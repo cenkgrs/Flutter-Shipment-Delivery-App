@@ -1,12 +1,10 @@
-import 'dart:ffi';
 import 'dart:ui';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'dart:convert';
-
+import 'package:crud_app/screens/home_page_screen.dart';
 
 class LoginScreen extends StatefulWidget {
     const LoginScreen({Key? key}) : super(key: key);
@@ -20,9 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
     TextEditingController passwordController = TextEditingController();
 
     bool _isLoading = false;
-
-    double blur_x = 5.0;
-    double blur_y = 5.0;
 
     @override
     Widget build(BuildContext context) {
@@ -87,12 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                         ),
-                        BackdropFilter(
-                            filter: ImageFilter.blur(
-                                sigmaX: blur_x,
-                                sigmaY: blur_y
-                            ),
-                        )
 
                     ],
                 ),
@@ -145,6 +134,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   hideLoading();
 
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  );
+
                 }
             } else {
 
@@ -169,8 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     void showLoading() {
       setState(() => _isLoading = true);
-      setState(() => blur_x = 100.0);
-      setState(() => blur_y = 100.0);
     }
 
     void hideLoading() {
