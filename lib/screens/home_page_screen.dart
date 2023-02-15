@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/driver/add_way_bill_card_widget.dart';
 import 'package:crud_app/widgets/driver/my_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/driver/my_deliveries_table_widget.dart';
-import 'package:crud_app/widgets/admin/way_bill_list_card_widget.dart';
+import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
+import 'package:crud_app/screens/admin/completed_deliveries_screen.dart';
+
 
 class HomeScreen extends StatelessWidget {
   final String userType;
@@ -35,10 +37,20 @@ class HomeScreen extends StatelessWidget {
               if (userType == 'admin')
                 Row(
                   children: [
-                    Container(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CompletedDeliveriesScene()),
+                        );
+                        ;
+                      },
+                      child: Container(
                       padding: EdgeInsets.all(10),
-                      child: WayBillListCard(),
+                      child: CompletedDeliveriesCard(),
                     ),
+                    )
                   ],
                 ),
             ],
