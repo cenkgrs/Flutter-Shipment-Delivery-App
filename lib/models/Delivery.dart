@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Delivery {
   final String delivery_no;
@@ -29,16 +30,16 @@ class Delivery {
   factory Delivery.fromJson(Map<String, dynamic> json) {
     for (var delivery in json['deliveries']) {
       return Delivery(
-        delivery_no: delivery["delivery_no"],
-        driver_id: delivery["driver_id"],
-        driver_name: delivery["driver_name"],
-        address: delivery["address"],
-        st_delivery: delivery["st_delivery"],
-        tt_delivery: delivery["tt_delivery"],
-        st_complete: delivery["st_complete"],
-        tt_complete: delivery["tt_complete"],
-        delivered_person: delivery["delivered_person"],
-        status: delivery['status']);
+          delivery_no: delivery["delivery_no"],
+          driver_id: delivery["driver_id"],
+          driver_name: delivery["driver_name"],
+          address: delivery["address"],
+          st_delivery: delivery["st_delivery"],
+          tt_delivery: delivery["tt_delivery"],
+          st_complete: delivery["st_complete"],
+          tt_complete: delivery["tt_complete"],
+          delivered_person: delivery["delivered_person"],
+          status: delivery['status']);
     }
 
     return Delivery(
@@ -52,13 +53,12 @@ class Delivery {
         tt_complete: json['deliveries'][0]["tt_complete"],
         delivered_person: json['deliveries'][0]["delivered_person"],
         status: json['deliveries'][0]['status']);
-    );
   }
 }
 
 Future<Delivery> fetchDelivery() async {
   final response =
-      await http.get(Uri.parse('http://bysurababy.com/api/get-deliveries'));
+      await http.get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -72,8 +72,16 @@ Future<Delivery> fetchDelivery() async {
 }
 
 Future<List<Delivery>> fetchDeliveries() async {
-  final response =
-      await http.get(Uri.parse('http://bysurababy.com/api/get-deliveries'));
+  final storage = const FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -84,17 +92,16 @@ Future<List<Delivery>> fetchDeliveries() async {
 
     for (var delivery in data['deliveries']) {
       result.add(Delivery(
-        delivery_no: delivery["delivery_no"],
-        driver_id: delivery["driver_id"],
-        driver_name: delivery["driver_name"],
-        address: delivery["address"],
-        st_delivery: delivery["st_delivery"],
-        tt_delivery: delivery["tt_delivery"],
-        st_complete: delivery["st_complete"],
-        tt_complete: delivery["tt_complete"],
-        delivered_person: delivery["delivered_person"],
-        status: delivery['status'])
-      );
+          delivery_no: delivery["delivery_no"],
+          driver_id: delivery["driver_id"],
+          driver_name: delivery["driver_name"],
+          address: delivery["address"],
+          st_delivery: delivery["st_delivery"],
+          tt_delivery: delivery["tt_delivery"] ?? DateTime.now(),
+          st_complete: delivery["st_complete"],
+          tt_complete: delivery["tt_complete"] ?? DateTime.now(),
+          delivered_person: delivery["delivered_person"] ?? 'none',
+          status: delivery['status']));
     }
 
     return result;
@@ -107,7 +114,7 @@ Future<List<Delivery>> fetchDeliveries() async {
 
 Future<List<Delivery>> fetchCompletedDeliveries() async {
   final response =
-      await http.get(Uri.parse('http://bysurababy.com/api/get-deliveries'));
+      await http.get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -119,17 +126,16 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
     for (var delivery in data['deliveries']) {
       if (delivery['status'] == 1) {
         result.add(Delivery(
-          delivery_no: delivery["delivery_no"],
-          driver_id: delivery["driver_id"],
-          driver_name: delivery["driver_name"],
-          address: delivery["address"],
-          st_delivery: delivery["st_delivery"],
-          tt_delivery: delivery["tt_delivery"],
-          st_complete: delivery["st_complete"],
-          tt_complete: delivery["tt_complete"],
-          delivered_person: delivery["delivered_person"],
-          status: delivery['status'])
-        );
+            delivery_no: delivery["delivery_no"],
+            driver_id: delivery["driver_id"],
+            driver_name: delivery["driver_name"],
+            address: delivery["address"],
+            st_delivery: delivery["st_delivery"],
+            tt_delivery: delivery["tt_delivery"],
+            st_complete: delivery["st_complete"],
+            tt_complete: delivery["tt_complete"],
+            delivered_person: delivery["delivered_person"],
+            status: delivery['status']));
       }
     }
 

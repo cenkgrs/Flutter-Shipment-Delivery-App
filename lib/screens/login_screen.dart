@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -101,7 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-          Uri.parse('http://bysurababy.com/api/login'),
+          Uri.parse('http://127.0.0.1:8000/api/login'),
+          headers: {'Accept': 'application/json;'},
           body: {'email': email, 'password': password});
 
       if (response.statusCode == 200) {
@@ -114,6 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
           ));
 
           hideLoading();
+
+          final storage = const FlutterSecureStorage();
+
+          // to save token in local storage
+          await storage.write(key: 'token', value: data['token']);
 
           var user_type = "admin";
 
