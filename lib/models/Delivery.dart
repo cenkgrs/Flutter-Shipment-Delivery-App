@@ -1,20 +1,24 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:http/http.dart' as http;
 
 class Delivery {
-  final String title;
+  final String delivery_no;
+  final int status;
 
   const Delivery({
-    required this.title,
+    required this.delivery_no,
+    required this.status,
   });
 
   factory Delivery.fromJson(Map<String, dynamic> json) {
     for (var product in json['response']['products']) {
-      return Delivery(title: product["name"]);
+      return Delivery(delivery_no: product["name"], status: 1);
     }
 
     return Delivery(
-      title: json['response']['products']['name'],
+      delivery_no: json['response']['products']['name'],
+      status: 1,
     );
   }
 }
@@ -46,7 +50,7 @@ Future<List<Delivery>> fetchDeliveries() async {
     List<Delivery> result = [];
 
     for (var product in data['response']['products']) {
-      result.add(Delivery(title: product['name']));
+      result.add(Delivery(delivery_no: product['name'], status: 0));
     }
 
     return result;

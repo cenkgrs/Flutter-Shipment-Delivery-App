@@ -27,10 +27,9 @@ class HomeScreen extends StatelessWidget {
               if (userType == 'driver')
                 Row(
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: MyDeliveriesCard(),
-                    ),
+                    Expanded(
+                        child:
+                            SizedBox(height: 650, child: MyDeliveriesTable())),
                   ],
                 ),
               if (userType == 'admin')
