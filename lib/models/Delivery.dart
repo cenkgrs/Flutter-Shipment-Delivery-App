@@ -111,6 +111,10 @@ Future<List<Delivery>> fetchDeliveries() async {
       var latitude;
       var longitude;
 
+      latitude = 0.0;
+      longitude = 0.0;
+
+      /*
       try {
         bool serviceEnabled;
         LocationPermission permission;
@@ -155,7 +159,7 @@ Future<List<Delivery>> fetchDeliveries() async {
         latitude = 0.0;
         longitude = 0.0;
       }
-
+      */
       result.add(Delivery(
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],

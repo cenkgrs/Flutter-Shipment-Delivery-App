@@ -109,16 +109,16 @@ class _SelectBoxState extends State<SelectBox> {
               borderRadius: BorderRadius.circular(15),
             ),
             items: deliveries
-                .map((item) => DropdownMenuItem<String>(
-                      value: item.title,
-                      child: Text(
-                        item.title,
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ))
-                .toList(),
+                .map((item){
+                  return DropdownMenuItem(
+                    child: Text(item.delivery_no,
+                      style: const TextStyle(
+                        fontSize:14
+                      )
+                    ),
+                    value: item.delivery_no
+                  )
+                }).toList(),
             validator: (value) {
               if (value == null) {
                 return 'Lütfen irsaliye numarası seçiniz.';

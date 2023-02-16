@@ -18,6 +18,26 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
     futureDeliveries = fetchDeliveries();
   }
 
+  Container getDeliveryIcon(delivery) {
+    if (delivery.status == 1) {
+      return Container(
+          padding: const EdgeInsets.all(0),
+          width: 200,
+          child: Align(
+            alignment: Alignment(-1, -1),
+            child: Icon(Icons.done, size: 57, color: Colors.blue),
+          ));
+    } else {
+      return Container(
+          padding: const EdgeInsets.all(12),
+          width: 200,
+          child: Align(
+            alignment: Alignment(-1, -1),
+            child: Icon(Icons.track_changes, size: 57, color: Colors.blue),
+          ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Delivery>>(
@@ -43,7 +63,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
 
                 return Center(
                     child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: Container(
                           width: 400,
                           height: 150,
@@ -61,40 +81,94 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                           ),
                           child: Column(
                             children: [
-                              if (delivery.status == 1)
-                                Container(
-                                    padding: const EdgeInsets.all(12),
-                                    width: 200,
-                                    child: Align(
-                                      alignment: Alignment(-2.5, -1),
-                                      child: Icon(Icons.done,
-                                          size: 57, color: Colors.blue),
-                                    )),
-                              if (delivery.status == 0)
-                                Container(
-                                    padding: const EdgeInsets.all(12),
-                                    width: 200,
-                                    child: Align(
-                                      alignment: Alignment(-2.5, -1),
-                                      child: Icon(Icons.track_changes,
-                                          size: 57, color: Colors.blue),
-                                    )),
-                              Container(
-                                width: 400,
-                                padding: const EdgeInsets.all(12),
-                                decoration: const BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.only(
-                                        bottomRight: Radius.circular(12),
-                                        bottomLeft: Radius.circular(12))),
-                                child: Text(
-                                  delivery.delivery_no,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 2,
+                                    child: getDeliveryIcon(delivery),
+                                  ),
+                                  Expanded(
+                                      flex: 8,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: [
+                                              Column(
+                                                children: <Widget>[
+                                                  Icon(Icons.person,
+                                                      size: 16,
+                                                      color:
+                                                          Colors.grey.shade700),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: <Widget>[
+                                                  Text(
+                                                    delivery.driver_name,
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade700,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Column(
+                                                children: <Widget>[
+                                                  Icon(Icons.location_on,
+                                                      size: 14,
+                                                      color:
+                                                          Colors.grey.shade700),
+                                                ],
+                                              ),
+                                              Column(
+                                                children: <Widget>[
+                                                  Text(
+                                                    delivery.address,
+                                                    style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade700,
+                                                        fontSize: 8,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ))
+                                ],
                               ),
+                              Expanded(
+                                  child: Container(
+                                width: 100,
+                              )),
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    width: 400,
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: const BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.only(
+                                            bottomRight: Radius.circular(12),
+                                            bottomLeft: Radius.circular(12))),
+                                    child: Text(
+                                      delivery.delivery_no,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              )
                             ],
                           ),
                         )));
