@@ -7,7 +7,8 @@ class AddWayBillCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Padding(
+        padding: EdgeInsets.all(10),
         child: GestureDetector(
             onTap: () {
               Navigator.push(

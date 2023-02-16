@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Delivery {
   final String delivery_no;
@@ -12,6 +14,9 @@ class Delivery {
   final int st_complete;
   final DateTime tt_complete;
   final String delivered_person;
+  final int distance;
+  final double latitude;
+  final double longitude;
   final int status;
 
   const Delivery({
@@ -24,6 +29,9 @@ class Delivery {
     required this.st_complete,
     required this.tt_complete,
     required this.delivered_person,
+    required this.distance,
+    required this.latitude,
+    required this.longitude,
     required this.status,
   });
 
@@ -39,6 +47,9 @@ class Delivery {
           st_complete: delivery["st_complete"],
           tt_complete: delivery["tt_complete"],
           delivered_person: delivery["delivered_person"],
+          distance: 0,
+          latitude: 0.0,
+          longitude: 0.0,
           status: delivery['status']);
     }
 
@@ -52,6 +63,9 @@ class Delivery {
         st_complete: json['deliveries'][0]["st_complete"],
         tt_complete: json['deliveries'][0]["tt_complete"],
         delivered_person: json['deliveries'][0]["delivered_person"],
+        distance: 0,
+        latitude: 0.0,
+        longitude: 0.0,
         status: json['deliveries'][0]['status']);
   }
 }
@@ -91,6 +105,57 @@ Future<List<Delivery>> fetchDeliveries() async {
     List<Delivery> result = [];
 
     for (var delivery in data['deliveries']) {
+      // Get delivery address coordinates
+      List<Location> locations;
+
+      var latitude;
+      var longitude;
+
+      try {
+        bool serviceEnabled;
+        LocationPermission permission;
+
+        serviceEnabled = await Geolocator.isLocationServiceEnabled();
+        if (!serviceEnabled) {
+          return Future.error('Location services are disabled');
+        }
+
+        permission = await Geolocator.checkPermission();
+        if (permission == LocationPermission.denied) {
+          permission = await Geolocator.requestPermission();
+          if (permission == LocationPermission.denied) {
+            return Future.error('Location permissions are denied');
+          }
+        }
+
+        if (permission == LocationPermission.deniedForever) {
+          return Future.error(
+              'Location permissions are permanently denied, we cannot request permissions.');
+        }
+
+        locations = await locationFromAddress(delivery['address']);
+
+        // Get current address coordinates
+        Position position =
+            await GeolocatorPlatform.instance.getCurrentPosition();
+
+        // Calcule distance between 2 place
+        var _distanceInMeters =
+            await GeolocatorPlatform.instance.distanceBetween(
+          locations[0].latitude,
+          locations[0].longitude,
+          position.latitude,
+          position.longitude,
+        );
+
+        latitude = locations[0].latitude;
+        longitude = locations[0].longitude;
+      } on NoResultFoundException {
+        // Handle "No results found for the address"
+        latitude = 0.0;
+        longitude = 0.0;
+      }
+
       result.add(Delivery(
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],
@@ -101,6 +166,9 @@ Future<List<Delivery>> fetchDeliveries() async {
           st_complete: delivery["st_complete"],
           tt_complete: delivery["tt_complete"] ?? DateTime.now(),
           delivered_person: delivery["delivered_person"] ?? 'none',
+          distance: 0,
+          latitude: latitude,
+          longitude: longitude,
           status: delivery['status']));
     }
 
@@ -135,6 +203,9 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
             st_complete: delivery["st_complete"],
             tt_complete: delivery["tt_complete"],
             delivered_person: delivery["delivered_person"],
+            distance: 0,
+            latitude: 0.0,
+            longitude: 0.0,
             status: delivery['status']));
       }
     }

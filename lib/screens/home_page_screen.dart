@@ -5,7 +5,6 @@ import 'package:crud_app/widgets/driver/my_deliveries_table_widget.dart';
 import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
 import 'package:crud_app/screens/admin/completed_deliveries_screen.dart';
 
-
 class HomeScreen extends StatelessWidget {
   final String userType;
   const HomeScreen({Key? key, required this.userType}) : super(key: key);
@@ -16,13 +15,11 @@ class HomeScreen extends StatelessWidget {
         title: 'Aydın Plastik',
         home: Scaffold(
           appBar: AppBar(title: const Text('Aydın Plastik')),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          body: ListView(
             children: <Widget>[
               if (userType == 'driver')
                 Row(children: [
-                  Container(
-                    padding: EdgeInsets.all(10),
+                  Expanded(
                     child: AddWayBillCard(),
                   ),
                 ]),
@@ -42,14 +39,15 @@ class HomeScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CompletedDeliveriesScene()),
+                              builder: (context) =>
+                                  const CompletedDeliveriesScene()),
                         );
                         ;
                       },
                       child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: CompletedDeliveriesCard(),
-                    ),
+                        padding: EdgeInsets.all(10),
+                        child: CompletedDeliveriesCard(),
+                      ),
                     )
                   ],
                 ),
