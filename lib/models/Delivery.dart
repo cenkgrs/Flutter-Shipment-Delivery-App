@@ -166,9 +166,11 @@ Future<List<Delivery>> fetchDeliveries() async {
           driver_name: delivery["driver_name"],
           address: delivery["address"],
           st_delivery: delivery["st_delivery"],
-          tt_delivery: delivery["tt_delivery"] ?? DateTime.now(),
+          tt_delivery:
+              DateTime.now(), //delivery["tt_delivery"] ?? DateTime.now(),
           st_complete: delivery["st_complete"],
-          tt_complete: delivery["tt_complete"] ?? DateTime.now(),
+          tt_complete:
+              DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
           delivered_person: delivery["delivered_person"] ?? 'none',
           distance: 0,
           latitude: latitude,

@@ -2,6 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/selectBox.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class AddCompletedDeliveryScene extends StatefulWidget {
   const AddCompletedDeliveryScene({Key? key}) : super(key: key);
@@ -12,8 +17,10 @@ class AddCompletedDeliveryScene extends StatefulWidget {
 }
 
 class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
-  TextEditingController deliveryNo = TextEditingController();
-  TextEditingController deliveryPerson = TextEditingController();
+  TextEditingController deliveryNoController = TextEditingController();
+  TextEditingController deliveryPersonController = TextEditingController();
+
+  bool _isLoading = false;
 
   static const String _title = 'Teslimat Kaydı Ekle';
 
@@ -43,7 +50,7 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        controller: deliveryNo,
+                        controller: deliveryNoController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'İrsaliye Numarası',
@@ -56,8 +63,7 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: TextFormField(
-                        obscureText: true,
-                        controller: deliveryPerson,
+                        controller: deliveryPersonController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Teslim Edilen Kişi',
@@ -68,7 +74,10 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                       height: 40,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        completeDelivery(deliveryNoController.text.toString(),
+                            deliveryPersonController.text.toString());
+                      },
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(
@@ -84,7 +93,91 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                     ),
                   ],
                 ),
-              )
+              ),
+              Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Visibility(
+                      visible: _isLoading,
+                      child: Center(
+                        // scaffold of the app
+                        child: LoadingAnimationWidget.hexagonDots(
+                          color: Colors.blue,
+                          size: 50,
+                        ),
+              )))),
             ])));
+  }
+
+  void completeDelivery(String deliveryNo, String deliveredPerson) async {
+
+    showLoading();
+
+    print("here");
+
+    final storage = const FlutterSecureStorage();
+
+    // to get token from local storage
+    var token = await storage.read(key: 'token');
+
+    try {
+      final response = await http
+          .post(Uri.parse('http://127.0.0.1:8000/api/complete-delivery'), headers: {
+        'Accept': 'application/json;',
+        'Authorization': 'Bearer $token'
+      }, body: {
+        'delivery_no': deliveryNo,
+        'delivered_person': deliveredPerson
+      }); //'email': email, 'password': password});
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        if (data['status'] == true) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Teslimat Tamamlandı !'),
+            backgroundColor: Colors.blue,
+          ));
+      
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Teslimat kaydı eklenemedi Lütfen irsaliye numarasını kontrol ediniz !'),
+            backgroundColor: Colors.blue,
+          ));
+        }
+
+        hideLoading();
+
+      } else {
+        throw Exception(
+            'Teslimat kaydı eklenemedi Lütfen irsaliye numarasını kontrol ediniz.');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+        ),
+        backgroundColor: Colors.blue,
+      ));
+
+      hideLoading();
+
+
+    }
+  }
+
+  void showLoading() {
+    setState(() => _isLoading = true);
+  }
+
+  void hideLoading() {
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      // Here you can write your code
+
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 }

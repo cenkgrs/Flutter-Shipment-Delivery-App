@@ -19,8 +19,8 @@ class _SelectBoxState extends State<SelectBox> {
 
   void initState() {
     super.initState();
-    futureDelivery = fetchDelivery();
-    futureDeliveries = fetchDeliveries();
+    //futureDelivery = fetchDelivery();
+    //futureDeliveries = fetchDeliveries();
   }
 
   Widget build(BuildContext context) {
@@ -28,6 +28,8 @@ class _SelectBoxState extends State<SelectBox> {
       'Male',
       'Female',
     ];
+
+    return Container();
 
     /*
     return FutureBuilder<Delivery>(
@@ -44,6 +46,8 @@ class _SelectBoxState extends State<SelectBox> {
       },
     );
     */
+
+    /*
     return FutureBuilder<List<Delivery>>(
         future: futureDeliveries,
         builder: (context, snapshot) {
@@ -68,8 +72,8 @@ class _SelectBoxState extends State<SelectBox> {
                 return Text(delivery.delivery_no);
               });
         });
-
-    /*
+*/
+/*
     return FutureBuilder<List<Delivery>>(
         future: futureDeliveries,
         builder: (context, snapshot) {
@@ -117,7 +121,7 @@ class _SelectBoxState extends State<SelectBox> {
                       )
                     ),
                     value: item.delivery_no
-                  )
+                  );
                 }).toList(),
             validator: (value) {
               if (value == null) {
