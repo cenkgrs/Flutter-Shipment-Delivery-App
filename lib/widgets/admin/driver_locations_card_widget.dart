@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:crud_app/screens/admin/create_delivery_screen.dart';
+import 'package:crud_app/screens/admin/waiting_deliveries_screen.dart';
 
-class CreateDeliveryCard extends StatelessWidget {
-  const CreateDeliveryCard({super.key});
+class DriverLocations extends StatelessWidget {
+  const DriverLocations({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class CreateDeliveryCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const CreateDeliveryScreen()),
+                builder: (context) => const WaitingDeliveriesScreen()),
           );
           ;
         },
@@ -45,7 +45,7 @@ class CreateDeliveryCard extends StatelessWidget {
                         padding: const EdgeInsets.all(12),
                         child: Align(
                           alignment: Alignment(-1, -1),
-                          child: Icon(Icons.document_scanner_outlined,
+                          child: Icon(Icons.share_location,
                               size: 57, color: Colors.blue),
                         )),
                   )
@@ -63,7 +63,7 @@ class CreateDeliveryCard extends StatelessWidget {
                             bottomRight: Radius.circular(12),
                             bottomLeft: Radius.circular(12))),
                     child: Text(
-                      "Yeni Teslimat Ekle",
+                      "Şöförler Şuan Nerede ?",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 17,

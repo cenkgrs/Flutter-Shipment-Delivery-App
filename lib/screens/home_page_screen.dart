@@ -4,14 +4,16 @@ import 'package:crud_app/widgets/driver/my_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/driver/my_deliveries_table_widget.dart';
 
 import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
-import 'package:crud_app/screens/admin/completed_deliveries_screen.dart';
 
 import 'package:crud_app/widgets/admin/create_delivery_card_widget.dart';
-import 'package:crud_app/screens/admin/create_delivery_screen.dart';
 
+import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
+
+import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final String userType;
+
   const HomeScreen({Key? key, required this.userType}) : super(key: key);
 
   @override
@@ -38,42 +40,19 @@ class HomeScreen extends StatelessWidget {
                 ),
               if (userType == 'admin')
                 Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const CompletedDeliveriesScene()),
-                        );
-                        ;
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: CompletedDeliveriesCard(),
-                      ),
-                    )
-                  ],
+                  children: [Expanded(child: const CreateDeliveryCard())],
                 ),
-                 if (userType == 'admin')
+              if (userType == 'admin')
                 Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const CreateDeliveryScreen()),
-                        );
-                        ;
-                      },
-                      child: Container(
-                      padding: EdgeInsets.all(10),
-                      child: const CreateDeliveryCard(),
-                    ),
-                    )
-                  ],
+                  children: [Expanded(child: const CompletedDeliveriesCard())],
+                ),
+              if (userType == 'admin')
+                Row(
+                  children: [Expanded(child: const WaitingDeliveriesCard())],
+                ),
+              if (userType == 'admin')
+                Row(
+                  children: [Expanded(child: const DriverLocations())],
                 ),
             ],
           ),

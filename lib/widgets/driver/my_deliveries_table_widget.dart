@@ -25,7 +25,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
           width: 200,
           child: Align(
             alignment: Alignment(-1, -1),
-            child: Icon(Icons.done, size: 57, color: Colors.blue),
+            child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
           ));
     } else {
       return Container(
