@@ -2,20 +2,30 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/selectBox.dart';
+import 'package:crud_app/models/Driver.dart';
 
 class CreateDeliveryScreen extends StatefulWidget {
   const CreateDeliveryScreen({Key? key}) : super(key: key);
 
   @override
-  State<CreateDeliveryScreen> createState() =>
-      _CreateDeliveryScreenState();
+  State<CreateDeliveryScreen> createState() => _CreateDeliveryScreenState();
 }
 
 class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
   TextEditingController deliveryNo = TextEditingController();
-  TextEditingController deliveryPerson = TextEditingController();
+  TextEditingController address = TextEditingController();
 
-  static const String _title = 'Teslimat Kaydı Ekle';
+  late Future<List<Driver>> futureDrivers;
+
+  static const String _title = 'Yeni Teslimat Ekle';
+
+  @override
+  void initState() {
+    super.initState();
+
+    futureDrivers = fetchDrivers();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +66,35 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: TextFormField(
-                        obscureText: true,
-                        controller: deliveryPerson,
+                        minLines: 3,
+                        maxLines: 5,
+                        controller: address,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: 'Teslim Edilen Kişi',
+                          labelText: 'Teslimat Adresi',
                         ),
                       ),
                     ),
+                    FutureBuilder<List<Driver>>(
+                        future: futureDrivers,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                          }
+                          if (snapshot.hasError) {
+                          }
+                          List<Driver> drivers = snapshot.data ?? [];
+                          return ListView.builder(
+                              itemCount: drivers.length,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: ScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                Driver driver = drivers[index];
+
+                                return Text(driver.name);
+                              });
+                        }),
                     SizedBox(
                       height: 40,
                     ),
@@ -75,7 +106,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(
-                          child: Text('Teslimatı Tamamla',
+                          child: Text('Ekle',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white)),
