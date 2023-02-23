@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-
 class AddCompletedDeliveryScene extends StatefulWidget {
   const AddCompletedDeliveryScene({Key? key}) : super(key: key);
 
@@ -55,7 +54,9 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                   children: <Widget>[
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: SelectBox(type: 'waiting_deliveries', callback: getSelectedDelivery),
+                      child: SelectBox(
+                          type: 'waiting_deliveries',
+                          callback: getSelectedDelivery),
                     ),
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -92,30 +93,27 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                 ),
               ),
               Padding(
-              padding: const EdgeInsets.all(10),
-              child: Container(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Visibility(
-                      visible: _isLoading,
-                      child: Center(
-                        // scaffold of the app
-                        child: LoadingAnimationWidget.hexagonDots(
-                          color: Colors.blue,
-                          size: 50,
-                        ),
-              )))),
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: Visibility(
+                          visible: _isLoading,
+                          child: Center(
+                            // scaffold of the app
+                            child: LoadingAnimationWidget.hexagonDots(
+                              color: Colors.blue,
+                              size: 50,
+                            ),
+                          )))),
             ])));
   }
 
   void completeDelivery(String deliveryNo, String deliveredPerson) async {
-
     if (selectedDeliveryNo == '') {
       return;
     }
 
     showLoading();
-
-    print("here");
 
     final storage = const FlutterSecureStorage();
 
@@ -123,14 +121,16 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
     var token = await storage.read(key: 'token');
 
     try {
-      final response = await http
-          .post(Uri.parse('http://127.0.0.1:8000/api/complete-delivery'), headers: {
-        'Accept': 'application/json;',
-        'Authorization': 'Bearer $token'
-      }, body: {
-        'delivery_no': selectedDeliveryNo,
-        'delivered_person': deliveredPerson
-      }); //'email': email, 'password': password});
+      final response = await http.post(
+          Uri.parse('http://127.0.0.1:8000/api/complete-delivery'),
+          headers: {
+            'Accept': 'application/json;',
+            'Authorization': 'Bearer $token'
+          },
+          body: {
+            'delivery_no': selectedDeliveryNo,
+            'delivered_person': deliveredPerson
+          }); //'email': email, 'password': password});
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
@@ -140,16 +140,15 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
             content: Text('Teslimat Tamamlandı !'),
             backgroundColor: Colors.blue,
           ));
-      
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Teslimat kaydı eklenemedi Lütfen irsaliye numarasını kontrol ediniz !'),
+            content: Text(
+                'Teslimat kaydı eklenemedi Lütfen irsaliye numarasını kontrol ediniz !'),
             backgroundColor: Colors.blue,
           ));
         }
 
         hideLoading();
-
       } else {
         throw Exception(
             'Teslimat kaydı eklenemedi Lütfen irsaliye numarasını kontrol ediniz.');
@@ -163,8 +162,6 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
       ));
 
       hideLoading();
-
-
     }
   }
 

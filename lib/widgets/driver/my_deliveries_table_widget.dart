@@ -2,6 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class MyDeliveriesTable extends StatefulWidget {
   const MyDeliveriesTable({Key? key}) : super(key: key);
@@ -38,6 +41,48 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
     }
   }
 
+  GestureDetector getDeliveryAction(delivery) {
+    if (delivery.status == 0 && delivery.st_delivery == 0) {
+      return GestureDetector(
+          onTap: () {
+            startDelivery(delivery);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            width: 200,
+            decoration: BoxDecoration(
+                color: Colors.blue, borderRadius: BorderRadius.circular(10)),
+            child: const Center(
+              child: Text('Teslimatı Başlat',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ));
+    }
+
+    if (delivery.status == 0 && delivery.st_delivery == 1) {
+      return GestureDetector(
+          onTap: () {},
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            width: 200,
+            decoration: BoxDecoration(
+                color: Colors.blue, borderRadius: BorderRadius.circular(10)),
+            child: const Center(
+              child: Text('Devam Ediyor',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ));
+    }
+
+    // Empty
+    return GestureDetector(
+      onTap: () {},
+      child: Container(),
+    );
+  }
+
   Row getDriverName(delivery) {
     return Row(
       children: [
@@ -69,7 +114,8 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
             Icon(Icons.location_on, size: 14, color: Colors.grey.shade700),
           ],
         ),
-        Column(
+        Flexible(
+            child: Column(
           children: <Widget>[
             Text(
               delivery.address,
@@ -79,7 +125,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                   fontWeight: FontWeight.bold),
             ),
           ],
-        )
+        ))
       ],
     );
   }
@@ -88,11 +134,6 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
     return Container(
       width: width * 0.9,
       padding: const EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(12),
-              bottomLeft: Radius.circular(12))),
       child: Text(
         delivery.delivery_no,
         style: TextStyle(
@@ -147,9 +188,12 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                               Row(
                                 children: <Widget>[
                                   Expanded(
-                                    flex: 2,
-                                    child: getDeliveryIcon(delivery),
-                                  ),
+                                      flex: 2,
+                                      child: Column(
+                                        children: <Widget>[
+                                          getDeliveryIcon(delivery),
+                                        ],
+                                      )),
                                   Expanded(
                                       flex: 8,
                                       child: Column(
@@ -164,15 +208,74 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                                   child: Container(
                                 width: 100,
                               )),
-                              Row(
-                                children: <Widget>[
-                                  getDeliveryNo(delivery, width)
-                                ],
+                              Container(
+                                decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(12),
+                                        bottomLeft: Radius.circular(12))),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 6,
+                                      child: getDeliveryNo(delivery, width),
+                                    ),
+                                    Expanded(
+                                        flex: 4,
+                                        child: getDeliveryAction(delivery))
+                                  ],
+                                ),
                               )
                             ],
                           ),
                         )));
               });
         });
+  }
+
+  startDelivery(Delivery delivery) async {
+    final storage = const FlutterSecureStorage();
+
+    // to get token from local storage
+    var token = await storage.read(key: 'token');
+
+    try {
+      final response = await http.post(
+          Uri.parse('http://127.0.0.1:8000/api/start-delivery'),
+          headers: {
+            'Accept': 'application/json;',
+            'Authorization': 'Bearer $token'
+          },
+          body: {
+            'delivery_no': delivery.delivery_no,
+          });
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+
+        if (data['status'] == true) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Teslimat Başlatıldı !'),
+            backgroundColor: Colors.blue,
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                'Teslimat Başlatılamadı Lütfen Sayfayı Tekrardan Açınız !'),
+            backgroundColor: Colors.blue,
+          ));
+        }
+      } else {
+        throw Exception(
+            'Teslimat Başlatılamadı Lütfen Sayfayı Tekrardan Açınız.');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.toString(),
+        ),
+        backgroundColor: Colors.blue,
+      ));
+    }
   }
 }
