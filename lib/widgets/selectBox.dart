@@ -9,7 +9,8 @@ class SelectBox extends StatefulWidget {
   final String type;
   final Function callback;
 
-  const SelectBox({Key? key, required this.type, required this.callback}) : super(key: key);
+  const SelectBox({Key? key, required this.type, required this.callback})
+      : super(key: key);
 
   @override
   State<SelectBox> createState() => _SelectBoxState();
@@ -51,6 +52,7 @@ class _SelectBoxState extends State<SelectBox> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
                     child: DropdownButton<String>(
+                      value: dropDownValue == '' ? null : dropDownValue,
                       hint: Text('İrsaliye Seç'),
                       isExpanded:
                           true, //make true to take width of parent widget
@@ -70,7 +72,7 @@ class _SelectBoxState extends State<SelectBox> {
 
                           // Send this value to parent widget
                           widget.callback(value);
-                          
+
                           print(value);
                         });
                       },
