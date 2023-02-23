@@ -20,9 +20,15 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
   TextEditingController deliveryNoController = TextEditingController();
   TextEditingController deliveryPersonController = TextEditingController();
 
+  String selectedDeliveryNo = "";
+
   bool _isLoading = false;
 
   static const String _title = 'Teslimat Kaydı Ekle';
+
+  getSelectedDelivery(String deliveryNo) {
+    selectedDeliveryNo = deliveryNo;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,17 +54,8 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                 child: ListView(
                   children: <Widget>[
                     Container(
-                      padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        controller: deliveryNoController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'İrsaliye Numarası',
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: SelectBox(type: 'waiting_deliveries'),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: SelectBox(type: 'waiting_deliveries', callback: getSelectedDelivery),
                     ),
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -112,6 +109,10 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
 
   void completeDelivery(String deliveryNo, String deliveredPerson) async {
 
+    if (selectedDeliveryNo == '') {
+      return;
+    }
+
     showLoading();
 
     print("here");
@@ -127,7 +128,7 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
         'Accept': 'application/json;',
         'Authorization': 'Bearer $token'
       }, body: {
-        'delivery_no': deliveryNo,
+        'delivery_no': selectedDeliveryNo,
         'delivered_person': deliveredPerson
       }); //'email': email, 'password': password});
 

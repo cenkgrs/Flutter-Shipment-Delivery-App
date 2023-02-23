@@ -61,9 +61,6 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                       ),
                     ),
                     Container(
-                      child: SelectBox(type: 'waiting_deliveries'),
-                    ),
-                    Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: TextFormField(
                         minLines: 3,

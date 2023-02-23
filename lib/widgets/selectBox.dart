@@ -3,11 +3,13 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/models/Driver.dart';
 
 class SelectBox extends StatefulWidget {
   final String type;
+  final Function callback;
 
-  const SelectBox({Key? key, required this.type}) : super(key: key);
+  const SelectBox({Key? key, required this.type, required this.callback}) : super(key: key);
 
   @override
   State<SelectBox> createState() => _SelectBoxState();
@@ -17,10 +19,12 @@ class _SelectBoxState extends State<SelectBox> {
   late Future<Delivery> futureDelivery;
   late Future<List<Delivery>> futureDeliveries;
 
+  String dropDownValue = "";
+
   void initState() {
     super.initState();
     //futureDelivery = fetchDelivery();
-    //futureDeliveries = fetchDeliveries();
+    futureDeliveries = fetchDeliveries();
   }
 
   Widget build(BuildContext context) {
@@ -29,107 +33,91 @@ class _SelectBoxState extends State<SelectBox> {
       'Female',
     ];
 
-    return Container();
-
-    /*
-    return FutureBuilder<Delivery>(
-      future: futureDelivery,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Text(snapshot.data!.title);
-        } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        }
-
-        // By default, show a loading spinner.
-        return const CircularProgressIndicator();
-      },
-    );
-    */
-
-    /*
-    return FutureBuilder<List<Delivery>>(
+    if (widget.type == 'waiting_deliveries') {
+      return FutureBuilder(
         future: futureDeliveries,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            // return: show loading widget
-          }
-          if (snapshot.hasError) {
-            // return: show error widget
-          }
-          List<Delivery> deliveries = snapshot.data ?? [];
-          return ListView.builder(
-              itemCount: deliveries.length,
-              //  respondedData3['data'].length,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: ScrollPhysics(),
-              itemBuilder: (context, index) {
-                Delivery delivery = deliveries[index];
-                //  DateFormat("yyyy-MM-dd").format(
-                //     DateTime.parse(respondedData3['data'][index]['appointmentDate']));
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: DropdownButton<String>(
+                      hint: Text('İrsaliye Seç'),
+                      isExpanded:
+                          true, //make true to take width of parent widget
+                      underline: Container(), //empty line
+                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      iconEnabledColor: Colors.blueAccent, //Icon color
+                      items:
+                          snapshot.data.map<DropdownMenuItem<String>>((item) {
+                        return DropdownMenuItem<String>(
+                          value: item.delivery_no,
+                          child: Text(item.delivery_no),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          dropDownValue = value!;
 
-                return Text(delivery.delivery_no);
-              });
-        });
-*/
-/*
-    return FutureBuilder<List<Delivery>>(
-        future: futureDeliveries,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            // return: show loading widget
-          }
-          if (snapshot.hasError) {
-            // return: show error widget
-          }
-          List<Delivery> deliveries = snapshot.data ?? [];
-
-          return DropdownButtonFormField2(
-            decoration: InputDecoration(
-              //Add isDense true and zero Padding.
-              //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
-              isDense: true,
-              contentPadding: EdgeInsets.zero,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              //Add more decoration as you want here
-              //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
-            ),
-            isExpanded: true,
-            hint: const Text(
-              'İrsaliye Numarası Seçiniz',
-              style: TextStyle(fontSize: 14),
-            ),
-            icon: const Icon(
-              Icons.arrow_drop_down,
-              color: Colors.black45,
-            ),
-            iconSize: 30,
-            buttonHeight: 60,
-            buttonPadding: const EdgeInsets.only(left: 20, right: 10),
-            dropdownDecoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            items: deliveries
-                .map((item){
-                  return DropdownMenuItem(
-                    child: Text(item.delivery_no,
-                      style: const TextStyle(
-                        fontSize:14
-                      )
+                          // Send this value to parent widget
+                          widget.callback(value);
+                          
+                          print(value);
+                        });
+                      },
                     ),
-                    value: item.delivery_no
-                  );
-                }).toList(),
-            validator: (value) {
-              if (value == null) {
-                return 'Lütfen irsaliye numarası seçiniz.';
-              }
-            },
-          );
+                  ))
+              : Container(
+                  child: Center(
+                    child: Text('İrsaliyeler Getiriliyor...'),
+                  ),
+                );
+        },
+      );
+    }
+
+    return FutureBuilder(
+        future: futureDeliveries,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? DropdownButtonFormField2<String>(
+                  decoration: InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  isExpanded: true,
+                  hint: const Text(
+                    'İrsaliye Numarası Seçiniz',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  icon: const Icon(
+                    Icons.arrow_drop_down,
+                    color: Colors.black45,
+                  ),
+                  iconSize: 30,
+                  buttonHeight: 60,
+                  buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+                  dropdownDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  items: snapshot.data.map<DropdownMenuItem<String>>((item) {
+                    return DropdownMenuItem<String>(
+                      value: item.delivery_no,
+                      child: Text(item.delivery_no),
+                    );
+                  }).toList(),
+                )
+              : Container(
+                  child: Center(
+                    child: Text('İrsaliyeler Getiriliyor...'),
+                  ),
+                );
         });
-        */
   }
 }
