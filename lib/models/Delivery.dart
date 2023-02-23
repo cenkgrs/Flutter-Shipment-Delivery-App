@@ -186,6 +186,52 @@ Future<List<Delivery>> fetchDeliveries() async {
   }
 }
 
+Future<List<Delivery>> fetchWaitingDeliveries() async {
+  final storage = const FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    var data = jsonDecode(response.body);
+
+    List<Delivery> result = [];
+
+    for (var delivery in data['deliveries']) {
+      if (delivery['status'] == 0) {
+        result.add(Delivery(
+            delivery_no: delivery["delivery_no"],
+            driver_id: delivery["driver_id"],
+            driver_name: delivery["driver_name"],
+            address: delivery["address"],
+            st_delivery: delivery["st_delivery"],
+            tt_delivery: DateTime.now(), // delivery["tt_delivery"],
+            st_complete: delivery["st_complete"],
+            tt_complete: DateTime.now(), //delivery["tt_complete"],
+            delivered_person: delivery["delivered_person"] ?? "none",
+            distance: 0,
+            latitude: 0.0,
+            longitude: 0.0,
+            status: delivery['status']));
+      }
+    }
+
+    return result;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load Delivery');
+  }
+}
+
 Future<List<Delivery>> fetchCompletedDeliveries() async {
   final response =
       await http.get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'));

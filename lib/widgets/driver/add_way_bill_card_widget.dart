@@ -76,6 +76,9 @@ class AddWayBillCard extends StatelessWidget {
                       )
                     ],
                   ),
-                ))));
+                )
+              )
+        )
+    );
   }
 }

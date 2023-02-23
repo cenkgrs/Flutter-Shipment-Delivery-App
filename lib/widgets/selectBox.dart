@@ -18,13 +18,19 @@ class SelectBox extends StatefulWidget {
 class _SelectBoxState extends State<SelectBox> {
   late Future<Delivery> futureDelivery;
   late Future<List<Delivery>> futureDeliveries;
+  late Future<List<Delivery>> futureWaitingDeliveries;
 
   String dropDownValue = "";
 
   void initState() {
     super.initState();
+
+    if (widget.type == 'waiting_deliveries') {
+      futureWaitingDeliveries = fetchWaitingDeliveries();
+    }
+
     //futureDelivery = fetchDelivery();
-    futureDeliveries = fetchDeliveries();
+    //futureDeliveries = fetchDeliveries();
   }
 
   Widget build(BuildContext context) {
@@ -35,7 +41,7 @@ class _SelectBoxState extends State<SelectBox> {
 
     if (widget.type == 'waiting_deliveries') {
       return FutureBuilder(
-        future: futureDeliveries,
+        future: futureWaitingDeliveries,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return snapshot.hasData
               ? DecoratedBox(
@@ -79,45 +85,6 @@ class _SelectBoxState extends State<SelectBox> {
       );
     }
 
-    return FutureBuilder(
-        future: futureDeliveries,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return snapshot.hasData
-              ? DropdownButtonFormField2<String>(
-                  decoration: InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  isExpanded: true,
-                  hint: const Text(
-                    'İrsaliye Numarası Seçiniz',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  icon: const Icon(
-                    Icons.arrow_drop_down,
-                    color: Colors.black45,
-                  ),
-                  iconSize: 30,
-                  buttonHeight: 60,
-                  buttonPadding: const EdgeInsets.only(left: 20, right: 10),
-                  dropdownDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  items: snapshot.data.map<DropdownMenuItem<String>>((item) {
-                    return DropdownMenuItem<String>(
-                      value: item.delivery_no,
-                      child: Text(item.delivery_no),
-                    );
-                  }).toList(),
-                )
-              : Container(
-                  child: Center(
-                    child: Text('İrsaliyeler Getiriliyor...'),
-                  ),
-                );
-        });
+    return Container();
   }
 }

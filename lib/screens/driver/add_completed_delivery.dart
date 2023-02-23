@@ -67,7 +67,7 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     GestureDetector(
@@ -80,7 +80,7 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(10)),
-                        child: Center(
+                        child: const Center(
                           child: Text('Teslimatı Tamamla',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

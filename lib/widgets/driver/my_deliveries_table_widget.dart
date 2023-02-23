@@ -123,8 +123,6 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
               physics: ScrollPhysics(),
               itemBuilder: (context, index) {
                 Delivery delivery = deliveries[index];
-                //  DateFormat("yyyy-MM-dd").format(
-                //     DateTime.parse(respondedData3['data'][index]['appointmentDate']));
 
                 return Center(
                     child: Padding(
