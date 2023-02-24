@@ -269,3 +269,36 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
     throw Exception('Failed to load Delivery');
   }
 }
+
+createDelivery(deliveryNo, address, driverId) async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  try {
+    final response = await http
+        .post(Uri.parse('http://127.0.0.1:8000/api/create-delivery'), headers: {
+      'Accept': 'application/json;',
+      'Authorization': 'Bearer $token'
+    }, body: {
+      'delivery_no': deliveryNo,
+      'address': address,
+      'driver_id': driverId
+    });
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data['status'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
+}
