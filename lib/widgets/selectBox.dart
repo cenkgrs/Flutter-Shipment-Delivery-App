@@ -17,9 +17,9 @@ class SelectBox extends StatefulWidget {
 }
 
 class _SelectBoxState extends State<SelectBox> {
-  late Future<Delivery> futureDelivery;
-  late Future<List<Delivery>> futureDeliveries;
   late Future<List<Delivery>> futureWaitingDeliveries;
+
+  late Future<List<Driver>> futureDrivers;
 
   String dropDownValue = "";
 
@@ -30,8 +30,9 @@ class _SelectBoxState extends State<SelectBox> {
       futureWaitingDeliveries = fetchWaitingDeliveries();
     }
 
-    //futureDelivery = fetchDelivery();
-    //futureDeliveries = fetchDeliveries();
+    if (widget.type == 'drivers') {
+      futureDrivers = fetchDrivers();
+    }
   }
 
   Widget build(BuildContext context) {
@@ -81,6 +82,51 @@ class _SelectBoxState extends State<SelectBox> {
               : Container(
                   child: Center(
                     child: Text('İrsaliyeler Getiriliyor...'),
+                  ),
+                );
+        },
+      );
+    }
+
+    if (widget.type == 'drivers') {
+      return FutureBuilder(
+        future: futureDrivers,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return snapshot.hasData
+              ? DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: DropdownButton<String>(
+                      value: dropDownValue == '' ? null : dropDownValue,
+                      hint: Text('Sürücü Seç'),
+                      isExpanded:
+                          true, //make true to take width of parent widget
+                      underline: Container(), //empty line
+                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      iconEnabledColor: Colors.blueAccent, //Icon color
+                      items:
+                          snapshot.data.map<DropdownMenuItem<String>>((item) {
+                        return DropdownMenuItem<String>(
+                          value: item.id,
+                          child: Text(item.name),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          dropDownValue = value!;
+
+                          // Send this value to parent widget
+                          widget.callback(value);
+                        });
+                      },
+                    ),
+                  ))
+              : Container(
+                  child: Center(
+                    child: Text('Sürücüler Getiriliyor...'),
                   ),
                 );
         },

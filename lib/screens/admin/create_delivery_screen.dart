@@ -1,8 +1,9 @@
+import 'dart:ffi';
 import 'dart:ui';
 
+import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/selectBox.dart';
-import 'package:crud_app/models/Driver.dart';
 
 class CreateDeliveryScreen extends StatefulWidget {
   const CreateDeliveryScreen({Key? key}) : super(key: key);
@@ -12,19 +13,20 @@ class CreateDeliveryScreen extends StatefulWidget {
 }
 
 class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
-  TextEditingController deliveryNo = TextEditingController();
-  TextEditingController address = TextEditingController();
+  TextEditingController deliveryNoController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
-  late Future<List<Driver>> futureDrivers;
+  int selectedDriver = 1;
 
   static const String _title = 'Yeni Teslimat Ekle';
+
+  getSelectedDriver(int driverId) {
+    selectedDriver = driverId;
+  }
 
   @override
   void initState() {
     super.initState();
-
-    futureDrivers = fetchDrivers();
-
   }
 
   @override
@@ -53,7 +55,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                     Container(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
-                        controller: deliveryNo,
+                        controller: deliveryNoController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'İrsaliye Numarası',
@@ -65,38 +67,42 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                       child: TextFormField(
                         minLines: 3,
                         maxLines: 5,
-                        controller: address,
+                        controller: addressController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Teslimat Adresi',
                         ),
                       ),
                     ),
-                    FutureBuilder<List<Driver>>(
-                        future: futureDrivers,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState !=
-                              ConnectionState.done) {
-                          }
-                          if (snapshot.hasError) {
-                          }
-                          List<Driver> drivers = snapshot.data ?? [];
-                          return ListView.builder(
-                              itemCount: drivers.length,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              physics: ScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                Driver driver = drivers[index];
-
-                                return Text(driver.name);
-                              });
-                        }),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: SelectBox(
+                          type: 'drivers',
+                          callback: getSelectedDriver),
+                    ),
                     SizedBox(
                       height: 40,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        var result = createDelivery(
+                            deliveryNoController.text.toString(),
+                            addressController.text.toString(),
+                            selectedDriver);
+
+                        if (result) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Yeni Teslimat Eklendi'),
+                            backgroundColor: Colors.blue,
+                          ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                'Yeni Teslimat Eklenemedi. Lütfen Verileri Kontrol Ediniz'),
+                            backgroundColor: Colors.blue,
+                          ));
+                        }
+                      },
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(

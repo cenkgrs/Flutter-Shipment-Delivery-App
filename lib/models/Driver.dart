@@ -20,13 +20,6 @@ Future<List<Driver>> fetchDrivers() async {
       List<Driver> result = [];
 
       for (var driver in data['drivers']) {
-        // Get delivery address coordinates
-
-        var latitude;
-        var longitude;
-
-        latitude = 0.0;
-        longitude = 0.0;
 
         result.add(Driver(
           id: driver["id"],
