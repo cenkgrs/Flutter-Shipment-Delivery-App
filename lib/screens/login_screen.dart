@@ -117,17 +117,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
           hideLoading();
 
-          final storage = const FlutterSecureStorage();
+          // Create storage instance
+          const storage = FlutterSecureStorage();
 
-          // to save token in local storage
+          // Save api token on local storage
           await storage.write(key: 'token', value: data['token']);
 
-          var user_type = "admin";
+          var user_type = data['user_type'];
 
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const HomeScreen(userType: "driver")),
+                builder: (context) => HomeScreen(userType: user_type)),
           );
         }
       } else {
