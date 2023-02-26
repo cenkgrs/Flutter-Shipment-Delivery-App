@@ -22,6 +22,7 @@ class _SelectBoxState extends State<SelectBox> {
   late Future<List<Driver>> futureDrivers;
 
   String dropDownValue = "";
+  int dropDownValueInt = 1000;
 
   void initState() {
     super.initState();
@@ -99,24 +100,23 @@ class _SelectBoxState extends State<SelectBox> {
                   ),
                   child: Padding(
                     padding: EdgeInsets.only(left: 15, right: 15),
-                    child: DropdownButton<String>(
-                      value: dropDownValue == '' ? null : dropDownValue,
+                    child: DropdownButton<int>(
+                      value: dropDownValueInt == 1000 ? null : dropDownValueInt,
                       hint: Text('Sürücü Seç'),
                       isExpanded:
                           true, //make true to take width of parent widget
                       underline: Container(), //empty line
                       style: TextStyle(fontSize: 18, color: Colors.blueAccent),
                       iconEnabledColor: Colors.blueAccent, //Icon color
-                      items:
-                          snapshot.data.map<DropdownMenuItem<String>>((item) {
-                        return DropdownMenuItem<String>(
+                      items: snapshot.data.map<DropdownMenuItem<int>>((item) {
+                        return DropdownMenuItem<int>(
                           value: item.id,
                           child: Text(item.name),
                         );
                       }).toList(),
                       onChanged: (value) {
                         setState(() {
-                          dropDownValue = value!;
+                          dropDownValueInt = dropDownValueInt!;
 
                           // Send this value to parent widget
                           widget.callback(value);

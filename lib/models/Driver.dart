@@ -13,31 +13,7 @@ class Driver {
 }
 
 Future<List<Driver>> fetchDrivers() async {
-  getDriversRequest().then((response) {
-    if (response.statusCode == true) {
-      var data = jsonDecode(response.body);
-
-      List<Driver> result = [];
-
-      for (var driver in data['drivers']) {
-
-        result.add(Driver(
-          id: driver["id"],
-          name: driver["name"],
-        ));
-      }
-
-      return result;
-    } else {
-      throw Exception('Failed to load Drivers');
-    }
-  });
-
-  throw Exception('Failed to load Drivers');
-}
-
-Future<http.Response> getDriversRequest() async {
-  const storage = const FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
 
   // to get token from local storage
   var token = await storage.read(key: 'token');
@@ -48,5 +24,20 @@ Future<http.Response> getDriversRequest() async {
     'Authorization': 'Bearer $token'
   });
 
-  return response;
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+
+    List<Driver> result = [];
+
+    for (var driver in data['drivers']) {
+      result.add(Driver(
+        id: driver["id"],
+        name: driver["name"],
+      ));
+    }
+
+    return result;
+  } else {
+    throw Exception('Failed to load Drivers');
+  }
 }

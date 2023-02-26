@@ -77,15 +77,14 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: SelectBox(
-                          type: 'drivers',
-                          callback: getSelectedDriver),
+                          type: 'drivers', callback: getSelectedDriver),
                     ),
                     SizedBox(
                       height: 40,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        var result = createDelivery(
+                      onTap: () async {
+                        var result = await createDelivery(
                             deliveryNoController.text.toString(),
                             addressController.text.toString(),
                             selectedDriver);

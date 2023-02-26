@@ -18,8 +18,89 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     futureDeliveries = fetchCompletedDeliveries();
   }
 
+  Container getDeliveryIcon(delivery) {
+    if (delivery.status == 1) {
+      return Container(
+          padding: const EdgeInsets.all(12),
+          width: 200,
+          child: Align(
+            alignment: Alignment(-1, -1),
+            child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
+          ));
+    } else {
+      return Container(
+          padding: const EdgeInsets.all(12),
+          width: 200,
+          child: Align(
+            alignment: Alignment(-1, -1),
+            child: Icon(Icons.track_changes, size: 57, color: Colors.blue),
+          ));
+    }
+  }
+
+  Row getDriverName(delivery) {
+    return Row(
+      children: [
+        Column(
+          children: <Widget>[
+            Icon(Icons.person, size: 16, color: Colors.grey.shade700),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Text(
+              delivery.driver_name,
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Row getAddress(delivery) {
+    return Row(
+      children: [
+        Column(
+          children: <Widget>[
+            Icon(Icons.location_on, size: 14, color: Colors.grey.shade700),
+          ],
+        ),
+        Flexible(
+            child: Column(
+          children: <Widget>[
+            Text(
+              delivery.address,
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 8,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ))
+      ],
+    );
+  }
+
+  Container getDeliveryNo(delivery, width) {
+    return Container(
+      width: width * 0.9,
+      padding: const EdgeInsets.all(12),
+      child: Text(
+        delivery.delivery_no,
+        style: TextStyle(
+            color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return FutureBuilder<List<Delivery>>(
         future: futureDeliveries,
         builder: (context, snapshot) {
@@ -61,31 +142,44 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                           ),
                           child: Column(
                             children: [
-                              if (delivery.status == 1)
-                                Container(
-                                    padding: const EdgeInsets.all(12),
-                                    width: 200,
-                                    child: Align(
-                                      alignment: Alignment(-2.5, -1),
-                                      child: Icon(Icons.done,
-                                          size: 57, color: Colors.blue),
-                                    )),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 2,
+                                      child: Column(
+                                        children: <Widget>[
+                                          getDeliveryIcon(delivery),
+                                        ],
+                                      )),
+                                  Expanded(
+                                      flex: 8,
+                                      child: Column(
+                                        children: <Widget>[
+                                          getDriverName(delivery),
+                                          getAddress(delivery)
+                                        ],
+                                      ))
+                                ],
+                              ),
+                              Expanded(
+                                  child: Container(
+                                width: 100,
+                              )),
                               Container(
-                                width: 400,
-                                padding: const EdgeInsets.all(12),
                                 decoration: const BoxDecoration(
                                     color: Colors.blue,
                                     borderRadius: BorderRadius.only(
                                         bottomRight: Radius.circular(12),
                                         bottomLeft: Radius.circular(12))),
-                                child: Text(
-                                  delivery.delivery_no,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 6,
+                                      child: getDeliveryNo(delivery, width),
+                                    ),
+                                  ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
                         )));

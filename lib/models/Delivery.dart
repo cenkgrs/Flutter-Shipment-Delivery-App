@@ -187,7 +187,7 @@ Future<List<Delivery>> fetchDeliveries() async {
 }
 
 Future<List<Delivery>> fetchWaitingDeliveries() async {
-  final storage = const FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
 
   // to get token from local storage
   var token = await storage.read(key: 'token');
@@ -233,8 +233,16 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
 }
 
 Future<List<Delivery>> fetchCompletedDeliveries() async {
-  final response =
-      await http.get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'));
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -251,10 +259,10 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
             driver_name: delivery["driver_name"],
             address: delivery["address"],
             st_delivery: delivery["st_delivery"],
-            tt_delivery: delivery["tt_delivery"],
+            tt_delivery: DateTime.now(), // delivery["tt_delivery"],
             st_complete: delivery["st_complete"],
-            tt_complete: delivery["tt_complete"],
-            delivered_person: delivery["delivered_person"],
+            tt_complete: DateTime.now(), //delivery["tt_complete"],
+            delivered_person: delivery["delivered_person"] ?? "none",
             distance: 0,
             latitude: 0.0,
             longitude: 0.0,
@@ -284,7 +292,7 @@ createDelivery(deliveryNo, address, driverId) async {
     }, body: {
       'delivery_no': deliveryNo,
       'address': address,
-      'driver_id': driverId
+      'driver_id': driverId.toString()
     });
 
     if (response.statusCode == 200) {
