@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
+import 'package:intl/intl.dart';
 
 class CompletedDeliveries extends StatefulWidget {
   const CompletedDeliveries({Key? key}) : super(key: key);
@@ -89,7 +90,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
       padding: const EdgeInsets.all(12),
       child: Text(
         delivery.delivery_no,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
       ),
     );
@@ -107,7 +108,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
         Column(
           children: <Widget>[
             Text(
-              delivery.tt_delivery,
+              DateFormat.yMd().format(DateTime.now()),
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 10,
@@ -131,7 +132,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
         Column(
           children: <Widget>[
             Text(
-              delivery.tt_complete,
+              DateFormat.yMd().format(DateTime.now()),
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 10,
