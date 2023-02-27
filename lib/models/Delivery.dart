@@ -86,7 +86,7 @@ Future<Delivery> fetchDelivery() async {
 }
 
 Future<List<Delivery>> fetchDeliveries() async {
-  final storage = const FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
 
   // to get token from local storage
   var token = await storage.read(key: 'token');

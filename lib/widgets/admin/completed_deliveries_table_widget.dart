@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
 
@@ -97,6 +95,54 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     );
   }
 
+  Row getDeliveryStartTime(delivery) {
+    return Row(
+      children: [
+        Column(
+          children: <Widget>[
+            Icon(Icons.timelapse_outlined,
+                size: 16, color: Colors.grey.shade700),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Text(
+              delivery.tt_delivery,
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Row getDeliveryCompleteTime(delivery) {
+    return Row(
+      children: [
+        Column(
+          children: <Widget>[
+            Icon(Icons.timelapse_outlined,
+                size: 16, color: Colors.grey.shade700),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Text(
+              delivery.tt_complete,
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -116,15 +162,13 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
               //  respondedData3['data'].length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              physics: ScrollPhysics(),
+              physics: const ScrollPhysics(),
               itemBuilder: (context, index) {
                 Delivery delivery = deliveries[index];
-                //  DateFormat("yyyy-MM-dd").format(
-                //     DateTime.parse(respondedData3['data'][index]['appointmentDate']));
 
                 return Center(
                     child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Container(
                           width: 400,
                           height: 150,
@@ -159,6 +203,24 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                                           getAddress(delivery)
                                         ],
                                       ))
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 10,
+                                      child: Column(children: <Widget>[
+                                        getDeliveryStartTime(delivery),
+                                      ])),
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 10,
+                                      child: Column(children: <Widget>[
+                                        getDeliveryCompleteTime(delivery),
+                                      ])),
                                 ],
                               ),
                               Expanded(

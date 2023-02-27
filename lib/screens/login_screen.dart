@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               GestureDetector(
@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(10)),
-                  child: Center(
+                  child: const Center(
                     child: Text('Giriş Yap',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, color: Colors.white)),
@@ -153,8 +153,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void hideLoading() {
     Future.delayed(const Duration(milliseconds: 1500), () {
-      // Here you can write your code
-
       setState(() {
         _isLoading = false;
       });

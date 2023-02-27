@@ -16,7 +16,7 @@ class WaitingDeliveriesScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_back_ios,
                 color: Colors.white,
               ),
@@ -28,7 +28,7 @@ class WaitingDeliveriesScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Row(
-                children: [
+                children: const [
                   Expanded(
                       child: SizedBox(height: 650, child: WaitingDeliveries())),
                 ],

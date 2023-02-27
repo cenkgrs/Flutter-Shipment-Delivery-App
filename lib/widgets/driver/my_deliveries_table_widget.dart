@@ -26,7 +26,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
       return Container(
           padding: const EdgeInsets.all(12),
           width: 200,
-          child: Align(
+          child: const Align(
             alignment: Alignment(-1, -1),
             child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
           ));
@@ -34,7 +34,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
       return Container(
           padding: const EdgeInsets.all(12),
           width: 200,
-          child: Align(
+          child: const Align(
             alignment: Alignment(-1, -1),
             child: Icon(Icons.track_changes, size: 57, color: Colors.blue),
           ));
@@ -136,7 +136,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
       padding: const EdgeInsets.all(12),
       child: Text(
         delivery.delivery_no,
-        style: TextStyle(
+        style: const TextStyle(
             color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
       ),
     );
@@ -167,7 +167,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
 
                 return Center(
                     child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
                         child: Container(
                           width: width * 0.9,
                           height: 150,
@@ -179,7 +179,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 5,
                                 blurRadius: 7,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
@@ -234,7 +234,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
   }
 
   startDelivery(Delivery delivery) async {
-    final storage = const FlutterSecureStorage();
+    const storage = FlutterSecureStorage();
 
     // to get token from local storage
     var token = await storage.read(key: 'token');

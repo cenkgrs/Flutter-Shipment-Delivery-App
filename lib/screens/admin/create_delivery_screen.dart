@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:ui';
-
 import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/selectBox.dart';
@@ -39,7 +36,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back_ios,
                   color: Colors.white,
                 ),
@@ -79,7 +76,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                       child: SelectBox(
                           type: 'drivers', callback: getSelectedDriver),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     GestureDetector(
@@ -107,7 +104,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(10)),
-                        child: Center(
+                        child: const Center(
                           child: Text('Ekle',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

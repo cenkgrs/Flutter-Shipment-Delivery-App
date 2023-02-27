@@ -10,7 +10,7 @@ class CreateDeliveryCard extends StatelessWidget {
 
     return Center(
         child: Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
@@ -31,7 +31,7 @@ class CreateDeliveryCard extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -43,8 +43,8 @@ class CreateDeliveryCard extends StatelessWidget {
                     child: Container(
                         width: 200,
                         padding: const EdgeInsets.all(12),
-                        child: Align(
-                          alignment: Alignment(-1, -1),
+                        child: const Align(
+                          alignment: const Alignment(-1, -1),
                           child: Icon(Icons.document_scanner_outlined,
                               size: 57, color: Colors.blue),
                         )),
@@ -62,7 +62,7 @@ class CreateDeliveryCard extends StatelessWidget {
                         borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(12),
                             bottomLeft: Radius.circular(12))),
-                    child: Text(
+                    child: const Text(
                       "Yeni Teslimat Ekle",
                       style: TextStyle(
                           color: Colors.white,

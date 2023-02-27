@@ -35,13 +35,13 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
               //  respondedData3['data'].length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              physics: ScrollPhysics(),
+              physics: const ScrollPhysics(),
               itemBuilder: (context, index) {
                 Delivery delivery = deliveries[index];
 
                 return Center(
                     child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Container(
                           width: 400,
                           height: 150,
@@ -53,7 +53,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                                 color: Colors.grey.withOpacity(0.5),
                                 spreadRadius: 5,
                                 blurRadius: 7,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
@@ -63,7 +63,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                                 Container(
                                     padding: const EdgeInsets.all(12),
                                     width: 200,
-                                    child: Align(
+                                    child: const Align(
                                       alignment: Alignment(-2.5, -1),
                                       child: Icon(Icons.done,
                                           size: 57, color: Colors.blue),
@@ -78,7 +78,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                                         bottomLeft: Radius.circular(12))),
                                 child: Text(
                                   delivery.delivery_no,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 17,
                                       fontWeight: FontWeight.bold),

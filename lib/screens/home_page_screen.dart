@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/driver/add_way_bill_card_widget.dart';
-import 'package:crud_app/widgets/driver/my_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/driver/my_deliveries_table_widget.dart';
 
 import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
-
 import 'package:crud_app/widgets/admin/create_delivery_card_widget.dart';
-
 import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
-
 import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -25,14 +21,14 @@ class HomeScreen extends StatelessWidget {
           body: ListView(
             children: <Widget>[
               if (userType == 'driver')
-                Row(children: [
+                Row(children: const [
                   Expanded(
                     child: AddWayBillCard(),
                   ),
                 ]),
               if (userType == 'driver')
                 Row(
-                  children: [
+                  children: const [
                     Expanded(
                         child:
                             SizedBox(height: 650, child: MyDeliveriesTable())),
@@ -40,19 +36,19 @@ class HomeScreen extends StatelessWidget {
                 ),
               if (userType == 'admin')
                 Row(
-                  children: [Expanded(child: const CreateDeliveryCard())],
+                  children: const [Expanded(child: CreateDeliveryCard())],
                 ),
               if (userType == 'admin')
                 Row(
-                  children: [Expanded(child: const CompletedDeliveriesCard())],
+                  children: const [Expanded(child: CompletedDeliveriesCard())],
                 ),
               if (userType == 'admin')
                 Row(
-                  children: [Expanded(child: const WaitingDeliveriesCard())],
+                  children: const [Expanded(child: WaitingDeliveriesCard())],
                 ),
               if (userType == 'admin')
                 Row(
-                  children: [Expanded(child: const DriverLocations())],
+                  children: const [Expanded(child: DriverLocations())],
                 ),
             ],
           ),
