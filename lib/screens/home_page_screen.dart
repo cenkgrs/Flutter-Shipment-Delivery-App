@@ -6,14 +6,53 @@ import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/create_delivery_card_widget.dart';
 import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
+import 'package:crud_app/screens/search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final String userType;
 
-  const HomeScreen({Key? key, required this.userType}) : super(key: key);
+  HomeScreen({Key? key, required this.userType}) : super(key: key);
+
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+
+    logOut() {}
+
+    navigationAction(selectedIndex) {
+
+      switch (selectedIndex) {
+        // Home Page
+        case 0: 
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(userType: userType)
+              ),
+            );
+            break;
+        
+        case 1: 
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SearchScreen(userType: userType)
+              ),
+          );
+          break;
+
+        // Log Out
+        case 2:
+          logOut();
+          break;
+        default: 
+          break;
+      }
+    }
+
+
+
     return MaterialApp(
         title: 'Aydın Plastik',
         home: Scaffold(
@@ -67,7 +106,8 @@ class HomeScreen extends StatelessWidget {
                 label: 'Çıkış',
               ),
             ],
-            currentIndex: 0,
+            onTap: navigationAction,
+            currentIndex: selectedIndex,
             selectedItemColor: Colors.blue,
           ),
         ));
