@@ -7,6 +7,7 @@ import 'package:crud_app/widgets/admin/create_delivery_card_widget.dart';
 import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 import 'package:crud_app/screens/search_screen.dart';
+import 'package:crud_app/main.dart';
 
 class HomeScreen extends StatelessWidget {
   final String userType;
@@ -44,7 +45,12 @@ class HomeScreen extends StatelessWidget {
 
         // Log Out
         case 2:
-          logOut();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyApp()
+              ),
+            );
           break;
         default: 
           break;

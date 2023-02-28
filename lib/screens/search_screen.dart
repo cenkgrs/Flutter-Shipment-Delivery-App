@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:crud_app/screens/home_page_screen.dart';
+import 'package:crud_app/main.dart';
 
 
 class SearchScreen extends StatelessWidget {
@@ -11,8 +12,6 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    logOut() {}
 
     navigationAction(selectedIndex) {
 
@@ -38,7 +37,12 @@ class SearchScreen extends StatelessWidget {
 
         // Log Out
         case 2:
-          logOut();
+           Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyApp()
+              ),
+            );
           break;
         default: 
           break;
@@ -48,7 +52,7 @@ class SearchScreen extends StatelessWidget {
 
 
     return MaterialApp(
-        title: 'Aydın Plastik',
+        title: 'Arama Yap',
         home: Scaffold(
           appBar: AppBar(title: const Text('Aydın Plastik')),
           body: Container(),
