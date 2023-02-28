@@ -52,6 +52,24 @@ class HomeScreen extends StatelessWidget {
                 ),
             ],
           ),
+          bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Ana Sayfa',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Ara',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.logout),
+                label: 'Çıkış',
+              ),
+            ],
+            currentIndex: 0,
+            selectedItemColor: Colors.blue,
+          ),
         ));
   }
 }

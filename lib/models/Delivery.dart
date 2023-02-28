@@ -245,8 +245,6 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
   });
 
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
     var data = jsonDecode(response.body);
 
     List<Delivery> result = [];
@@ -272,8 +270,6 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
 
     return result;
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
     throw Exception('Failed to load Delivery');
   }
 }
