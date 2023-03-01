@@ -7,7 +7,7 @@ class BottomNavbar extends StatefulWidget {
   final String userType;
   final int index;
 
-  BottomNavbar({Key? key, required this.userType, required this.index})
+  const BottomNavbar({Key? key, required this.userType, required this.index})
       : super(key: key);
 
   @override
@@ -108,18 +108,19 @@ class _BottomNavbarState extends State<BottomNavbar> {
       );
     } else {
       return BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Ana Sayfa',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.fire_truck),
-            label: 'Teslimatım',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Ara',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.fire_truck),
+            label: 'Teslimatım',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.logout),

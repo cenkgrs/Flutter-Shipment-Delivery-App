@@ -5,6 +5,7 @@ import 'package:crud_app/models/Delivery.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MyDeliveriesTable extends StatefulWidget {
   const MyDeliveriesTable({Key? key}) : super(key: key);
@@ -150,10 +151,30 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
         future: futureDeliveries,
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
-            // return: show loading widget
+            return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Visibility(
+                        visible: true,
+                        child: Center(
+                          // scaffold of the app
+                          child: LoadingAnimationWidget.hexagonDots(
+                            color: Colors.blue,
+                            size: 50,
+                          ),
+                        ))));
           }
           if (snapshot.hasError) {
-            // return: show error widget
+            return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: const Visibility(
+                        visible: true,
+                        child: Center(
+                            // scaffold of the app
+                            child: Text('Teslimat Bulunamadı')))));
           }
           List<Delivery> deliveries = snapshot.data ?? [];
           return ListView.builder(

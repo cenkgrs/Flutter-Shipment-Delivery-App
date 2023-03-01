@@ -1,0 +1,19 @@
+// Driver - Teslimatım penceresi
+    İçerisinde teslimat bilgileri, başlangıç zamanı adres vs olucak
+    En altta Teslimatı Tamamla Butonu bulunacak böylelikle sürücü irsaliye aramakla vs uğraşmak zorunda kalmıcak
+    Teslimatı tamamla butonu üstünde teslim edilen kişi girdisi olucak
+    Eğer st_delivery olan teslimat yok ise aktif teslimatınız yoktu diye uyarı vericek
+- Eğer aktif teslimat varsa teslimatı başlat butonu hiçbir teslimatta gözükmücek
+- Başlanan teslimatta sorun olursa ve değiştirilmek istenirse diye teslimatım sayfasına teslimatı iptal et butonu eklenecek
+    Bu sadece st_delivery değerini sıfırlıcak çünkü teslimatın hala yapılması gerekiyor
+
+
+// Admin - Şöförler Nerede Penceresi
+    Bunun için öncelikle şöförlerin anlık lokasyon bilgileri alınmalı
+    Alınan lokasyon bilgileri süreli olarak locations tablosunda saklanıcak
+    Liste yapılıp her şöför için mevcut teslimat bilgileri ne zaman başladığı vs yazıcak
+    Ardından detay sayfasına girdiğinde de o anki (yani en son kaydedilen) lokasyonunu ve zamanını gösteren bir harita sayfası açılıcak
+
+- Arama sayfası
+
+    Atılan search delivery istediğinden gelen sonuçlarla tablo çizdirilecek

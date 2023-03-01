@@ -25,12 +25,14 @@ class HomeScreen extends StatelessWidget {
           appBar: AppBar(title: const Text('Aydın Plastik')),
           body: ListView(
             children: <Widget>[
+              /*
               if (userType == 'driver')
                 Row(children: const [
                   Expanded(
                     child: AddWayBillCard(),
                   ),
                 ]),
+              */
               if (userType == 'driver')
                 Row(
                   children: const [
