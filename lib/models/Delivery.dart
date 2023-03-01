@@ -359,3 +359,44 @@ Future<List<Delivery>> searchDelivery(query) async {
     throw Exception('Failed to load Delivery');
   }
 }
+
+Future<Delivery> getActiveDelivery() async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('http://127.0.0.1:8000/api/get-active-delivery'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
+
+  var latitude = 0.0;
+  var longitude = 0.0;
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+
+    var delivery = data.delivery;
+
+    return Delivery(
+        delivery_no: delivery["delivery_no"],
+        driver_id: delivery["driver_id"],
+        driver_name: delivery["driver_name"],
+        address: delivery["address"],
+        st_delivery: delivery["st_delivery"],
+        tt_delivery:
+            DateTime.now(), //delivery["tt_delivery"] ?? DateTime.now(),
+        st_complete: delivery["st_complete"],
+        tt_complete:
+            DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
+        delivered_person: delivery["delivered_person"] ?? 'none',
+        distance: 0,
+        latitude: latitude,
+        longitude: longitude,
+        status: delivery['status']);
+  } else {
+    throw Exception('Failed to load Delivery');
+  }
+}

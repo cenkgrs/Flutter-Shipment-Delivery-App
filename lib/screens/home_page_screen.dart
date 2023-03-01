@@ -6,8 +6,6 @@ import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/create_delivery_card_widget.dart';
 import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
-import 'package:crud_app/screens/search_screen.dart';
-import 'package:crud_app/main.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 
 

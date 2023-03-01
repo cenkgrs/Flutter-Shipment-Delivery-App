@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:crud_app/screens/home_page_screen.dart';
 import 'package:crud_app/screens/search_screen.dart';
+import 'package:crud_app/screens/driver/delivery_screen.dart';
 import 'package:crud_app/main.dart';
 
 class BottomNavbar extends StatefulWidget {
@@ -72,6 +73,12 @@ class _BottomNavbarState extends State<BottomNavbar> {
             break;
 
           case 2:
+           Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const DeliveryScreen()),
+            );
             break;
           // Log Out
           case 3:
