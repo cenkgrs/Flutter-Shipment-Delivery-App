@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/admin/waiting_deliveries_table_widget.dart';
+import 'package:crud_app/widgets/bottomNavbar.dart';
 
 class WaitingDeliveriesScreen extends StatelessWidget {
   const WaitingDeliveriesScreen({Key? key}) : super(key: key);
@@ -35,6 +36,8 @@ class WaitingDeliveriesScreen extends StatelessWidget {
               ),
             ],
           ),
+          bottomNavigationBar: BottomNavbar(userType: 'admin', index: 0)
+
         ));
   }
 }

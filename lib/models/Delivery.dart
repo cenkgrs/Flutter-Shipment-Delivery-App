@@ -306,3 +306,56 @@ createDelivery(deliveryNo, address, driverId) async {
     return false;
   }
 }
+
+Future<List<Delivery>> searchDelivery(query) async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .post(Uri.parse('http://127.0.0.1:8000/api/search-delivery'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  }, body: {
+    'query': query.toString()
+  });
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+
+    List<Delivery> result = [];
+
+    for (var delivery in data['deliveries']) {
+      // Get delivery address coordinates
+      List<Location> locations;
+
+      var latitude;
+      var longitude;
+
+      latitude = 0.0;
+      longitude = 0.0;
+
+      result.add(Delivery(
+          delivery_no: delivery["delivery_no"],
+          driver_id: delivery["driver_id"],
+          driver_name: delivery["driver_name"],
+          address: delivery["address"],
+          st_delivery: delivery["st_delivery"],
+          tt_delivery:
+              DateTime.now(), //delivery["tt_delivery"] ?? DateTime.now(),
+          st_complete: delivery["st_complete"],
+          tt_complete:
+              DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
+          delivered_person: delivery["delivered_person"] ?? 'none',
+          distance: 0,
+          latitude: latitude,
+          longitude: longitude,
+          status: delivery['status']));
+    }
+
+    return result;
+  } else {
+    throw Exception('Failed to load Delivery');
+  }
+}

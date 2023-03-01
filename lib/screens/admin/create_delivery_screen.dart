@@ -1,6 +1,7 @@
 import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/selectBox.dart';
+import 'package:crud_app/widgets/bottomNavbar.dart';
 
 class CreateDeliveryScreen extends StatefulWidget {
   const CreateDeliveryScreen({Key? key}) : super(key: key);
@@ -115,6 +116,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                   ],
                 ),
               )
-            ])));
+            ]),
+            bottomNavigationBar: BottomNavbar(userType: 'admin', index: 0)));
   }
 }

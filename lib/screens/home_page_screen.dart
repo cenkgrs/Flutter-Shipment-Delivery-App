@@ -8,56 +8,16 @@ import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 import 'package:crud_app/screens/search_screen.dart';
 import 'package:crud_app/main.dart';
+import 'package:crud_app/widgets/bottomNavbar.dart';
+
 
 class HomeScreen extends StatelessWidget {
   final String userType;
 
   HomeScreen({Key? key, required this.userType}) : super(key: key);
 
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-
-    logOut() {}
-
-    navigationAction(selectedIndex) {
-
-      switch (selectedIndex) {
-        // Home Page
-        case 0: 
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomeScreen(userType: userType)
-              ),
-            );
-            break;
-        
-        case 1: 
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchScreen(userType: userType)
-              ),
-          );
-          break;
-
-        // Log Out
-        case 2:
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MyApp()
-              ),
-            );
-          break;
-        default: 
-          break;
-      }
-    }
-
-
 
     return MaterialApp(
         title: 'Aydın Plastik',
@@ -97,25 +57,7 @@ class HomeScreen extends StatelessWidget {
                 ),
             ],
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Ana Sayfa',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Ara',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.logout),
-                label: 'Çıkış',
-              ),
-            ],
-            onTap: navigationAction,
-            currentIndex: selectedIndex,
-            selectedItemColor: Colors.blue,
-          ),
+          bottomNavigationBar: BottomNavbar(userType: userType, index: 0)
         ));
   }
 }

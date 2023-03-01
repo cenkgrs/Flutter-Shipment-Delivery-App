@@ -1,80 +1,65 @@
+import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/screens/home_page_screen.dart';
 import 'package:crud_app/main.dart';
-
+import 'package:crud_app/widgets/bottomNavbar.dart';
 
 class SearchScreen extends StatelessWidget {
   final String userType;
 
-  SearchScreen({Key? key, required this.userType}) : super(key: key);
+  TextEditingController queryController = TextEditingController();
 
-  int selectedIndex = 1;
+  SearchScreen({Key? key, required this.userType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
 
-    navigationAction(selectedIndex) {
-
-      switch (selectedIndex) {
-        // Home Page
-        case 0: 
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomeScreen(userType: userType)
-              ),
-            );
-            break;
-        
-        case 1: 
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchScreen(userType: userType)
-              ),
-          );
-          break;
-
-        // Log Out
-        case 2:
-           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MyApp()
-              ),
-            );
-          break;
-        default: 
-          break;
-      }
-    }
-
-
-
     return MaterialApp(
         title: 'Arama Yap',
         home: Scaffold(
-          appBar: AppBar(title: const Text('Aydın Plastik')),
-          body: Container(),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Ana Sayfa',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Ara',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.logout),
-                label: 'Çıkış',
-              ),
-            ],
-            onTap: navigationAction,
-            currentIndex: selectedIndex,
-            selectedItemColor: Colors.blue,
+          appBar: AppBar(title: const Text('Arama Yap')),
+          body: Container(
+            margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 10,
+                      child: TextFormField(
+                        cursorColor: Colors.grey,
+                        controller: queryController,
+                        decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            filled: true,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            hintText: 'Teslimat Ara',
+                            hintStyle: const TextStyle(
+                                color: Colors.grey, fontSize: 18),
+                            prefixIcon: Container(
+                              padding: const EdgeInsets.all(15),
+                              width: 18,
+                              child: const Icon(Icons.search),
+                            )),
+                      ),
+                    ),
+                    GestureDetector(
+                        onTap: () async {
+                          var result = await searchDelivery(
+                              queryController.text.toString());
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.all(15),
+                          child: const Icon(Icons.search),
+                        ))
+                  ],
+                )
+              ],
+            ),
           ),
+          bottomNavigationBar: BottomNavbar(userType: userType, index: 1)
         ));
   }
 }
