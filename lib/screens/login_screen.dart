@@ -22,6 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    double width = MediaQuery.of(context).size.width;
+
     return Stack(
       children: [
         Padding(
@@ -68,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(10)),
                   child: const Center(
                     child: Text('Giriş Yap',

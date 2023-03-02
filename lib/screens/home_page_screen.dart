@@ -8,6 +8,9 @@ import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 
+import 'package:provider/provider.dart';
+import 'package:crud_app/themes/themes.dart';
+
 
 class HomeScreen extends StatelessWidget {
   final String userType;
@@ -15,10 +18,28 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key, required this.userType}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+      create: (context) => AppTheme(),
+      child: Consumer<AppTheme>(builder: (context, state, child) {
     return MaterialApp(
         title: 'Aydın Plastik',
+        theme: state.darkTheme
+              ? ThemeData(
+                  appBarTheme: AppBarTheme(color: Color(0xff0A2647)),
+                  colorScheme: const ColorScheme.dark().copyWith(
+                    primary: Color(0xff2C74B3),
+                    secondary: Color(0xff2C74B3),
+                    brightness: Brightness.dark,
+                  ),
+                  scaffoldBackgroundColor: Color(0xff144272)
+                )
+              : ThemeData(
+                  colorScheme: const ColorScheme.light().copyWith(
+                    secondary: Colors.blue,
+                    brightness: Brightness.light,
+                  ),
+                  scaffoldBackgroundColor: Colors.lightBlue
+                ),
         home: Scaffold(
           appBar: AppBar(title: const Text('Aydın Plastik')),
           body: ListView(
@@ -59,5 +80,5 @@ class HomeScreen extends StatelessWidget {
           ),
           bottomNavigationBar: BottomNavbar(userType: userType, index: 0)
         ));
-  }
+      }));
 }

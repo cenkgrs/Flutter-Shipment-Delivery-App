@@ -160,7 +160,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                         child: Center(
                           // scaffold of the app
                           child: LoadingAnimationWidget.hexagonDots(
-                            color: Colors.blue,
+                            color: Theme.of(context).colorScheme.secondary,
                             size: 50,
                           ),
                         ))));
