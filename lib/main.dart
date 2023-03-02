@@ -14,7 +14,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -31,35 +30,32 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           theme: state.darkTheme
               ? ThemeData(
-                  appBarTheme: const AppBarTheme(color: Color(0xff0A2647)),
+                  appBarTheme:
+                      const AppBarTheme(color: Color.fromARGB(255, 0, 1, 1)),
                   colorScheme: const ColorScheme.dark().copyWith(
                     primary: const Color(0xff2C74B3),
                     secondary: const Color(0xffffffff),
                     outline: const Color(0xffffffff),
                     shadow: const Color(0xffffffff),
-                    brightness: Brightness.light,
+                    brightness: Brightness.dark,
                   ),
-                  scaffoldBackgroundColor: const Color(0xff144272)
-                )
+                  scaffoldBackgroundColor: Color.fromARGB(255, 0, 0, 0))
               : ThemeData(
                   colorScheme: const ColorScheme.light().copyWith(
                     secondary: Colors.blue,
                     brightness: Brightness.light,
                   ),
-                  scaffoldBackgroundColor: Colors.lightBlue
-                ),
+                  scaffoldBackgroundColor: Colors.lightBlue),
           home: Scaffold(
             appBar: AppBar(title: const Text(_title)),
             body: const LoginScreen(),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
                 AppTheme().switchthemelight();
-                
               },
               child: const Icon(Icons.add),
             ),
           ),
         );
       }));
-
 }

@@ -22,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     double width = MediaQuery.of(context).size.width;
 
     return Stack(
@@ -105,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-          Uri.parse('http://127.0.0.1:8000/api/login'),
+          Uri.parse('http://bysurababy.com/api/login'),
           headers: {'Accept': 'application/json;'},
           body: {'email': email, 'password': password});
 

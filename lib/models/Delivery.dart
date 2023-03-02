@@ -92,7 +92,7 @@ Future<List<Delivery>> fetchDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'), headers: {
+      .get(Uri.parse('http://bysurababy.com/api/get-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -193,7 +193,7 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'), headers: {
+      .get(Uri.parse('http://bysurababy.com/api/get-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -243,7 +243,7 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'), headers: {
+      .get(Uri.parse('http://bysurababy.com/api/get-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -290,7 +290,7 @@ createDelivery(deliveryNo, address, driverId) async {
 
   try {
     final response = await http
-        .post(Uri.parse('http://127.0.0.1:8000/api/create-delivery'), headers: {
+        .post(Uri.parse('http://bysurababy.com/api/create-delivery'), headers: {
       'Accept': 'application/json;',
       'Authorization': 'Bearer $token'
     }, body: {
@@ -322,7 +322,7 @@ Future<List<Delivery>> searchDelivery(query) async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .post(Uri.parse('http://127.0.0.1:8000/api/search-delivery'), headers: {
+      .post(Uri.parse('http://bysurababy.com/api/search-delivery'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   }, body: {
@@ -375,7 +375,7 @@ Future<Delivery> getActiveDelivery() async {
   var token = await storage.read(key: 'token');
 
   final response = await http.get(
-      Uri.parse('http://127.0.0.1:8000/api/get-active-delivery'),
+      Uri.parse('http://bysurababy.com/api/get-active-delivery'),
       headers: {
         'Accept': 'application/json;',
         'Authorization': 'Bearer $token'

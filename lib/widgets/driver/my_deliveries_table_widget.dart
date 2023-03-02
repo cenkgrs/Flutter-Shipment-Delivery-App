@@ -231,7 +231,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                               )),
                               Container(
                                 decoration: const BoxDecoration(
-                                    color: Colors.blue,
+                                    color: Color(0xff293462),
                                     borderRadius: BorderRadius.only(
                                         bottomRight: Radius.circular(12),
                                         bottomLeft: Radius.circular(12))),
@@ -262,7 +262,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
 
     try {
       final response = await http.post(
-          Uri.parse('http://127.0.0.1:8000/api/start-delivery'),
+          Uri.parse('http://bysurababy.com/api/start-delivery'),
           headers: {
             'Accept': 'application/json;',
             'Authorization': 'Bearer $token'
