@@ -213,9 +213,13 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
             driver_name: delivery["driver_name"],
             address: delivery["address"],
             st_delivery: delivery["st_delivery"],
-            tt_delivery: DateTime.now(), // delivery["tt_delivery"],
+            tt_delivery: delivery["tt_delivery"] == null
+                ? null
+                : DateTime.tryParse(delivery["tt_delivery"]),
             st_complete: delivery["st_complete"],
-            tt_complete: DateTime.now(), //delivery["tt_complete"],
+            tt_complete: delivery["tt_complete"] == null
+                ? null
+                : DateTime.tryParse(delivery["tt_complete"]),
             delivered_person: delivery["delivered_person"] ?? "none",
             distance: 0,
             latitude: 0.0,

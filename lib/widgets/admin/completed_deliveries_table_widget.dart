@@ -99,7 +99,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
 
   Row getDeliveryStartTime(delivery) {
     if (delivery.st_delivery == 0) {
-      return const Row();
+      return Row();
     }
 
     return Row(
@@ -127,7 +127,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
 
   Row getDeliveryCompleteTime(delivery) {
     if (delivery.st_complete == 0) {
-      return const Row();
+      return Row();
     }
 
     return Row(

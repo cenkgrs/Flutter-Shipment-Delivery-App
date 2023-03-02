@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
+      theme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
         body: const LoginScreen(),
