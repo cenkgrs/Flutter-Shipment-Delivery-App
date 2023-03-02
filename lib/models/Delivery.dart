@@ -10,9 +10,9 @@ class Delivery {
   final String driver_name;
   final String address;
   final int st_delivery;
-  final DateTime tt_delivery;
+  final DateTime? tt_delivery;
   final int st_complete;
-  final DateTime tt_complete;
+  final DateTime? tt_complete;
   final String delivered_person;
   final int distance;
   final double latitude;
@@ -257,9 +257,13 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
             driver_name: delivery["driver_name"],
             address: delivery["address"],
             st_delivery: delivery["st_delivery"],
-            tt_delivery: DateTime.parse(delivery["tt_delivery"]),
+            tt_delivery: delivery["tt_delivery"] == null
+                ? null
+                : DateTime.tryParse(delivery["tt_delivery"]),
             st_complete: delivery["st_complete"],
-            tt_complete: DateTime.parse(delivery["tt_complete"]),
+            tt_complete: delivery["tt_complete"] == null
+                ? null
+                : DateTime.tryParse(delivery["tt_complete"]),
             delivered_person: delivery["delivered_person"] ?? "none",
             distance: 0,
             latitude: 0.0,
@@ -366,11 +370,12 @@ Future<Delivery> getActiveDelivery() async {
   // to get token from local storage
   var token = await storage.read(key: 'token');
 
-  final response = await http
-      .get(Uri.parse('http://127.0.0.1:8000/api/get-active-delivery'), headers: {
-    'Accept': 'application/json;',
-    'Authorization': 'Bearer $token'
-  });
+  final response = await http.get(
+      Uri.parse('http://127.0.0.1:8000/api/get-active-delivery'),
+      headers: {
+        'Accept': 'application/json;',
+        'Authorization': 'Bearer $token'
+      });
 
   var latitude = 0.0;
   var longitude = 0.0;
@@ -378,7 +383,7 @@ Future<Delivery> getActiveDelivery() async {
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
 
-    var delivery = data.delivery;
+    var delivery = data['delivery'];
 
     return Delivery(
         delivery_no: delivery["delivery_no"],

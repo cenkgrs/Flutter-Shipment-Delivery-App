@@ -13,6 +13,7 @@ class DeliveryScreen extends StatefulWidget {
 class _DeliveryScreenState extends State<DeliveryScreen> {
   late Future<Delivery> futureActiveDelivery;
 
+  @override
   void initState() {
     super.initState();
     futureActiveDelivery = getActiveDelivery();

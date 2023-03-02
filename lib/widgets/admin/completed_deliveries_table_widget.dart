@@ -98,6 +98,10 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
   }
 
   Row getDeliveryStartTime(delivery) {
+    if (delivery.st_delivery == 0) {
+      return const Row();
+    }
+
     return Row(
       children: [
         Column(
@@ -109,7 +113,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
         Column(
           children: <Widget>[
             Text(
-              DateFormat.yMd().format(DateTime.now()),
+              DateFormat.yMd().format(delivery.tt_delivery),
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 10,
@@ -122,6 +126,10 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
   }
 
   Row getDeliveryCompleteTime(delivery) {
+    if (delivery.st_complete == 0) {
+      return const Row();
+    }
+
     return Row(
       children: [
         Column(
@@ -133,7 +141,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
         Column(
           children: <Widget>[
             Text(
-              DateFormat.yMd().format(DateTime.now()),
+              DateFormat.yMd().format(delivery.tt_complete),
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 10,
@@ -148,6 +156,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return FutureBuilder<List<Delivery>>(
         future: futureDeliveries,
@@ -175,14 +184,12 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                     child: const Visibility(
                         visible: true,
                         child: Center(
-                          // scaffold of the app
-                          child: Text('Tamamlanan Teslimat Bulunamadı')
-                        ))));
+                            // scaffold of the app
+                            child: Text('Tamamlanan Teslimat Bulunamadı')))));
           }
           List<Delivery> deliveries = snapshot.data ?? [];
           return ListView.builder(
               itemCount: deliveries.length,
-              //  respondedData3['data'].length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               physics: const ScrollPhysics(),
