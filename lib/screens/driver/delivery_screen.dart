@@ -49,39 +49,31 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         ));
   }
 
-  completeDeliveryButton(width) {
-    return TextButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-        ),
-        onPressed: () {},
-        child: const Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Icon(Icons.done_outline),
-                ],
-              ),
-              Column(
-                children: <Widget>[Text('Teslimatı Tamamla')],
-              )
-            ],
-          ),
-        ));
+  completeDeliveryButton(delivery, width) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FloatingActionButton.extended(
+            onPressed: () {
+              _showDeliveredPersonSheet(context, delivery.delivery_no);
+            },
+            splashColor: Colors.lightBlue,
+            icon: Icon(Icons.done_all_sharp),
+            label: Text('Teslimatı Tamamla'))
+      ],
+    );
   }
 
   void _showDeliveredPersonSheet(BuildContext context, deliveryNo) async {
-    String deliveredPerson = await showModalBottomSheet(
+    String? deliveredPerson = await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           //3
           return const DeliveredPersonSheet();
         });
 
-    completeDelivery(deliveryNo, deliveredPerson);
+    completeDelivery(deliveryNo, "asd");
   }
 
   Container getDeliveryIcon(delivery) {
@@ -312,7 +304,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   ),
                                 ))),
                         deliveryNo(delivery, width),
-                        completeDeliveryButton(width)
+                        completeDeliveryButton(delivery, width)
                       ],
                     );
                   }),

@@ -9,35 +9,28 @@ class DeliveredPersonSheet extends StatefulWidget {
 
 class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
   int? deliveredPerson;
-  // ...
+  TextEditingController deliveryPersonController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: MediaQuery.of(context).size.width,
-        minHeight: MediaQuery.of(context).size.height / 2,
-      ),
-      child: Column(
-        children: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop(deliveredPerson);
-            },
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(10)),
-              child: const Center(
-                child: Text('Giriş Yap',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white)),
+    return Stack(children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.all(10),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              child: TextFormField(
+                controller: deliveryPersonController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Teslim Edilen Kişi',
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
+    ]);
   }
 }
