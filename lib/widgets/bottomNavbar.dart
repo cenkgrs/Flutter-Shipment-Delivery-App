@@ -73,15 +73,22 @@ class _BottomNavbarState extends State<BottomNavbar> {
             break;
 
           case 2:
-           Navigator.push(
+            Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      const DeliveryScreen()),
+              MaterialPageRoute(builder: (context) => const DeliveryScreen()),
             );
             break;
+
+          case 2:
+            /*
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SettingsScreen()),
+            );
+            */
+            break;
           // Log Out
-          case 3:
+          case 4:
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const MyApp()),
@@ -114,29 +121,48 @@ class _BottomNavbarState extends State<BottomNavbar> {
         selectedItemColor: Colors.blue,
       );
     } else {
-      return BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Ana Sayfa',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Ara',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.fire_truck),
-            label: 'Teslimatım',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
-            label: 'Çıkış',
-          ),
-        ],
-        onTap: navigationAction,
-        currentIndex: widget.index,
-        selectedItemColor: Colors.blue,
+      return BottomAppBar(
+        notchMargin: 5,
+        color: Colors.blue,
+        shape: CircularNotchedRectangle(),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(
+              padding: EdgeInsets.only(left: 20),
+              icon: const Icon(Icons.home, color: Colors.white),
+              onPressed: () {
+                navigationAction(0);
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                navigationAction(1);
+              },
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                navigationAction(3);
+              },
+            ),
+            IconButton(
+              padding: EdgeInsets.only(right: 20),
+              icon: const Icon(Icons.logout, color: Colors.white),
+              onPressed: () {
+                navigationAction(4);
+              },
+            )
+          ],
+        ),
       );
     }
   }

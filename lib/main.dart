@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           title: _title,
           debugShowCheckedModeBanner: false,
-          theme: state.darkTheme
+          /*theme: state.darkTheme
               ? ThemeData(
                   appBarTheme:
                       const AppBarTheme(color: Color.fromARGB(255, 0, 1, 1)),
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                     secondary: Colors.blue,
                     brightness: Brightness.light,
                   ),
-                  scaffoldBackgroundColor: Colors.lightBlue),
+                  scaffoldBackgroundColor: Colors.lightBlue),*/
           home: Scaffold(
             appBar: AppBar(title: const Text(_title)),
             body: const LoginScreen(),

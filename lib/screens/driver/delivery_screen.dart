@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/widgets/driver/delivered_person_sheet.dart';
 
 class DeliveryScreen extends StatefulWidget {
   const DeliveryScreen({Key? key}) : super(key: key);
@@ -22,6 +23,66 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   bool _isLoading = false;
 
   static const String _title = 'Teslimatım';
+
+  deliveryNo(delivery, width) {
+    return Padding(
+        padding: EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Column(
+              children: <Widget>[
+                Icon(Icons.numbers, size: 25, color: Colors.blue),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  delivery.delivery_no,
+                  style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )
+          ],
+        ));
+  }
+
+  completeDeliveryButton(width) {
+    return TextButton(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+        ),
+        onPressed: () {},
+        child: const Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Icon(Icons.done_outline),
+                ],
+              ),
+              Column(
+                children: <Widget>[Text('Teslimatı Tamamla')],
+              )
+            ],
+          ),
+        ));
+  }
+
+  void _showDeliveredPersonSheet(BuildContext context, deliveryNo) async {
+    String deliveredPerson = await showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          //3
+          return const DeliveredPersonSheet();
+        });
+
+    completeDelivery(deliveryNo, deliveredPerson);
+  }
 
   Container getDeliveryIcon(delivery) {
     if (delivery.status == 1) {
@@ -109,6 +170,20 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     return MaterialApp(
         title: _title,
         home: Scaffold(
+            floatingActionButton: FloatingActionButton(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.blue,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const DeliveryScreen()),
+                );
+              },
+              child: const Icon(Icons.delivery_dining), //icon inside button
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             appBar: AppBar(
               leading: InkWell(
                 onTap: () {
@@ -169,67 +244,77 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                             latitude: 00,
                             longitude: 0,
                             status: 0);
-                    return Center(
-                        child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                            child: Container(
-                              width: width * 0.9,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              getDeliveryIcon(delivery),
-                                            ],
-                                          )),
-                                      Expanded(
-                                          flex: 8,
-                                          child: Column(
-                                            children: <Widget>[
-                                              getDriverName(delivery),
-                                              getAddress(delivery)
-                                            ],
-                                          ))
+                    return ListView(
+                      children: [
+                        Center(
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                                child: Container(
+                                  width: width * 0.9,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        spreadRadius: 5,
+                                        blurRadius: 7,
+                                        offset: const Offset(0, 3),
+                                      ),
                                     ],
                                   ),
-                                  Expanded(
-                                      child: Container(
-                                    width: 100,
-                                  )),
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(12),
-                                            bottomLeft: Radius.circular(12))),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 10,
-                                          child: getDeliveryNo(delivery, width),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                              flex: 2,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  getDeliveryIcon(delivery),
+                                                ],
+                                              )),
+                                          Expanded(
+                                              flex: 8,
+                                              child: Column(
+                                                children: <Widget>[
+                                                  getDriverName(delivery),
+                                                  getAddress(delivery)
+                                                ],
+                                              ))
+                                        ],
+                                      ),
+                                      Expanded(
+                                          child: Container(
+                                        width: 100,
+                                      )),
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                            color: Colors.blue,
+                                            borderRadius: BorderRadius.only(
+                                                bottomRight:
+                                                    Radius.circular(12),
+                                                bottomLeft:
+                                                    Radius.circular(12))),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 10,
+                                              child: getDeliveryNo(
+                                                  delivery, width),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )));
+                                      )
+                                    ],
+                                  ),
+                                ))),
+                        deliveryNo(delivery, width),
+                        completeDeliveryButton(width)
+                      ],
+                    );
                   }),
               Padding(
                   padding: const EdgeInsets.all(10),

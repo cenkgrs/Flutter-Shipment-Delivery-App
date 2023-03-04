@@ -8,6 +8,8 @@ import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 
+import 'package:crud_app/screens/driver/delivery_screen.dart';
+
 import 'package:provider/provider.dart';
 import 'package:crud_app/themes/themes.dart';
 
@@ -22,7 +24,7 @@ class HomeScreen extends StatelessWidget {
       child: Consumer<AppTheme>(builder: (context, state, child) {
         return MaterialApp(
             title: 'Aydın Plastik',
-            theme: state.darkTheme
+            /*theme: state.darkTheme
                 ? ThemeData(
                     appBarTheme: AppBarTheme(color: Color(0xff181823)),
                     colorScheme: const ColorScheme.dark().copyWith(
@@ -36,8 +38,20 @@ class HomeScreen extends StatelessWidget {
                       secondary: Colors.blue,
                       brightness: Brightness.light,
                     ),
-                    scaffoldBackgroundColor: Colors.lightBlue),
+                    scaffoldBackgroundColor: Colors.lightBlue),*/
             home: Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DeliveryScreen()),
+                    );
+                  },
+                  child: const Icon(Icons.delivery_dining), //icon inside button
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
                 appBar: AppBar(title: const Text('Aydın Plastik')),
                 body: ListView(
                   children: <Widget>[

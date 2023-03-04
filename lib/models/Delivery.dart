@@ -409,3 +409,38 @@ Future<Delivery> getActiveDelivery() async {
     throw Exception('Failed to load Delivery');
   }
 }
+
+completeDelivery(String deliveryNo, String deliveredPerson) async {
+  final storage = const FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  try {
+    final response = await http.post(
+        Uri.parse('http://bysurababy.com/api/complete-delivery'),
+        headers: {
+          'Accept': 'application/json;',
+          'Authorization': 'Bearer $token'
+        },
+        body: {
+          'delivery_no': deliveryNo,
+          'delivered_person': deliveredPerson
+        });
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data['status'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      throw Exception(
+          'Teslimat kaydı eklenemedi Lütfen irsaliye numarasını kontrol ediniz.');
+    }
+  } catch (e) {
+    return false;
+  }
+}

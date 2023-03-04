@@ -42,48 +42,6 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
     }
   }
 
-  GestureDetector getDeliveryAction(delivery) {
-    if (delivery.status == 0 && delivery.st_delivery == 0) {
-      return GestureDetector(
-          onTap: () {
-            startDelivery(delivery);
-          },
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            width: 200,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(10)),
-            child: const Center(
-              child: Text('Teslimatı Başlat',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white)),
-            ),
-          ));
-    }
-
-    if (delivery.status == 0 && delivery.st_delivery == 1) {
-      return GestureDetector(
-          onTap: () {},
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            width: 200,
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(10)),
-            child: const Center(
-              child: Text('Devam Ediyor',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white)),
-            ),
-          ));
-    }
-
-    // Empty
-    return GestureDetector(
-      onTap: () {},
-      child: Container(),
-    );
-  }
-
   Row getDriverName(delivery) {
     return Row(
       children: [
@@ -140,6 +98,48 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
         style: const TextStyle(
             color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
       ),
+    );
+  }
+
+  GestureDetector getDeliveryAction(delivery) {
+    if (delivery.status == 0 && delivery.st_delivery == 0) {
+      return GestureDetector(
+          onTap: () {
+            startDelivery(delivery);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            width: 200,
+            decoration: BoxDecoration(
+                color: Colors.blue, borderRadius: BorderRadius.circular(10)),
+            child: const Center(
+              child: Text('Teslimatı Başlat',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ));
+    }
+
+    if (delivery.status == 0 && delivery.st_delivery == 1) {
+      return GestureDetector(
+          onTap: () {},
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            width: 200,
+            decoration: BoxDecoration(
+                color: Colors.blue, borderRadius: BorderRadius.circular(10)),
+            child: const Center(
+              child: Text('Devam Ediyor',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white)),
+            ),
+          ));
+    }
+
+    // Empty
+    return GestureDetector(
+      onTap: () {},
+      child: Container(),
     );
   }
 
@@ -231,7 +231,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                               )),
                               Container(
                                 decoration: const BoxDecoration(
-                                    color: Color(0xff293462),
+                                    color: Colors.blue,
                                     borderRadius: BorderRadius.only(
                                         bottomRight: Radius.circular(12),
                                         bottomLeft: Radius.circular(12))),

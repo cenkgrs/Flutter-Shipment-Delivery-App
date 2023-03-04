@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final response = await http.post(
           Uri.parse('http://bysurababy.com/api/login'),
           headers: {'Accept': 'application/json;'},
-          body: {'email': email, 'password': password});
+          body: {'email': 'cenkgrs@gmail.com', 'password': '123456'});
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
