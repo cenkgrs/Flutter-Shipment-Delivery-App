@@ -9,6 +9,7 @@ import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 
 import 'package:crud_app/screens/driver/delivery_screen.dart';
+import 'package:crud_app/screens/admin/drivers_screen.dart';
 
 import 'package:provider/provider.dart';
 import 'package:crud_app/themes/themes.dart';
@@ -40,15 +41,16 @@ class HomeScreen extends StatelessWidget {
                     ),
                     scaffoldBackgroundColor: Colors.lightBlue),*/
             home: Scaffold(
-                floatingActionButton: FloatingActionButton(
+                floatingActionButton: 
+                FloatingActionButton(
                   onPressed: () {
-                    Navigator.push(
+                      Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DeliveryScreen()),
+                          builder: (context) => userType == 'driver' ? const DeliveryScreen() : const DriversScreen()),
                     );
                   },
-                  child: const Icon(Icons.delivery_dining), //icon inside button
+                  child: userType == 'driver' ? const Icon(Icons.delivery_dining) : const Icon(Icons.people), //icon inside button
                 ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,
@@ -56,13 +58,13 @@ class HomeScreen extends StatelessWidget {
                 body: ListView(
                   children: <Widget>[
                     /*
-              if (userType == 'driver')
-                Row(children: const [
-                  Expanded(
-                    child: AddWayBillCard(),
-                  ),
-                ]),
-              */
+                    if (userType == 'driver')
+                      Row(children: const [
+                        Expanded(
+                          child: AddWayBillCard(),
+                        ),
+                      ]),
+                    */
                     if (userType == 'driver')
                       Row(
                         children: const [
