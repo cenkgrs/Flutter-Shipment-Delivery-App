@@ -101,6 +101,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     return FutureBuilder<List<Delivery>>(
         future: futureDeliveries,
@@ -146,7 +147,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                         padding: const EdgeInsets.all(10),
                         child: Container(
                           width: 400,
-                          height: 150,
+                          height: height * 0.20,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.white,

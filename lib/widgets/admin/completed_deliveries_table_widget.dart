@@ -201,7 +201,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                         padding: const EdgeInsets.all(10),
                         child: Container(
                           width: 400,
-                          height: 150,
+                          height: height * 0.25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.white,
