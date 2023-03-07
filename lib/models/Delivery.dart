@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
+import 'package:crud_app/constants.dart';
+
 
 class Delivery {
   final String delivery_no;
@@ -72,7 +73,7 @@ class Delivery {
 
 Future<Delivery> fetchDelivery() async {
   final response =
-      await http.get(Uri.parse('http://127.0.0.1:8000/api/get-deliveries'));
+      await http.get(Uri.parse('${Constant.baseUrl}/get-deliveries'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -92,7 +93,7 @@ Future<List<Delivery>> fetchDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('http://bysurababy.com/api/get-deliveries'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -105,61 +106,13 @@ Future<List<Delivery>> fetchDeliveries() async {
     List<Delivery> result = [];
 
     for (var delivery in data['deliveries']) {
-      // Get delivery address coordinates
-      List<Location> locations;
 
       var latitude;
       var longitude;
 
       latitude = 0.0;
       longitude = 0.0;
-
-      /*
-      try {
-        bool serviceEnabled;
-        LocationPermission permission;
-
-        serviceEnabled = await Geolocator.isLocationServiceEnabled();
-        if (!serviceEnabled) {
-          return Future.error('Location services are disabled');
-        }
-
-        permission = await Geolocator.checkPermission();
-        if (permission == LocationPermission.denied) {
-          permission = await Geolocator.requestPermission();
-          if (permission == LocationPermission.denied) {
-            return Future.error('Location permissions are denied');
-          }
-        }
-
-        if (permission == LocationPermission.deniedForever) {
-          return Future.error(
-              'Location permissions are permanently denied, we cannot request permissions.');
-        }
-
-        locations = await locationFromAddress(delivery['address']);
-
-        // Get current address coordinates
-        Position position =
-            await GeolocatorPlatform.instance.getCurrentPosition();
-
-        // Calcule distance between 2 place
-        var _distanceInMeters =
-            await GeolocatorPlatform.instance.distanceBetween(
-          locations[0].latitude,
-          locations[0].longitude,
-          position.latitude,
-          position.longitude,
-        );
-
-        latitude = locations[0].latitude;
-        longitude = locations[0].longitude;
-      } on NoResultFoundException {
-        // Handle "No results found for the address"
-        latitude = 0.0;
-        longitude = 0.0;
-      }
-      */
+    
       result.add(Delivery(
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],
@@ -444,3 +397,72 @@ completeDelivery(String deliveryNo, String deliveredPerson) async {
     return false;
   }
 }
+
+setLocation() async {
+  Location location = new Location();
+
+  bool serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
+
+  serviceEnabled = await location.serviceEnabled();
+  if (!serviceEnabled) {
+    serviceEnabled = await location.requestService();
+    if (!serviceEnabled) {
+      return;
+    }
+  }
+
+  _permissionGranted = await location.hasPermission();
+  if (_permissionGranted == PermissionStatus.denied) {
+    _permissionGranted = await location.requestPermission();
+    if (_permissionGranted != PermissionStatus.granted) {
+      return;
+    }
+  }
+
+  _locationData = await location.getLocation();
+
+  print(_locationData);
+}
+
+Future _getLocation() async {
+    Location location = new Location();
+    LocationData _pos = await location.getLocation();
+
+    const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  try {
+    final response = await http.post(
+        Uri.parse('${Constant.baseUrl}/add-location-record'),
+        headers: {
+          'Accept': 'application/json;',
+          'Authorization': 'Bearer $token'
+        },
+        body: {
+          'driver_id': 1,
+          'address': 'Adres',
+          'latitude': _pos.latitude,
+          'longitude': _pos.longitude,
+        });
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data['status'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      throw Exception(
+          'Lokasyon bilgisi gönderilemedi.');
+    }
+  } catch (e) {
+    return false;
+  }
+}
+

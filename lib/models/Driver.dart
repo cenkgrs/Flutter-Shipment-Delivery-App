@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:crud_app/constants.dart';
 
 class Driver {
   final int id;
@@ -19,7 +20,7 @@ Future<List<Driver>> fetchDrivers() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('http://bysurababy.com/api/get-drivers'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-drivers'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });

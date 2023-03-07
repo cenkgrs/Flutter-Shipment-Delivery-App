@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:crud_app/constants.dart';
 
 class AddCompletedDeliveryScene extends StatefulWidget {
   const AddCompletedDeliveryScene({Key? key}) : super(key: key);
@@ -122,7 +123,7 @@ class _AddCompletedDeliverySceneState extends State<AddCompletedDeliveryScene> {
 
     try {
       final response = await http.post(
-          Uri.parse('http://127.0.0.1:8000/api/complete-delivery'),
+          Uri.parse('${Constant.baseUrl}/complete-delivery'),
           headers: {
             'Accept': 'application/json;',
             'Authorization': 'Bearer $token'

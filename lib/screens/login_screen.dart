@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'dart:convert';
 import 'package:crud_app/screens/home_page_screen.dart';
+import 'package:crud_app/constants.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -104,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-          Uri.parse('http://bysurababy.com/api/login'),
+          Uri.parse('${Constant.baseUrl}/login'),
           headers: {'Accept': 'application/json;'},
           body: {'email': 'cenkgrs@gmail.com', 'password': '123456'});
 
