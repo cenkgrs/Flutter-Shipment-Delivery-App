@@ -54,45 +54,51 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   }
 
   cancelDeliveryButton(delivery, width) {
-    return FloatingActionButton.extended(
-        heroTag: UniqueKey(),
-        onPressed: () async {
-          var result = await cancelDelivery(delivery);
+    return SizedBox(
+      width: width * 0.4,
+      child: FittedBox(
+          child: FloatingActionButton.extended(
+              heroTag: UniqueKey(),
+              onPressed: () async {
+                var result = await cancelDelivery(delivery);
 
-          if (result['status'] == true) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => HomeScreen(userType: 'driver')),
-            );
+                if (result['status'] == true) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen(userType: 'driver')),
+                  );
 
-            hideLoading();
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(result['exception']),
-              backgroundColor: Colors.blue,
-            ));
+                  hideLoading();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(result['exception']),
+                    backgroundColor: Colors.blue,
+                  ));
 
-            hideLoading();
-          }
-
-        
-        },
-        backgroundColor: Colors.redAccent,
-        splashColor: Colors.red,
-        icon: const Icon(Icons.cancel_outlined),
-        label: const Text('Teslimatı İptal Et'));
+                  hideLoading();
+                }
+              },
+              backgroundColor: Colors.redAccent,
+              splashColor: Colors.red,
+              icon: const Icon(Icons.cancel_outlined),
+              label: const Text('Teslimatı İptal Et'))),
+    );
   }
 
   completeDeliveryButton(delivery, width) {
-    return FloatingActionButton.extended(
-        heroTag: UniqueKey(),
-        onPressed: () {
-          _showDeliveredPersonSheet(context, delivery.delivery_no);
-        },
-        splashColor: Colors.lightBlue,
-        icon: const Icon(Icons.done_all_sharp),
-        label: const Text('Teslimatı Tamamla'));
+    return SizedBox(
+      width: width * 0.4,
+      child: FittedBox(
+          child: FloatingActionButton.extended(
+              heroTag: UniqueKey(),
+              onPressed: () {
+                _showDeliveredPersonSheet(context, delivery.delivery_no);
+              },
+              splashColor: Colors.lightBlue,
+              icon: const Icon(Icons.done_all_sharp),
+              label: const Text('Teslimatı Tamamla'))),
+    );
   }
 
   void _showDeliveredPersonSheet(BuildContext context, deliveryNo) async {
@@ -334,25 +340,28 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   ),
                                 ))),
                         deliveryNo(delivery, width),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: <Widget>[
-                                  cancelDeliveryButton(delivery, width),
-                                ],
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  completeDeliveryButton(delivery, width)
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
+                        Center(
+                          child: Padding(
+                              padding: EdgeInsets.all(0),
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: <Widget>[
+                                        cancelDeliveryButton(delivery, width),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        completeDeliveryButton(delivery, width)
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
                       ],
                     );
                   }),
