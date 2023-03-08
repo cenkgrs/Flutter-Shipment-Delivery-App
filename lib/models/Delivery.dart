@@ -146,7 +146,7 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('http://bysurababy.com/api/get-deliveries'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -196,7 +196,7 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('http://bysurababy.com/api/get-deliveries'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -243,7 +243,7 @@ createDelivery(deliveryNo, address, driverId) async {
 
   try {
     final response = await http
-        .post(Uri.parse('http://bysurababy.com/api/create-delivery'), headers: {
+        .post(Uri.parse('${Constant.baseUrl}/create-delivery'), headers: {
       'Accept': 'application/json;',
       'Authorization': 'Bearer $token'
     }, body: {
@@ -275,7 +275,7 @@ Future<List<Delivery>> searchDelivery(query) async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .post(Uri.parse('http://bysurababy.com/api/search-delivery'), headers: {
+      .post(Uri.parse('${Constant.baseUrl}/search-delivery'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   }, body: {
@@ -328,7 +328,7 @@ Future<Delivery> getActiveDelivery() async {
   var token = await storage.read(key: 'token');
 
   final response = await http.get(
-      Uri.parse('http://bysurababy.com/api/get-active-delivery'),
+      Uri.parse('${Constant.baseUrl}/get-active-delivery'),
       headers: {
         'Accept': 'application/json;',
         'Authorization': 'Bearer $token'
@@ -371,7 +371,7 @@ completeDelivery(String deliveryNo, String deliveredPerson) async {
 
   try {
     final response = await http.post(
-        Uri.parse('http://bysurababy.com/api/complete-delivery'),
+        Uri.parse('${Constant.baseUrl}/complete-delivery'),
         headers: {
           'Accept': 'application/json;',
           'Authorization': 'Bearer $token'
@@ -395,6 +395,39 @@ completeDelivery(String deliveryNo, String deliveredPerson) async {
     }
   } catch (e) {
     return false;
+  }
+}
+
+startDelivery(Delivery delivery) async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  try {
+    final response = await http.post(
+        Uri.parse('${Constant.baseUrl}/start-delivery'),
+        headers: {
+          'Accept': 'application/json;',
+          'Authorization': 'Bearer $token'
+        },
+        body: {
+          'delivery_no': delivery.delivery_no,
+        });
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return data;
+    
+    } else {
+        var data = jsonDecode(response.body);
+
+        return {'status': false, 'exception': data['message']};
+    }
+  } catch (e) {
+    return {'status': false, 'exception': e.toString()};
+    
   }
 }
 
@@ -432,37 +465,37 @@ Future _getLocation() async {
 
     const storage = FlutterSecureStorage();
 
-  // to get token from local storage
-  var token = await storage.read(key: 'token');
+    // to get token from local storage
+    var token = await storage.read(key: 'token');
 
-  try {
-    final response = await http.post(
-        Uri.parse('${Constant.baseUrl}/add-location-record'),
-        headers: {
-          'Accept': 'application/json;',
-          'Authorization': 'Bearer $token'
-        },
-        body: {
-          'driver_id': 1,
-          'address': 'Adres',
-          'latitude': _pos.latitude,
-          'longitude': _pos.longitude,
-        });
+    try {
+      final response = await http.post(
+          Uri.parse('${Constant.baseUrl}/add-location-record'),
+          headers: {
+            'Accept': 'application/json;',
+            'Authorization': 'Bearer $token'
+          },
+          body: {
+            'driver_id': 1,
+            'address': 'Adres',
+            'latitude': _pos.latitude,
+            'longitude': _pos.longitude,
+          });
 
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
 
-      if (data['status'] == true) {
-        return true;
+        if (data['status'] == true) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        throw Exception(
+            'Lokasyon bilgisi gönderilemedi.');
       }
-    } else {
-      throw Exception(
-          'Lokasyon bilgisi gönderilemedi.');
+    } catch (e) {
+      return false;
     }
-  } catch (e) {
-    return false;
-  }
 }
 

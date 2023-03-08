@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
-import 'package:crud_app/models/Delivery.dart';
 import 'package:crud_app/widgets/driver/delivered_person_sheet.dart';
+
+// Models
+import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/models/Location.dart';
 
 class DeliveryScreen extends StatefulWidget {
   const DeliveryScreen({Key? key}) : super(key: key);
@@ -59,8 +62,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               _showDeliveredPersonSheet(context, delivery.delivery_no);
             },
             splashColor: Colors.lightBlue,
-            icon: Icon(Icons.done_all_sharp),
-            label: Text('Teslimatı Tamamla'))
+            icon: const Icon(Icons.done_all_sharp),
+            label: const Text('Teslimatı Tamamla'))
       ],
     );
   }
@@ -172,20 +175,11 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                       builder: (context) => const DeliveryScreen()),
                 );
               },
-              child: const Icon(Icons.delivery_dining), //icon inside button
+              child: const Icon(Icons.gps_fixed),
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             appBar: AppBar(
-              leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                ),
-              ),
               title: const Text(_title),
               centerTitle: true,
             ),
@@ -219,7 +213,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   visible: true,
                                   child: Center(
                                       // scaffold of the app
-                                      child: Text('Teslimat Bulunamadı')))));
+                                      child: Text('Aktif Teslimatınız Bulunmamaktadır')))));
                     }
                     Delivery delivery = snapshot.data ??
                         Delivery(

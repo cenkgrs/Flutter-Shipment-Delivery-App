@@ -3,6 +3,7 @@ import 'package:crud_app/screens/home_page_screen.dart';
 import 'package:crud_app/screens/search_screen.dart';
 import 'package:crud_app/screens/driver/delivery_screen.dart';
 import 'package:crud_app/screens/admin/drivers_screen.dart';
+import 'package:crud_app/screens/driver/completed_deliveries_screen.dart';
 import 'package:crud_app/main.dart';
 
 class BottomNavbar extends StatefulWidget {
@@ -101,12 +102,12 @@ class _BottomNavbarState extends State<BottomNavbar> {
             break;
 
           case 3:
-            /*
+            
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              MaterialPageRoute(builder: (context) => const CompletedDeliveriesScene()),
             );
-            */
+            
             break;
           // Log Out
           case 4:
@@ -193,7 +194,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
             ),
             IconButton(
               icon: const Icon(
-                Icons.settings,
+                Icons.done_outline_outlined,
                 color: Colors.white,
               ),
               onPressed: () {
@@ -201,7 +202,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
               },
             ),
             IconButton(
-              padding: EdgeInsets.only(right: 20),
+              padding: const EdgeInsets.only(right: 20),
               icon: const Icon(Icons.logout, color: Colors.white),
               onPressed: () {
                 navigationAction(4);
