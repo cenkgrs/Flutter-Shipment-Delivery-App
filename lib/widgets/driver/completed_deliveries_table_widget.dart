@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class CompletedDeliveries extends StatefulWidget {
   const CompletedDeliveries({Key? key}) : super(key: key);
@@ -12,30 +13,25 @@ class CompletedDeliveries extends StatefulWidget {
 
 class _CompletedDeliveriesState extends State<CompletedDeliveries> {
   late Future<List<Delivery>> futureDeliveries;
+  DateFormat? dateFormat;
+  DateFormat? timeFormat;
 
   void initState() {
     super.initState();
+    initializeDateFormatting();
+    dateFormat = DateFormat.yMMMMEEEEd('tr');
+    timeFormat = DateFormat.Hms('tr');
     futureDeliveries = fetchCompletedDeliveries();
   }
 
   Container getDeliveryIcon(delivery) {
-    if (delivery.status == 1) {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          width: 200,
-          child: Align(
-            alignment: Alignment(-1, -1),
-            child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
-          ));
-    } else {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          width: 200,
-          child: Align(
-            alignment: Alignment(-1, -1),
-            child: Icon(Icons.track_changes, size: 57, color: Colors.blue),
-          ));
-    }
+    return Container(
+        padding: const EdgeInsets.all(12),
+        width: 200,
+        child: Align(
+          alignment: Alignment(-1, -1),
+          child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
+        ));
   }
 
   Row getDriverName(delivery) {
@@ -97,66 +93,91 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     );
   }
 
-  Row getDeliveryStartTime(delivery) {
-    if (delivery.st_delivery == 0) {
-      return Row();
+  Container getDeliveryStartTime(delivery) {
+    if (delivery.st_complete == 0) {
+      return Container();
     }
 
-    return Row(
-      children: [
-        Column(
-          children: <Widget>[
-            Icon(Icons.timelapse_outlined,
-                size: 16, color: Colors.grey.shade700),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Text(
-              DateFormat.yMd().format(delivery.tt_delivery),
-              style: TextStyle(
-                  color: Colors.grey.shade700,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: const <Widget>[
+                Align(
+                  alignment: Alignment(-1, -1),
+                  child: Icon(Icons.hourglass_bottom,
+                      size: 30, color: Colors.blueAccent),
+                )
+              ],
             ),
-          ],
-        )
-      ],
+          ),
+          Expanded(
+              flex: 4,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    dateFormat!.format(delivery.tt_delivery) + ' ' + timeFormat!.format(delivery.tt_delivery),
+                    style: TextStyle(
+                        color: Colors.blue.shade100,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ))
+        ],
+      ),
     );
   }
 
-  Row getDeliveryCompleteTime(delivery) {
+  Container getDeliveryCompleteTime(delivery){
     if (delivery.st_complete == 0) {
-      return Row();
+      return Container();
     }
 
-    return Row(
-      children: [
-        Column(
-          children: <Widget>[
-            Icon(Icons.timelapse_outlined,
-                size: 16, color: Colors.grey.shade700),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Text(
-              DateFormat.yMd().format(delivery.tt_complete),
-              style: TextStyle(
-                  color: Colors.grey.shade700,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: const <Widget>[
+                Align(
+                  alignment: Alignment(-1, -1),
+                  child: Icon(Icons.timelapse_outlined,
+                      size: 30, color: Colors.blueAccent),
+                )
+              ],
             ),
-          ],
-        )
-      ],
+          ),
+          Expanded(
+              flex: 4,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    dateFormat!.format(delivery.tt_complete) + ' ' + timeFormat!.format(delivery.tt_complete),
+                    style: TextStyle(
+                        color: Colors.blue.shade100,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ))
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     return Stack(
       children: <Widget>[
