@@ -43,6 +43,7 @@ class HomeScreen extends StatelessWidget {
             home: Scaffold(
                 floatingActionButton: 
                 FloatingActionButton(
+                  heroTag: UniqueKey(),
                   onPressed: () {
                       Navigator.push(
                       context,

@@ -1,7 +1,11 @@
+import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
+import 'package:crud_app/screens/home_page_screen.dart';
 
 class DeliveredPersonSheet extends StatefulWidget {
-  const DeliveredPersonSheet({Key? key}) : super(key: key);
+  final String deliveryNo;
+  const DeliveredPersonSheet({Key? key, required this.deliveryNo})
+      : super(key: key);
 
   @override
   _DeliveredPersonSheetState createState() => _DeliveredPersonSheetState();
@@ -31,6 +35,27 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
           ],
         ),
       ),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: FloatingActionButton.extended(
+                heroTag: UniqueKey(),
+                onPressed: () {
+                  completeDelivery(widget.deliveryNo,
+                      deliveryPersonController.text.toString());
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen(userType: 'driver')),
+                  );
+                },
+                backgroundColor: Colors.blueAccent,
+                splashColor: Colors.blue,
+                icon: const Icon(Icons.done_outline),
+                label: const Text('Tamamla'))),
+      )
     ]);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:crud_app/widgets/driver/delivered_person_sheet.dart';
+import 'package:crud_app/screens/home_page_screen.dart';
 
 // Models
 import 'package:crud_app/models/Delivery.dart';
@@ -52,31 +53,64 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         ));
   }
 
+  cancelDeliveryButton(delivery, width) {
+    return FloatingActionButton.extended(
+        heroTag: UniqueKey(),
+        onPressed: () async {
+          var result = await cancelDelivery(delivery);
+
+          if (result['status'] == true) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomeScreen(userType: 'driver')),
+            );
+
+            hideLoading();
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(result['exception']),
+              backgroundColor: Colors.blue,
+            ));
+
+            hideLoading();
+          }
+
+        
+        },
+        backgroundColor: Colors.redAccent,
+        splashColor: Colors.red,
+        icon: const Icon(Icons.cancel_outlined),
+        label: const Text('Teslimatı İptal Et'));
+  }
+
   completeDeliveryButton(delivery, width) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        FloatingActionButton.extended(
-            onPressed: () {
-              _showDeliveredPersonSheet(context, delivery.delivery_no);
-            },
-            splashColor: Colors.lightBlue,
-            icon: const Icon(Icons.done_all_sharp),
-            label: const Text('Teslimatı Tamamla'))
-      ],
-    );
+    return FloatingActionButton.extended(
+        heroTag: UniqueKey(),
+        onPressed: () {
+          _showDeliveredPersonSheet(context, delivery.delivery_no);
+        },
+        splashColor: Colors.lightBlue,
+        icon: const Icon(Icons.done_all_sharp),
+        label: const Text('Teslimatı Tamamla'));
   }
 
   void _showDeliveredPersonSheet(BuildContext context, deliveryNo) async {
-    String? deliveredPerson = await showModalBottomSheet(
+    /*String? deliveredPerson = await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           //3
           return const DeliveredPersonSheet();
         });
 
-    completeDelivery(deliveryNo, "asd");
+    completeDelivery(deliveryNo, "asd");*/
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          //3
+          return DeliveredPersonSheet(deliveryNo: deliveryNo);
+        });
   }
 
   Container getDeliveryIcon(delivery) {
@@ -166,6 +200,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         title: _title,
         home: Scaffold(
             floatingActionButton: FloatingActionButton(
+              heroTag: UniqueKey(),
               foregroundColor: Colors.white,
               backgroundColor: Colors.blue,
               onPressed: () {
@@ -213,7 +248,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   visible: true,
                                   child: Center(
                                       // scaffold of the app
-                                      child: Text('Aktif Teslimatınız Bulunmamaktadır')))));
+                                      child: Text(
+                                          'Aktif Teslimatınız Bulunmamaktadır')))));
                     }
                     Delivery delivery = snapshot.data ??
                         Delivery(
@@ -298,7 +334,25 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   ),
                                 ))),
                         deliveryNo(delivery, width),
-                        completeDeliveryButton(delivery, width)
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: <Widget>[
+                                  cancelDeliveryButton(delivery, width),
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  completeDeliveryButton(delivery, width)
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     );
                   }),

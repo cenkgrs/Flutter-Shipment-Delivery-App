@@ -106,7 +106,6 @@ Future<List<Delivery>> fetchDeliveries() async {
     List<Delivery> result = [];
 
     for (var delivery in data['deliveries']) {
-
       var latitude;
       var longitude;
 
@@ -327,12 +326,11 @@ Future<Delivery> getActiveDelivery() async {
   // to get token from local storage
   var token = await storage.read(key: 'token');
 
-  final response = await http.get(
-      Uri.parse('${Constant.baseUrl}/get-active-delivery'),
-      headers: {
-        'Accept': 'application/json;',
-        'Authorization': 'Bearer $token'
-      });
+  final response = await http
+      .get(Uri.parse('${Constant.baseUrl}/get-active-delivery'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
 
   var latitude = 0.0;
   var longitude = 0.0;
@@ -370,16 +368,14 @@ completeDelivery(String deliveryNo, String deliveredPerson) async {
   var token = await storage.read(key: 'token');
 
   try {
-    final response = await http.post(
-        Uri.parse('${Constant.baseUrl}/complete-delivery'),
-        headers: {
-          'Accept': 'application/json;',
-          'Authorization': 'Bearer $token'
-        },
-        body: {
-          'delivery_no': deliveryNo,
-          'delivered_person': deliveredPerson
-        });
+    final response = await http
+        .post(Uri.parse('${Constant.baseUrl}/complete-delivery'), headers: {
+      'Accept': 'application/json;',
+      'Authorization': 'Bearer $token'
+    }, body: {
+      'delivery_no': deliveryNo,
+      'delivered_person': deliveredPerson
+    });
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -405,29 +401,54 @@ startDelivery(Delivery delivery) async {
   var token = await storage.read(key: 'token');
 
   try {
-    final response = await http.post(
-        Uri.parse('${Constant.baseUrl}/start-delivery'),
-        headers: {
-          'Accept': 'application/json;',
-          'Authorization': 'Bearer $token'
-        },
-        body: {
-          'delivery_no': delivery.delivery_no,
-        });
+    final response = await http
+        .post(Uri.parse('${Constant.baseUrl}/start-delivery'), headers: {
+      'Accept': 'application/json;',
+      'Authorization': 'Bearer $token'
+    }, body: {
+      'delivery_no': delivery.delivery_no,
+    });
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
 
       return data;
-    
     } else {
-        var data = jsonDecode(response.body);
+      var data = jsonDecode(response.body);
 
-        return {'status': false, 'exception': data['message']};
+      return {'status': false, 'exception': data['message']};
     }
   } catch (e) {
     return {'status': false, 'exception': e.toString()};
-    
+  }
+}
+
+cancelDelivery(Delivery delivery) async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  try {
+    final response = await http
+        .post(Uri.parse('${Constant.baseUrl}/cancel-delivery'), headers: {
+      'Accept': 'application/json;',
+      'Authorization': 'Bearer $token'
+    }, body: {
+      'delivery_no': delivery.delivery_no,
+    });
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return data;
+    } else {
+      var data = jsonDecode(response.body);
+
+      return {'status': false, 'exception': data['message']};
+    }
+  } catch (e) {
+    return {'status': false, 'exception': e.toString()};
   }
 }
 
@@ -460,42 +481,38 @@ setLocation() async {
 }
 
 Future _getLocation() async {
-    Location location = new Location();
-    LocationData _pos = await location.getLocation();
+  Location location = new Location();
+  LocationData _pos = await location.getLocation();
 
-    const storage = FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
 
-    // to get token from local storage
-    var token = await storage.read(key: 'token');
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
 
-    try {
-      final response = await http.post(
-          Uri.parse('${Constant.baseUrl}/add-location-record'),
-          headers: {
-            'Accept': 'application/json;',
-            'Authorization': 'Bearer $token'
-          },
-          body: {
-            'driver_id': 1,
-            'address': 'Adres',
-            'latitude': _pos.latitude,
-            'longitude': _pos.longitude,
-          });
+  try {
+    final response = await http
+        .post(Uri.parse('${Constant.baseUrl}/add-location-record'), headers: {
+      'Accept': 'application/json;',
+      'Authorization': 'Bearer $token'
+    }, body: {
+      'driver_id': 1,
+      'address': 'Adres',
+      'latitude': _pos.latitude,
+      'longitude': _pos.longitude,
+    });
 
-      if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
 
-        if (data['status'] == true) {
-          return true;
-        } else {
-          return false;
-        }
+      if (data['status'] == true) {
+        return true;
       } else {
-        throw Exception(
-            'Lokasyon bilgisi gönderilemedi.');
+        return false;
       }
-    } catch (e) {
-      return false;
+    } else {
+      throw Exception('Lokasyon bilgisi gönderilemedi.');
     }
+  } catch (e) {
+    return false;
+  }
 }
-
