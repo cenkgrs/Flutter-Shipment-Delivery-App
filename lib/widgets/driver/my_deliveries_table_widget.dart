@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/models/Location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -117,6 +118,8 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                 backgroundColor: Colors.blue,
               ));
 
+              var result = await setLocation();
+
               hideLoading();
             } else {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -213,10 +216,9 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
               List<Delivery> deliveries = snapshot.data ?? [];
               return ListView.builder(
                   itemCount: deliveries.length,
-                  //  respondedData3['data'].length,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
-                  physics: ScrollPhysics(),
+                  physics: const ScrollPhysics(),
                   itemBuilder: (context, index) {
                     Delivery delivery = deliveries[index];
 

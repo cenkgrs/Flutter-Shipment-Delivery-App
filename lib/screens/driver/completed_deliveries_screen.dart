@@ -25,8 +25,7 @@ class CompletedDeliveriesScene extends StatelessWidget {
               title: const Text(_title),
               centerTitle: true,
             ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            body: ListView(
               children: <Widget>[
                 Row(
                   children: const [
