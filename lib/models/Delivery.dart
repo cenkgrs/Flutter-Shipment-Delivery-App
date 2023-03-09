@@ -4,7 +4,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location/location.dart';
 import 'package:crud_app/constants.dart';
 
-
 class Delivery {
   final String delivery_no;
   final int driver_id;
@@ -111,7 +110,7 @@ Future<List<Delivery>> fetchDeliveries() async {
 
       latitude = 0.0;
       longitude = 0.0;
-    
+
       result.add(Delivery(
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],
@@ -451,5 +450,3 @@ cancelDelivery(Delivery delivery) async {
     return {'status': false, 'exception': e.toString()};
   }
 }
-
-

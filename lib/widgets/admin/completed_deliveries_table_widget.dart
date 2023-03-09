@@ -188,6 +188,19 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                             child: Text('Tamamlanan Teslimat Bulunamadı')))));
           }
           List<Delivery> deliveries = snapshot.data ?? [];
+
+          if (deliveries.isEmpty) {
+            return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: const Visibility(
+                        visible: true,
+                        child: Center(
+                            // scaffold of the app
+                            child: Text('Tamamlanan Teslimat Bulunamadı')))));
+          }
+
           return ListView.builder(
               itemCount: deliveries.length,
               shrinkWrap: true,

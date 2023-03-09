@@ -121,7 +121,9 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    dateFormat!.format(delivery.tt_delivery) + ' ' + timeFormat!.format(delivery.tt_delivery),
+                    dateFormat!.format(delivery.tt_delivery) +
+                        ' ' +
+                        timeFormat!.format(delivery.tt_delivery),
                     style: TextStyle(
                         color: Colors.blue.shade100,
                         fontSize: 13,
@@ -134,7 +136,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     );
   }
 
-  Container getDeliveryCompleteTime(delivery){
+  Container getDeliveryCompleteTime(delivery) {
     if (delivery.st_complete == 0) {
       return Container();
     }
@@ -162,7 +164,9 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    dateFormat!.format(delivery.tt_complete) + ' ' + timeFormat!.format(delivery.tt_complete),
+                    dateFormat!.format(delivery.tt_complete) +
+                        ' ' +
+                        timeFormat!.format(delivery.tt_complete),
                     style: TextStyle(
                         color: Colors.blue.shade100,
                         fontSize: 13,
@@ -212,6 +216,19 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                                     Text('Tamamlanan Teslimat Bulunamadı')))));
               }
               List<Delivery> deliveries = snapshot.data ?? [];
+
+              if (deliveries.isEmpty) {
+                return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: const Visibility(
+                            visible: true,
+                            child: Center(
+                                // scaffold of the app
+                                child:
+                                    Text('Tamamlanan Teslimat Bulunamadı')))));
+              }
               return ListView.builder(
                   itemCount: deliveries.length,
                   shrinkWrap: true,

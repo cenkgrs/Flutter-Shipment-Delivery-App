@@ -53,6 +53,17 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         ));
   }
 
+  deliveryAddress(delivery, width) {
+    return Card(
+        child: Row(
+      children: [
+        Column(
+          children: [const Text("Adres"), Text(delivery.address)],
+        ),
+      ],
+    ));
+  }
+
   cancelDeliveryButton(delivery, width) {
     return SizedBox(
       width: width * 0.4,
@@ -340,6 +351,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                   ),
                                 ))),
                         deliveryNo(delivery, width),
+                        deliveryAddress(delivery, width),
                         Center(
                           child: Padding(
                               padding: EdgeInsets.all(0),

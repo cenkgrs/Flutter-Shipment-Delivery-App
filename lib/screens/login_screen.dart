@@ -104,10 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
     showLoading();
 
     try {
-      final response = await http.post(
-          Uri.parse('${Constant.baseUrl}/login'),
+      final response = await http.post(Uri.parse('${Constant.baseUrl}/login'),
           headers: {'Accept': 'application/json;'},
-          body: {'email': 'cenkgrs@gmail.com', 'password': '123456'});
+          body: {'email': email, 'password': password});
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);

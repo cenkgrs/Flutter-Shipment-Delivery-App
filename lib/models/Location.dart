@@ -11,14 +11,13 @@ class Locations {
   final String longitude;
   final DateTime time;
 
-  const Locations({
-    required this.driverId,
-    required this.address,
-    required this.latitude,
-    required this.longitude,
-    required this.time,
-  });
-
+  const Locations(
+      {required this.driverId,
+      required this.address,
+      required this.latitude,
+      required this.longitude,
+      required this.time,
+      ge});
 }
 
 Future setLocation() async {
@@ -36,7 +35,6 @@ Future setLocation() async {
       'Accept': 'application/json;',
       'Authorization': 'Bearer $token'
     }, body: {
-      'driver_id': '1',
       'address': 'Adres',
       'latitude': pos.latitude.toString(),
       'longitude': pos.longitude.toString(),
