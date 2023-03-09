@@ -133,9 +133,21 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                             child: Text('Tamamlanan Teslimat Bulunamadı')))));
           }
           List<Delivery> deliveries = snapshot.data ?? [];
+
+          if (deliveries.isEmpty) {
+            return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: const Visibility(
+                        visible: true,
+                        child: Center(
+                            // scaffold of the app
+                            child: Text('Bekleyen Teslimat Bulunamadı')))));
+          }
+
           return ListView.builder(
               itemCount: deliveries.length,
-              //  respondedData3['data'].length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               physics: const ScrollPhysics(),
@@ -147,7 +159,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                         padding: const EdgeInsets.all(10),
                         child: Container(
                           width: 400,
-                          height: height * 0.20,
+                          height: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.white,

@@ -25,18 +25,7 @@ class CompletedDeliveriesScene extends StatelessWidget {
               title: const Text(_title),
               centerTitle: true,
             ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  children: const [
-                    Expanded(
-                        child: SizedBox(
-                            height: 650, child: CompletedDeliveries())),
-                  ],
-                ),
-              ],
-            ),
-            bottomNavigationBar: BottomNavbar(userType: 'admin', index: 0)));
+            body: const CompletedDeliveries(),
+            bottomNavigationBar: const BottomNavbar(userType: 'admin', index: 0)));
   }
 }

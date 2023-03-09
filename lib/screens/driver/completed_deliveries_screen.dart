@@ -25,17 +25,8 @@ class CompletedDeliveriesScene extends StatelessWidget {
               title: const Text(_title),
               centerTitle: true,
             ),
-            body: ListView(
-              children: <Widget>[
-                Row(
-                  children: const [
-                    Expanded(
-                        child: SizedBox(
-                            height: 650, child: CompletedDeliveries())),
-                  ],
-                ),
-              ],
-            ),
-            bottomNavigationBar: const BottomNavbar(userType: 'driver', index: 3)));
+            body: const CompletedDeliveries(),
+            bottomNavigationBar:
+                const BottomNavbar(userType: 'driver', index: 3)));
   }
 }

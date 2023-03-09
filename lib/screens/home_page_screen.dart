@@ -41,17 +41,20 @@ class HomeScreen extends StatelessWidget {
                     ),
                     scaffoldBackgroundColor: Colors.lightBlue),*/
             home: Scaffold(
-                floatingActionButton: 
-                FloatingActionButton(
+                floatingActionButton: FloatingActionButton(
                   heroTag: UniqueKey(),
                   onPressed: () {
-                      Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => userType == 'driver' ? const DeliveryScreen() : const DriversScreen()),
+                          builder: (context) => userType == 'driver'
+                              ? const DeliveryScreen()
+                              : const DriversScreen()),
                     );
                   },
-                  child: userType == 'driver' ? const Icon(Icons.delivery_dining) : const Icon(Icons.people), //icon inside button
+                  child: userType == 'driver'
+                      ? const Icon(Icons.delivery_dining)
+                      : const Icon(Icons.people), //icon inside button
                 ),
                 floatingActionButtonLocation:
                     FloatingActionButtonLocation.centerDocked,
@@ -66,14 +69,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ]),
                     */
-                    if (userType == 'driver')
-                      Row(
-                        children: const [
-                          Expanded(
-                              child: SizedBox(
-                                  height: 650, child: MyDeliveriesTable())),
-                        ],
-                      ),
+                    if (userType == 'driver') const MyDeliveriesTable(),
                     if (userType == 'admin')
                       Row(
                         children: const [Expanded(child: CreateDeliveryCard())],

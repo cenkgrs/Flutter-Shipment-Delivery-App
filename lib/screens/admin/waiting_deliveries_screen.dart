@@ -12,32 +12,21 @@ class WaitingDeliveriesScreen extends StatelessWidget {
     return MaterialApp(
         title: 'Aydın Plastik',
         home: Scaffold(
-          appBar: AppBar(
-            leading: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.white,
+            appBar: AppBar(
+              leading: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
               ),
+              title: const Text(_title),
+              centerTitle: true,
             ),
-            title: const Text(_title),
-            centerTitle: true,
-          ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                children: const [
-                  Expanded(
-                      child: SizedBox(height: 650, child: WaitingDeliveries())),
-                ],
-              ),
-            ],
-          ),
-          bottomNavigationBar: BottomNavbar(userType: 'admin', index: 0)
-
-        ));
+            body: const WaitingDeliveries(),
+            bottomNavigationBar:
+                const BottomNavbar(userType: 'admin', index: 0)));
   }
 }
