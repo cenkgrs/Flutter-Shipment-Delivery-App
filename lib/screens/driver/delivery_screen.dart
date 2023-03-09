@@ -33,7 +33,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         padding: EdgeInsets.all(20),
         child: Row(
           children: [
-            Column(
+            const Column(
               children: <Widget>[
                 Icon(Icons.numbers, size: 25, color: Colors.blue),
               ],
@@ -44,7 +44,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                   delivery.delivery_no,
                   style: TextStyle(
                       color: Colors.grey.shade700,
-                      fontSize: 23,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
               ],
@@ -54,14 +54,53 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   }
 
   deliveryAddress(delivery, width) {
-    return Card(
-        child: Row(
-      children: [
-        Column(
-          children: [const Text("Adres"), Text(delivery.address)],
-        ),
-      ],
-    ));
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const Column(
+                  children: <Widget>[
+                    Icon(Icons.location_on, size: 25, color: Colors.blue),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      "Adres",
+                      style: TextStyle(
+                          color: Colors.grey.shade700,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Card(
+                margin: const EdgeInsets.only(top: 20),
+                shadowColor: Colors.blueAccent,
+                child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        Flexible(
+                            child: Column(
+                          children: <Widget>[
+                            Text(
+                              delivery.address,
+                              style: TextStyle(
+                                  color: Colors.grey.shade700,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ))
+                      ],
+                    )))
+          ],
+        ));
   }
 
   cancelDeliveryButton(delivery, width) {
@@ -113,100 +152,11 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   }
 
   void _showDeliveredPersonSheet(BuildContext context, deliveryNo) async {
-    /*String? deliveredPerson = await showModalBottomSheet(
-        context: context,
-        builder: (BuildContext context) {
-          //3
-          return const DeliveredPersonSheet();
-        });
-
-    completeDelivery(deliveryNo, "asd");*/
-
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          //3
           return DeliveredPersonSheet(deliveryNo: deliveryNo);
         });
-  }
-
-  Container getDeliveryIcon(delivery) {
-    if (delivery.status == 1) {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          width: 200,
-          child: const Align(
-            alignment: Alignment(-1, -1),
-            child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
-          ));
-    } else {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          width: 200,
-          child: const Align(
-            alignment: Alignment(-1, -1),
-            child: Icon(Icons.track_changes, size: 57, color: Colors.blue),
-          ));
-    }
-  }
-
-  Row getDriverName(delivery) {
-    return Row(
-      children: [
-        Column(
-          children: <Widget>[
-            Icon(Icons.person, size: 16, color: Colors.grey.shade700),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Text(
-              delivery.driver_name,
-              style: TextStyle(
-                  color: Colors.grey.shade700,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
-        )
-      ],
-    );
-  }
-
-  Row getAddress(delivery) {
-    return Row(
-      children: [
-        Column(
-          children: <Widget>[
-            Icon(Icons.location_on, size: 14, color: Colors.grey.shade700),
-          ],
-        ),
-        Flexible(
-            child: Column(
-          children: <Widget>[
-            Text(
-              delivery.address,
-              style: TextStyle(
-                  color: Colors.grey.shade700,
-                  fontSize: 8,
-                  fontWeight: FontWeight.bold),
-            ),
-          ],
-        ))
-      ],
-    );
-  }
-
-  Container getDeliveryNo(delivery, width) {
-    return Container(
-      width: width * 0.9,
-      padding: const EdgeInsets.all(12),
-      child: Text(
-        delivery.delivery_no,
-        style: const TextStyle(
-            color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-      ),
-    );
   }
 
   @override
@@ -285,93 +235,26 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                             status: 0);
                     return ListView(
                       children: [
-                        Center(
-                            child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                                child: Container(
-                                  width: width * 0.9,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 5,
-                                        blurRadius: 7,
-                                        offset: const Offset(0, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                              flex: 2,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  getDeliveryIcon(delivery),
-                                                ],
-                                              )),
-                                          Expanded(
-                                              flex: 8,
-                                              child: Column(
-                                                children: <Widget>[
-                                                  getDriverName(delivery),
-                                                  getAddress(delivery)
-                                                ],
-                                              ))
-                                        ],
-                                      ),
-                                      Expanded(
-                                          child: Container(
-                                        width: 100,
-                                      )),
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.blue,
-                                            borderRadius: BorderRadius.only(
-                                                bottomRight:
-                                                    Radius.circular(12),
-                                                bottomLeft:
-                                                    Radius.circular(12))),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                              flex: 10,
-                                              child: getDeliveryNo(
-                                                  delivery, width),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ))),
                         deliveryNo(delivery, width),
                         deliveryAddress(delivery, width),
                         Center(
                           child: Padding(
                               padding: EdgeInsets.all(0),
-                              child: Container(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      children: <Widget>[
-                                        cancelDeliveryButton(delivery, width),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: <Widget>[
-                                        completeDeliveryButton(delivery, width)
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: <Widget>[
+                                      cancelDeliveryButton(delivery, width),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      completeDeliveryButton(delivery, width)
+                                    ],
+                                  ),
+                                ],
                               )),
                         ),
                       ],

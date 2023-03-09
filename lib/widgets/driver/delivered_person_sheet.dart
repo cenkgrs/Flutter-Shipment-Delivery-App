@@ -1,6 +1,7 @@
 import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/screens/home_page_screen.dart';
+import 'package:flutter/services.dart';
 
 class DeliveredPersonSheet extends StatefulWidget {
   final String deliveryNo;
@@ -12,23 +13,44 @@ class DeliveredPersonSheet extends StatefulWidget {
 }
 
 class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
-  int? deliveredPerson;
+  String? deliveredPerson;
   TextEditingController deliveryPersonController = TextEditingController();
+  TextEditingController nationalIdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
       Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
+            const Text("Lütfen teslim edilen kişiyi giriniz",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.blueAccent)),
             Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              margin: const EdgeInsets.only(top: 20, bottom: 20),
               child: TextFormField(
                 controller: deliveryPersonController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Teslim Edilen Kişi',
+                ),
+              ),
+            ),
+            const Text("TC Kimlik No (Zorunlu Değil)",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.blueAccent)),
+            Container(
+              margin: const EdgeInsets.only(top: 20, bottom: 10),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                controller: nationalIdController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'TC Kimlik No',
                 ),
               ),
             ),
