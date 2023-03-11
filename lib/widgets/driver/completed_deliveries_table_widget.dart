@@ -26,12 +26,9 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
 
   Container getDeliveryIcon(delivery) {
     return Container(
-        padding: const EdgeInsets.all(12),
-        width: 200,
-        child: Align(
-          alignment: Alignment(-1, -1),
-          child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
-        ));
+      padding: const EdgeInsets.all(12),
+      child: const Icon(Icons.task_alt, size: 57, color: Colors.blue),
+    );
   }
 
   Row getDriverName(delivery) {
@@ -99,25 +96,24 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     }
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
+          const Expanded(
             flex: 2,
             child: Column(
               children: const <Widget>[
                 Align(
                   alignment: Alignment(-1, -1),
-                  child: Icon(Icons.hourglass_bottom,
-                      size: 30, color: Colors.blueAccent),
+                  child: Icon(Icons.start, size: 30, color: Colors.blueAccent),
                 )
               ],
             ),
           ),
           Expanded(
-              flex: 4,
+              flex: 8,
               child: Column(
                 children: <Widget>[
                   Text(
@@ -125,7 +121,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                         ' ' +
                         timeFormat!.format(delivery.tt_delivery),
                     style: TextStyle(
-                        color: Colors.blue.shade100,
+                        color: Colors.blueGrey,
                         fontSize: 13,
                         fontWeight: FontWeight.bold),
                   ),
@@ -142,7 +138,8 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     }
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      margin: EdgeInsets.only(top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,7 +157,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
             ),
           ),
           Expanded(
-              flex: 4,
+              flex: 8,
               child: Column(
                 children: <Widget>[
                   Text(
@@ -168,7 +165,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                         ' ' +
                         timeFormat!.format(delivery.tt_complete),
                     style: TextStyle(
-                        color: Colors.blue.shade100,
+                        color: Colors.blueGrey,
                         fontSize: 13,
                         fontWeight: FontWeight.bold),
                   ),
@@ -242,7 +239,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                             padding: const EdgeInsets.all(10),
                             child: Container(
                               width: 400,
-                              height: 150,
+                              height: 200,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white,
@@ -271,6 +268,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                                           child: Column(
                                             children: <Widget>[
                                               getDriverName(delivery),
+                                              const SizedBox(height: 5),
                                               getAddress(delivery)
                                             ],
                                           ))

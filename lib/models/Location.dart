@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location/location.dart';
 import 'package:crud_app/constants.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 class Locations {
   final int driverId;
@@ -54,4 +55,8 @@ Future setLocation() async {
   } catch (e) {
     return false;
   }
+}
+
+launchMap(String address) {
+  MapsLauncher.launchQuery(address);
 }

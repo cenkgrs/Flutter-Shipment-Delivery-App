@@ -26,6 +26,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   bool _isLoading = false;
 
+  String address = "";
+
   static const String _title = 'Teslimatım';
 
   deliveryNo(delivery, width) {
@@ -42,6 +44,31 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               children: <Widget>[
                 Text(
                   delivery.delivery_no,
+                  style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )
+          ],
+        ));
+  }
+
+  deliveryFirm(delivery, firm) {
+    return Padding(
+        padding: EdgeInsets.all(20),
+        child: Row(
+          children: [
+            const Column(
+              children: <Widget>[
+                Icon(Icons.build, size: 25, color: Colors.blue),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  delivery.firm_name,
                   style: TextStyle(
                       color: Colors.grey.shade700,
                       fontSize: 20,
@@ -171,11 +198,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               foregroundColor: Colors.white,
               backgroundColor: Colors.blue,
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const DeliveryScreen()),
-                );
+                launchMap(address);
               },
               child: const Icon(Icons.gps_fixed),
             ),
@@ -218,11 +241,13 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                       child: Text(
                                           'Aktif Teslimatınız Bulunmamaktadır')))));
                     }
+
                     Delivery delivery = snapshot.data ??
                         Delivery(
                             delivery_no: '1',
                             driver_id: 1,
                             driver_name: 'null',
+                            firm_name: 'firm',
                             address: 'address',
                             st_delivery: 1,
                             tt_delivery: DateTime.now(),
@@ -233,9 +258,12 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                             latitude: 00,
                             longitude: 0,
                             status: 0);
+
+                    address = delivery.address;
                     return ListView(
                       children: [
                         deliveryNo(delivery, width),
+                        deliveryFirm(delivery, width),
                         deliveryAddress(delivery, width),
                         Center(
                           child: Padding(
