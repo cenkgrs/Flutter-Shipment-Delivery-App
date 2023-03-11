@@ -8,6 +8,7 @@ class Delivery {
   final String delivery_no;
   final int driver_id;
   final String driver_name;
+  final String firm_name;
   final String address;
   final int st_delivery;
   final DateTime? tt_delivery;
@@ -23,6 +24,7 @@ class Delivery {
     required this.delivery_no,
     required this.driver_id,
     required this.driver_name,
+    required this.firm_name,
     required this.address,
     required this.st_delivery,
     required this.tt_delivery,
@@ -41,6 +43,7 @@ class Delivery {
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],
           driver_name: delivery["driver_name"],
+          firm_name: delivery["firm_name"],
           address: delivery["address"],
           st_delivery: delivery["st_delivery"],
           tt_delivery: delivery["tt_delivery"],
@@ -57,6 +60,7 @@ class Delivery {
         delivery_no: json['deliveries'][0]["delivery_no"],
         driver_id: json['deliveries'][0]["driver_id"],
         driver_name: json['deliveries'][0]["driver_name"],
+        firm_name: json['deliveries'][0]["firm_name"],
         address: json['deliveries'][0]["address"],
         st_delivery: json['deliveries'][0]["st_delivery"],
         tt_delivery: json['deliveries'][0]["tt_delivery"],
@@ -115,6 +119,7 @@ Future<List<Delivery>> fetchDeliveries() async {
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],
           driver_name: delivery["driver_name"],
+          firm_name: delivery["firm_name"],
           address: delivery["address"],
           st_delivery: delivery["st_delivery"],
           tt_delivery:
@@ -162,6 +167,7 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
             delivery_no: delivery["delivery_no"],
             driver_id: delivery["driver_id"],
             driver_name: delivery["driver_name"],
+            firm_name: delivery["firm_name"],
             address: delivery["address"],
             st_delivery: delivery["st_delivery"],
             tt_delivery: delivery["tt_delivery"] == null
@@ -210,6 +216,7 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
             delivery_no: delivery["delivery_no"],
             driver_id: delivery["driver_id"],
             driver_name: delivery["driver_name"],
+            firm_name: delivery["firm_name"],
             address: delivery["address"],
             st_delivery: delivery["st_delivery"],
             tt_delivery: delivery["tt_delivery"] == null
@@ -299,6 +306,7 @@ Future<List<Delivery>> searchDelivery(query) async {
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],
           driver_name: delivery["driver_name"],
+          firm_name: delivery["firm_name"],
           address: delivery["address"],
           st_delivery: delivery["st_delivery"],
           tt_delivery:
@@ -343,6 +351,7 @@ Future<Delivery> getActiveDelivery() async {
         delivery_no: delivery["delivery_no"],
         driver_id: delivery["driver_id"],
         driver_name: delivery["driver_name"],
+        firm_name: delivery["firm_name"],
         address: delivery["address"],
         st_delivery: delivery["st_delivery"],
         tt_delivery:
