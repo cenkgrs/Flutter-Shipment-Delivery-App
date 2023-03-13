@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 class CompletedDeliveries extends StatefulWidget {
   const CompletedDeliveries({Key? key}) : super(key: key);
@@ -12,9 +14,14 @@ class CompletedDeliveries extends StatefulWidget {
 
 class _CompletedDeliveriesState extends State<CompletedDeliveries> {
   late Future<List<Delivery>> futureDeliveries;
+  DateFormat? dateFormat;
+  DateFormat? timeFormat;
 
   void initState() {
     super.initState();
+    initializeDateFormatting();
+    dateFormat = DateFormat.yMMMMEEEEd('tr');
+    timeFormat = DateFormat.Hms('tr');
     futureDeliveries = fetchCompletedDeliveries();
   }
 
@@ -97,59 +104,89 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     );
   }
 
-  Row getDeliveryStartTime(delivery) {
-    if (delivery.st_delivery == 0) {
-      return Row();
+  Container getDeliveryStartTime(delivery) {
+    if (delivery.st_complete == 0) {
+      return Container();
     }
 
-    return Row(
-      children: [
-        Column(
-          children: <Widget>[
-            Icon(Icons.timelapse_outlined,
-                size: 16, color: Colors.grey.shade700),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Text(
-              DateFormat.yMd().format(delivery.tt_delivery),
-              style: TextStyle(
-                  color: Colors.grey.shade700,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold),
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: const <Widget>[
+                Align(
+                  alignment: Alignment(-1, -1),
+                  child: Icon(Icons.start, size: 30, color: Colors.blueAccent),
+                )
+              ],
             ),
-          ],
-        )
-      ],
+          ),
+          Expanded(
+              flex: 8,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    dateFormat!.format(delivery.tt_delivery) +
+                        ' ' +
+                        timeFormat!.format(delivery.tt_delivery),
+                    style: TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ))
+        ],
+      ),
     );
   }
 
-  Row getDeliveryCompleteTime(delivery) {
+  Container getDeliveryCompleteTime(delivery) {
     if (delivery.st_complete == 0) {
-      return Row();
+      return Container();
     }
 
-    return Row(
-      children: [
-        Column(
-          children: <Widget>[
-            Icon(Icons.timelapse_outlined,
-                size: 16, color: Colors.grey.shade700),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            Text(
-              DateFormat.yMd().format(delivery.tt_complete),
-              style: TextStyle(
-                  color: Colors.grey.shade700,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold),
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      margin: EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: const <Widget>[
+                Align(
+                  alignment: Alignment(-1, -1),
+                  child: Icon(Icons.timelapse_outlined,
+                      size: 30, color: Colors.blueAccent),
+                )
+              ],
             ),
-          ],
-        )
-      ],
+          ),
+          Expanded(
+              flex: 8,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    dateFormat!.format(delivery.tt_complete) +
+                        ' ' +
+                        timeFormat!.format(delivery.tt_complete),
+                    style: TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ))
+        ],
+      ),
     );
   }
 
@@ -243,6 +280,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                                       child: Column(
                                         children: <Widget>[
                                           getDriverName(delivery),
+                                          const SizedBox(height: 5),
                                           getAddress(delivery)
                                         ],
                                       ))

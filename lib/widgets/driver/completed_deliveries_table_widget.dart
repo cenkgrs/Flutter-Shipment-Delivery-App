@@ -101,7 +101,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Expanded(
+          Expanded(
             flex: 2,
             child: Column(
               children: const <Widget>[

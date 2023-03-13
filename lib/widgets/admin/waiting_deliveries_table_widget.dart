@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+
 
 class WaitingDeliveries extends StatefulWidget {
   const WaitingDeliveries({Key? key}) : super(key: key);
@@ -13,9 +16,14 @@ class WaitingDeliveries extends StatefulWidget {
 
 class _WaitingDeliveriesState extends State<WaitingDeliveries> {
   late Future<List<Delivery>> futureDeliveries;
+  DateFormat? dateFormat;
+  DateFormat? timeFormat;
 
   void initState() {
     super.initState();
+    initializeDateFormatting();
+    dateFormat = DateFormat.yMMMMEEEEd('tr');
+    timeFormat = DateFormat.Hms('tr');
     futureDeliveries = fetchWaitingDeliveries();
   }
 
@@ -98,6 +106,47 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
     );
   }
 
+  Container getDeliveryStartTime(delivery) {
+    if (delivery.st_complete == 0) {
+      return Container();
+    }
+
+    return Container(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: const <Widget>[
+                Align(
+                  alignment: Alignment(-1, -1),
+                  child: Icon(Icons.start, size: 30, color: Colors.blueAccent),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+              flex: 8,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    dateFormat!.format(delivery.tt_delivery) +
+                        ' ' +
+                        timeFormat!.format(delivery.tt_delivery),
+                    style: TextStyle(
+                        color: Colors.blueGrey,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ))
+        ],
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -191,6 +240,15 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                                           getAddress(delivery)
                                         ],
                                       ))
+                                ],
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 10,
+                                      child: Column(children: <Widget>[
+                                        getDeliveryStartTime(delivery),
+                                      ])),
                                 ],
                               ),
                               Expanded(
