@@ -12,6 +12,7 @@ class CreateDeliveryScreen extends StatefulWidget {
 
 class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
   TextEditingController deliveryNoController = TextEditingController();
+  TextEditingController firmController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
   int selectedDriver = 1;
@@ -60,6 +61,16 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                         ),
                       ),
                     ),
+                     Container(
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: firmController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Firma İsmi',
+                        ),
+                      ),
+                    ),
                     Container(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: TextFormField(
@@ -84,6 +95,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                       onTap: () async {
                         var result = await createDelivery(
                             deliveryNoController.text.toString(),
+                            firmController.text.toString(),
                             addressController.text.toString(),
                             selectedDriver);
 

@@ -240,7 +240,7 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
   }
 }
 
-createDelivery(deliveryNo, address, driverId) async {
+createDelivery(deliveryNo, firm, address, driverId) async {
   const storage = FlutterSecureStorage();
 
   // to get token from local storage
@@ -253,6 +253,7 @@ createDelivery(deliveryNo, address, driverId) async {
       'Authorization': 'Bearer $token'
     }, body: {
       'delivery_no': deliveryNo,
+      'firm': firm,
       'address': address,
       'driver_id': driverId.toString()
     });
