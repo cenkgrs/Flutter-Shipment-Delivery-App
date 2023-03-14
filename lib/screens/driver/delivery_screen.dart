@@ -35,7 +35,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         padding: EdgeInsets.all(20),
         child: Row(
           children: [
-            const Column(
+            Column(
               children: <Widget>[
                 Icon(Icons.numbers, size: 25, color: Colors.blue),
               ],
@@ -60,7 +60,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
         padding: EdgeInsets.all(20),
         child: Row(
           children: [
-            const Column(
+            Column(
               children: <Widget>[
                 Icon(Icons.build, size: 25, color: Colors.blue),
               ],
@@ -267,7 +267,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                         deliveryAddress(delivery, width),
                         Center(
                           child: Padding(
-                              padding: EdgeInsets.all(0),
+                              padding: const EdgeInsets.all(0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -7,6 +7,7 @@ import 'package:maps_launcher/maps_launcher.dart';
 
 class Locations {
   final int driverId;
+  final String driverName;
   final String address;
   final String latitude;
   final String longitude;
@@ -14,6 +15,7 @@ class Locations {
 
   const Locations(
       {required this.driverId,
+      required this.driverName,
       required this.address,
       required this.latitude,
       required this.longitude,
@@ -59,4 +61,39 @@ Future setLocation() async {
 
 launchMap(String address) {
   MapsLauncher.launchQuery(address);
+}
+
+
+Future<List<Locations>> getDriverLocations() async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('${Constant.baseUrl}/get-last-locations'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+
+    List<Locations> result = [];
+
+    for (var location in data['locations']) {
+      result.add(Locations(
+        driverId: location["driver_id"],
+        driverName: location["driver_name"],
+        address: location["address"],
+        latitude: location["latitude"],
+        longitude: location["longitude"],
+        time: location["time"],
+      ));
+    }
+
+    return result;
+  } else {
+    throw Exception('Failed to load driver locations');
+  }
 }

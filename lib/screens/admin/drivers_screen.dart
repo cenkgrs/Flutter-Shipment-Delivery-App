@@ -1,6 +1,5 @@
-import 'package:crud_app/models/Driver.dart';
+import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:crud_app/widgets/selectBox.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 
 class DriversScreen extends StatefulWidget {
@@ -37,8 +36,8 @@ class _DriversScreenState extends State<DriversScreen> {
               title: const Text(_title),
               centerTitle: true,
             ),
-            body: Stack(children: const <Widget>[
-            ]),
-            bottomNavigationBar: const BottomNavbar(userType: 'admin', index: 0)));
+            body: const DriverLocations(),
+            bottomNavigationBar:
+                const BottomNavbar(userType: 'admin', index: 0)));
   }
 }
