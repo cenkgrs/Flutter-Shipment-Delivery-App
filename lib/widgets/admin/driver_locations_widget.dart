@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/models/Driver.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -30,8 +30,7 @@ class _DriverLocationsState extends State<DriverLocations> {
       decoration: const BoxDecoration(
           color: Colors.blue,
           borderRadius: BorderRadius.only(
-              topRight: Radius.circular(12),
-              topLeft: Radius.circular(12))),
+              topRight: Radius.circular(12), topLeft: Radius.circular(12))),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -47,6 +46,21 @@ class _DriverLocationsState extends State<DriverLocations> {
         ],
       ),
     );
+  }
+
+  getStatus(location) {
+    return checkDriverStatus(location.driverId);
+  }
+
+  getStatusIcon(location) async{
+    var status = await getStatus(location);
+
+    if (status == 'active') {
+      return const Icon(Icons.delivery_dining, size: 57, color: Colors.blue);
+    } else {
+      return const Icon(Icons.stop_circle_outlined, size: 57, color: Colors.blue);
+    }
+
   }
 
   @override
@@ -111,7 +125,11 @@ class _DriverLocationsState extends State<DriverLocations> {
                     child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(
-                          children: <Widget>[getDriverName(location)],
+                          children: <Widget>[
+                            getDriverName(location),
+                            const SizedBox(height: 50),
+                            getStatusIcon(location),
+                          ],
                         )));
               });
         });
