@@ -24,7 +24,7 @@ class CompletedDeliveriesScene extends StatelessWidget {
                       builder: (context) => const DeliveryScreen()),
                 );
               },
-              child: const Icon(Icons.fire_truck),
+              child: const Icon(Icons.delivery_dining),
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,

@@ -3,6 +3,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:crud_app/widgets/driver/delivered_person_sheet.dart';
 import 'package:crud_app/screens/home_page_screen.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 // Models
 import 'package:crud_app/models/Delivery.dart';
@@ -17,11 +19,16 @@ class DeliveryScreen extends StatefulWidget {
 
 class _DeliveryScreenState extends State<DeliveryScreen> {
   late Future<Delivery> futureActiveDelivery;
+  DateFormat? dateFormat;
+  DateFormat? timeFormat;
 
   @override
   void initState() {
     super.initState();
     futureActiveDelivery = getActiveDelivery();
+    initializeDateFormatting();
+    dateFormat = DateFormat.yMMMMEEEEd('tr');
+    timeFormat = DateFormat.Hms('tr');
   }
 
   bool _isLoading = false;
@@ -30,29 +37,120 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   static const String _title = 'Teslimatım';
 
-  deliveryNo(delivery, width) {
-    return Padding(
-        padding: EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Column(
-              children: <Widget>[
-                Icon(Icons.numbers, size: 25, color: Colors.blue),
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                Text(
+  card(delivery, width) {
+    return Card(
+      margin: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
                   delivery.delivery_no,
-                  style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontSize: 20,
+                  style: const TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
-              ],
-            )
-          ],
-        ));
+              ),
+            ],
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(
+                  width: 2,
+                  color: Colors.blueAccent,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Column(
+                    children: <Widget>[
+                      Text(
+                        delivery.firm_name,
+                        style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )
+                ],
+              )),
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Flexible(
+                      child: Column(
+                    children: <Widget>[
+                      Text(
+                        delivery.address,
+                        style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ))
+                ],
+              )),
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Flexible(
+                      child: Column(
+                    children: <Widget>[
+                      Text(
+                        '${dateFormat!.format(delivery.tt_delivery)} ${timeFormat!.format(delivery.tt_delivery)}',
+                        style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ))
+                ],
+              ))
+        ],
+      ),
+    );
+  }
+
+  drawBorder(delivery, width) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            width: 2,
+            color: Colors.blueAccent,
+          ),
+        ),
+      ),
+    );
+  }
+
+  deliveryNo(delivery, width) {
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: Text(
+            delivery.delivery_no,
+            style: TextStyle(
+                color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
   }
 
   deliveryFirm(delivery, firm) {
@@ -82,53 +180,26 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   deliveryAddress(delivery, width) {
     return Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+        padding: const EdgeInsets.all(10),
+        child: Row(
           children: [
-            Row(
-              children: [
-                const Column(
-                  children: <Widget>[
-                    Icon(Icons.location_on, size: 25, color: Colors.blue),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "Adres",
-                      style: TextStyle(
-                          color: Colors.grey.shade700,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
+            Flexible(
+                child: Column(
+              children: <Widget>[
+                Text(
+                  delivery.address,
+                  style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
-            ),
-            Card(
-                margin: const EdgeInsets.only(top: 20),
-                shadowColor: Colors.blueAccent,
-                child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Flexible(
-                            child: Column(
-                          children: <Widget>[
-                            Text(
-                              delivery.address,
-                              style: TextStyle(
-                                  color: Colors.grey.shade700,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ))
-                      ],
-                    )))
+            ))
           ],
         ));
   }
+
+  deliveryStartTime(delivery, wdith) {}
 
   cancelDeliveryButton(delivery, width) {
     return SizedBox(
@@ -262,28 +333,18 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     address = delivery.address;
                     return ListView(
                       children: [
-                        deliveryNo(delivery, width),
-                        deliveryFirm(delivery, width),
-                        deliveryAddress(delivery, width),
-                        Center(
-                          child: Padding(
-                              padding: const EdgeInsets.all(0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    children: <Widget>[
-                                      cancelDeliveryButton(delivery, width),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: <Widget>[
-                                      completeDeliveryButton(delivery, width)
-                                    ],
-                                  ),
-                                ],
-                              )),
+                        card(delivery, width),
+                        Card(
+                          margin: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              deliveryNo(delivery, width),
+                              drawBorder(delivery, width),
+                              const SizedBox(height: 10),
+                              deliveryFirm(delivery, width),
+                              deliveryAddress(delivery, width),
+                            ],
+                          ),
                         ),
                       ],
                     );

@@ -54,6 +54,29 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
     );
   }
 
+  Row getFirm(delivery) {
+    return Row(
+      children: [
+        Column(
+          children: <Widget>[
+            Icon(Icons.person, size: 16, color: Colors.grey.shade700),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Text(
+              delivery.firm_name,
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   Row getAddress(delivery) {
     return Row(
       children: [
@@ -268,6 +291,8 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                                           child: Column(
                                             children: <Widget>[
                                               getDriverName(delivery),
+                                              const SizedBox(height: 5),
+                                              getFirm(delivery),
                                               const SizedBox(height: 5),
                                               getAddress(delivery)
                                             ],
