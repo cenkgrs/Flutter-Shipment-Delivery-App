@@ -52,15 +52,47 @@ class _DriverLocationsState extends State<DriverLocations> {
     return checkDriverStatus(location.driverId);
   }
 
-  getStatusIcon(location) async{
+  getStatusIcon(location) async {
     var status = await getStatus(location);
 
     if (status == 'active') {
       return const Icon(Icons.delivery_dining, size: 57, color: Colors.blue);
     } else {
-      return const Icon(Icons.stop_circle_outlined, size: 57, color: Colors.blue);
+      return const Icon(Icons.stop_circle_outlined,
+          size: 57, color: Colors.blue);
     }
+  }
 
+  getCurrentLocation(Locations location) {
+    return Text(
+      location.address,
+      style: const TextStyle(
+          fontWeight: FontWeight.normal, fontSize: 18, color: Colors.blueGrey),
+    );
+  }
+
+  getLastLocationTime(Locations location) {
+    return Column(
+      children: [
+        tire(),
+        const SizedBox(width: 10),
+        Text(
+          '${dateFormat!.format(location.time)} ${timeFormat!.format(location.time)}',
+          style: const TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 18,
+              color: Colors.blueGrey),
+        )
+      ],
+    );
+  }
+
+  tire() {
+    return const Text("-",
+        style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: 18,
+            color: Colors.blueGrey));
   }
 
   @override
@@ -129,6 +161,8 @@ class _DriverLocationsState extends State<DriverLocations> {
                             getDriverName(location),
                             const SizedBox(height: 50),
                             getStatusIcon(location),
+                            getCurrentLocation(location),
+                            getLastLocationTime(location),
                           ],
                         )));
               });
