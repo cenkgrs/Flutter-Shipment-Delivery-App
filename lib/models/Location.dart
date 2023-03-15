@@ -63,7 +63,6 @@ launchMap(String address) {
   MapsLauncher.launchQuery(address);
 }
 
-
 Future<List<Locations>> getDriverLocations() async {
   const storage = FlutterSecureStorage();
 
