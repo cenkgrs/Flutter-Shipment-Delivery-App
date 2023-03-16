@@ -24,7 +24,7 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
         padding: const EdgeInsets.all(20),
         child: ListView(
           children: <Widget>[
-            const Text("Lütfen teslim edilen kişiyi giriniz",
+            const Text("Lütfen teslim edilen kişinin ismini giriniz",
                 style: TextStyle(
                     fontWeight: FontWeight.bold, color: Colors.blueAccent)),
             Container(
