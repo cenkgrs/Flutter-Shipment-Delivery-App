@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
@@ -60,6 +62,18 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           deliveryFirm(delivery, delivery.firm_name),
           deliveryAddress(delivery, width),
           deliveryStartTime(delivery, width),
+          FutureBuilder<String>(
+              future:
+                  calculateRemainingKm(delivery.latitude, delivery.longitude),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return Container(child: CircularProgressIndicator());
+                }
+
+                var distance = snapshot.data ?? "0.0";
+
+                return remainingKm(distance.toString());
+              }),
           Center(
               child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -228,23 +242,35 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     );
   }
 
-  remainingKm(delivery, width) {
+  remainingKm(distance) {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Row(
           children: [
-            Flexible(
-                child: Column(
+            tire(),
+            const SizedBox(width: 5),
+            Column(
               children: <Widget>[
                 Text(
-                  calculateRemainingKm(delivery.latitude, delivery.longitude).toString(),
+                  "Kalan Mesafe: ",
                   style: TextStyle(
                       color: Colors.grey.shade700,
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold),
                 ),
               ],
-            ))
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  distance,
+                  style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ],
         ));
   }
@@ -334,19 +360,6 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                     return ListView(
                       children: [
                         card(delivery, width),
-                        Card(
-                          margin: const EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              deliveryNo(delivery, width),
-                              drawBorder(delivery, width),
-                              const SizedBox(height: 10),
-                              deliveryFirm(delivery, width),
-                              deliveryAddress(delivery, width),
-                              remainingKm(delivery,width)
-                            ],
-                          ),
-                        ),
                       ],
                     );
                   }),

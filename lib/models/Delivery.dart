@@ -16,8 +16,8 @@ class Delivery {
   final DateTime? tt_complete;
   final String delivered_person;
   final int distance;
-  final double latitude;
-  final double longitude;
+  final double? latitude;
+  final double? longitude;
   final int status;
 
   const Delivery({
@@ -126,8 +126,8 @@ Future<List<Delivery>> fetchDeliveries() async {
               DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
           delivered_person: delivery["delivered_person"] ?? 'none',
           distance: 0,
-          latitude: delivery["latitude"],
-          longitude: delivery["longitude"],
+          latitude: double.tryParse(delivery['latitude']),
+          longitude: double.tryParse(delivery['longitude']),
           status: delivery['status']));
     }
 
@@ -250,7 +250,7 @@ createDelivery(deliveryNo, firm, address, driverId) async {
       'Authorization': 'Bearer $token'
     }, body: {
       'delivery_no': deliveryNo,
-      'firm': firm,
+      'firm_name': firm,
       'address': address,
       'driver_id': driverId.toString()
     });
@@ -359,8 +359,8 @@ Future<Delivery> getActiveDelivery() async {
             DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
         delivered_person: delivery["delivered_person"] ?? 'none',
         distance: 0,
-        latitude: delivery['latitude'],
-        longitude: delivery['longitude'],
+        latitude: double.tryParse(delivery['latitude']),
+        longitude: double.tryParse(delivery['longitude']),
         status: delivery['status']);
   } else {
     throw Exception('Failed to load Delivery');

@@ -2,6 +2,7 @@ import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/selectBox.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CreateDeliveryScreen extends StatefulWidget {
   const CreateDeliveryScreen({Key? key}) : super(key: key);
@@ -14,6 +15,8 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
   TextEditingController deliveryNoController = TextEditingController();
   TextEditingController firmController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+
+  bool _isLoading = false;
 
   int selectedDriver = 1;
 
@@ -61,7 +64,7 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                         ),
                       ),
                     ),
-                     Container(
+                    Container(
                       padding: const EdgeInsets.all(10),
                       child: TextFormField(
                         controller: firmController,
@@ -93,6 +96,8 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
+                        showLoading();
+
                         var result = await createDelivery(
                             deliveryNoController.text.toString(),
                             firmController.text.toString(),
@@ -111,6 +116,8 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                             backgroundColor: Colors.blue,
                           ));
                         }
+
+                        hideLoading();
                       },
                       child: Container(
                         height: 50,
@@ -127,8 +134,33 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                     ),
                   ],
                 ),
-              )
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: Visibility(
+                          visible: _isLoading,
+                          child: Center(
+                            // scaffold of the app
+                            child: LoadingAnimationWidget.hexagonDots(
+                              color: Colors.blue,
+                              size: 50,
+                            ),
+                          )))),
             ]),
             bottomNavigationBar: BottomNavbar(userType: 'admin', index: 0)));
+  }
+
+  void showLoading() {
+    setState(() => _isLoading = true);
+  }
+
+  void hideLoading() {
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 }

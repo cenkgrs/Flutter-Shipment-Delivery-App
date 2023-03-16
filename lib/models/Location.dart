@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -99,20 +100,29 @@ Future<List<Locations>> getDriverLocations() async {
   }
 }
 
-calculateRemainingKm(lat2, lon2) async {
+Future<String> calculateRemainingKm(lat2, lon2) async {
   Location location = Location();
   LocationData pos = await location.getLocation();
 
   var lat1 = pos.latitude;
   var lon1 = pos.longitude;
 
-  var test = Geolocator.distanceBetween(lat1!, lon1!, lat2, lon2);
+  var distance = Geolocator.distanceBetween(lat1!, lon1!, lat2, lon2);
 
+  if (distance > 1000) {
+    return '${(distance / 1000).toStringAsFixed(2)} KM';
+  } else {
+    return '${(distance / 1000).toStringAsFixed(2)} Meters';
+  }
+
+  /*
   var p = 0.017453292519943295;
   var c = cos;
   var a = 0.5 -
       c((lat2 - lat1) * p) / 2 +
-      c(lat1! * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+      c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+
+  print(12742 * asin(sqrt(a)));
   return 12742 * asin(sqrt(a));
-  
+  */
 }
