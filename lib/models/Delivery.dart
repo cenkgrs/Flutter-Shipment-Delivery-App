@@ -112,9 +112,6 @@ Future<List<Delivery>> fetchDeliveries() async {
       var latitude;
       var longitude;
 
-      latitude = 0.0;
-      longitude = 0.0;
-
       result.add(Delivery(
           delivery_no: delivery["delivery_no"],
           driver_id: delivery["driver_id"],
@@ -129,8 +126,8 @@ Future<List<Delivery>> fetchDeliveries() async {
               DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
           delivered_person: delivery["delivered_person"] ?? 'none',
           distance: 0,
-          latitude: latitude,
-          longitude: longitude,
+          latitude: delivery["latitude"],
+          longitude: delivery["longitude"],
           status: delivery['status']));
     }
 
@@ -362,8 +359,8 @@ Future<Delivery> getActiveDelivery() async {
             DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
         delivered_person: delivery["delivered_person"] ?? 'none',
         distance: 0,
-        latitude: latitude,
-        longitude: longitude,
+        latitude: delivery['latitude'],
+        longitude: delivery['longitude'],
         status: delivery['status']);
   } else {
     throw Exception('Failed to load Delivery');

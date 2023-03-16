@@ -249,6 +249,27 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     );
   }
 
+  remainingKm(delivery, width) {
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            Flexible(
+                child: Column(
+              children: <Widget>[
+                Text(
+                  calculateRemainingKm(delivery.latitude, delivery.longitude).toString(),
+                  style: TextStyle(
+                      color: Colors.grey.shade700,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ))
+          ],
+        ));
+  }
+
   void _showDeliveredPersonSheet(BuildContext context, deliveryNo) async {
     showModalBottomSheet(
         context: context,
@@ -343,6 +364,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                               const SizedBox(height: 10),
                               deliveryFirm(delivery, width),
                               deliveryAddress(delivery, width),
+                              remainingKm(delivery,width)
                             ],
                           ),
                         ),

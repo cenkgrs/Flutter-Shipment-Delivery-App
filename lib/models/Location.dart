@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location/location.dart';
 import 'package:crud_app/constants.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 class Locations {
   final int driverId;
@@ -63,7 +65,6 @@ launchMap(String address) {
   MapsLauncher.launchQuery(address);
 }
 
-
 Future<List<Locations>> getDriverLocations() async {
   const storage = FlutterSecureStorage();
 
@@ -96,4 +97,22 @@ Future<List<Locations>> getDriverLocations() async {
   } else {
     throw Exception('Failed to load driver locations');
   }
+}
+
+calculateRemainingKm(lat2, lon2) async {
+  Location location = Location();
+  LocationData pos = await location.getLocation();
+
+  var lat1 = pos.latitude;
+  var lon1 = pos.longitude;
+
+  var test = Geolocator.distanceBetween(lat1!, lon1!, lat2, lon2);
+
+  var p = 0.017453292519943295;
+  var c = cos;
+  var a = 0.5 -
+      c((lat2 - lat1) * p) / 2 +
+      c(lat1! * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+  return 12742 * asin(sqrt(a));
+  
 }
