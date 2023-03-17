@@ -35,6 +35,16 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
             child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
           ));
     } else {
+      if (delivery.st_delivery == 1) {
+        return Container(
+            padding: const EdgeInsets.all(12),
+            width: 200,
+            child: const Align(
+              alignment: Alignment(-1, -1),
+              child: Icon(Icons.access_time, size: 57, color: Colors.blue),
+            ));
+      }
+
       return Container(
           padding: const EdgeInsets.all(12),
           width: 200,
@@ -57,6 +67,29 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
           children: <Widget>[
             Text(
               delivery.driver_name,
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
+  Row getFirmName(delivery) {
+    return Row(
+      children: [
+        Column(
+          children: <Widget>[
+            Icon(Icons.person, size: 16, color: Colors.grey.shade700),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Text(
+              delivery.firm_name,
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 10,
@@ -256,6 +289,9 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                                           child: Column(
                                             children: <Widget>[
                                               getDriverName(delivery),
+                                              const SizedBox(height: 3),
+                                              getFirmName(delivery),
+                                              const SizedBox(height: 3),
                                               getAddress(delivery)
                                             ],
                                           ))
@@ -274,11 +310,11 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
-                                          flex: 6,
+                                          flex: 5,
                                           child: getDeliveryNo(delivery, width),
                                         ),
                                         Expanded(
-                                            flex: 4,
+                                            flex: 5,
                                             child: getDeliveryAction(delivery))
                                       ],
                                     ),

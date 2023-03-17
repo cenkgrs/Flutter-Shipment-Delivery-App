@@ -112,7 +112,7 @@ Future<String> calculateRemainingKm(lat2, lon2) async {
   if (distance > 1000) {
     return '${(distance / 1000).toStringAsFixed(2)} KM';
   } else {
-    return '${(distance / 1000).toStringAsFixed(2)} Meters';
+    return '${(distance / 1000).toStringAsFixed(2)} Metre';
   }
 
   /*
