@@ -1,4 +1,4 @@
-import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
+import 'package:crud_app/widgets/admin/driver_locations_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 

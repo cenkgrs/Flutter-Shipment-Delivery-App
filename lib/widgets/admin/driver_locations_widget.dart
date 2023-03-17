@@ -48,19 +48,14 @@ class _DriverLocationsState extends State<DriverLocations> {
     );
   }
 
-  getStatus(location) {
-    return checkDriverStatus(location.driverId);
-  }
-
   getStatusIcon(location) async {
-    var status = await getStatus(location);
+    var status = await checkDriverStatus(location.driverId);
 
     if (status == 'active') {
       return const Icon(Icons.delivery_dining, size: 57, color: Colors.blue);
-    } else {
-      return const Icon(Icons.stop_circle_outlined,
-          size: 57, color: Colors.blue);
     }
+
+    return const Icon(Icons.stop_circle_outlined, size: 57, color: Colors.blue);
   }
 
   getCurrentLocation(Locations location) {
