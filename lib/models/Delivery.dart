@@ -369,8 +369,8 @@ Future<Delivery> getActiveDelivery() async {
   }
 }
 
-completeDelivery(String deliveryNo, String deliveredPerson) async {
-  final storage = const FlutterSecureStorage();
+completeDelivery(String deliveryNo, String deliveredPerson, String nationalId) async { 
+  const storage = FlutterSecureStorage();
 
   // to get token from local storage
   var token = await storage.read(key: 'token');
@@ -382,7 +382,8 @@ completeDelivery(String deliveryNo, String deliveredPerson) async {
       'Authorization': 'Bearer $token'
     }, body: {
       'delivery_no': deliveryNo,
-      'delivered_person': deliveredPerson
+      'delivered_person': deliveredPerson,
+      'national_id': nationalId
     });
 
     if (response.statusCode == 200) {

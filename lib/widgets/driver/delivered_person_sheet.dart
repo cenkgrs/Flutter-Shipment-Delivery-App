@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 class DeliveredPersonSheet extends StatefulWidget {
   final String deliveryNo;
-  const DeliveredPersonSheet({Key? key, required this.deliveryNo})
+  DeliveredPersonSheet({Key? key, required this.deliveryNo})
       : super(key: key);
 
   @override
@@ -16,6 +16,8 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
   String? deliveredPerson;
   TextEditingController deliveryPersonController = TextEditingController();
   TextEditingController nationalIdController = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +59,37 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
           ],
         ),
       ),
+      Visibility(
+        visible: _isLoading,
+        child: const CircularProgressIndicator(),
+      ),
       Align(
         alignment: Alignment.bottomCenter,
         child: Padding(
             padding: const EdgeInsets.all(10),
             child: FloatingActionButton.extended(
                 heroTag: UniqueKey(),
-                onPressed: () {
-                  completeDelivery(widget.deliveryNo,
-                      deliveryPersonController.text.toString());
+                onPressed: () async{
+                  showLoading();
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomeScreen(userType: 'driver')),
-                  );
+                  var person = deliveryPersonController.text.toString();
+                  var nationalId = nationalIdController.toString();
+
+                  var result = await completeDelivery(widget.deliveryNo, person, nationalId);
+
+                  if (result == true) {
+                    hideLoading();
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen(userType: 'driver')),
+                    );
+                  } else {
+                    hideLoading();
+
+                    // Give error message here
+                  }
                 },
                 backgroundColor: Colors.blueAccent,
                 splashColor: Colors.blue,
@@ -79,5 +97,17 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
                 label: const Text('Tamamla'))),
       )
     ]);
+  }
+
+    void showLoading() {
+    setState(() => _isLoading = true);
+  }
+
+  void hideLoading() {
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 }

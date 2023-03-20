@@ -40,7 +40,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   static const String _title = 'Teslimatım';
 
   tire() {
-    return const Column(
+    return Column(
       children: <Widget>[
         Text(
           '-',
@@ -100,7 +100,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   drawBorder(delivery, width) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(
             width: 2,
@@ -115,7 +115,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     return Row(
       children: [
         Padding(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Text(
             delivery.delivery_no,
             style: const TextStyle(
