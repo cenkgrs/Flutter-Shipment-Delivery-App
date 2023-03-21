@@ -86,9 +86,15 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
                           builder: (context) => HomeScreen(userType: 'driver')),
                     );
                   } else {
-                    hideLoading();
 
-                    // Give error message here
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: const Text(
+                        'Teslimat kaydı eklenemedi. Lütfen girdiğiniz verileri kontrol ediniz',
+                      ),
+                      backgroundColor: Colors.blue,
+                    ));
+
+                    hideLoading();
                   }
                 },
                 backgroundColor: Colors.blueAccent,

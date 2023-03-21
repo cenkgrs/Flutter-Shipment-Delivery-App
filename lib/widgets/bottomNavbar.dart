@@ -57,12 +57,10 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
 
           case 3:
-              /*
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SettingsScreen()),
             );
-            */
             break;
           // Log Out
           case 4:
