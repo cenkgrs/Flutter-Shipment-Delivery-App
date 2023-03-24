@@ -3,6 +3,8 @@ import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:crud_app/screens/admin/create_driver_screen.dart';
 import 'package:crud_app/models/Driver.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:crud_app/screens/admin/drivers_screen.dart';
+import 'package:crud_app/screens/admin/driver_details_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -114,16 +116,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               itemBuilder: (context, index) {
                 Driver driver = drivers[index];
 
-                return Card(
-                    margin: const EdgeInsets.all(10),
-                    child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: <Widget>[
-                            getDriverName(driver),
-                            const SizedBox(height: 50),
-                          ],
-                        )));
+                return GestureDetector(
+                    onTap:() => {
+                      Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const DriverDetailsScreen()),
+          );
+                    },
+                    child: Card(
+                        margin: const EdgeInsets.all(10),
+                        child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              children: <Widget>[
+                                getDriverName(driver),
+                                const SizedBox(height: 50),
+                              ],
+                            ))));
               });
         });
   }
@@ -135,6 +145,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return MaterialApp(
         title: _title,
         home: Scaffold(
+          floatingActionButton: FloatingActionButton(
+                  heroTag: UniqueKey(),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const DriversScreen()),
+                    );
+                  },
+                  child: const Icon(Icons.people), //icon inside button
+                ),
+                floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             appBar: AppBar(
               leading: InkWell(
                 onTap: () {
