@@ -63,3 +63,36 @@ checkDriverStatus(driverId) async {
     throw Exception('Failed to check Driver status');
   }
 }
+
+createDriver(name, email, password) async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  try {
+    final response = await http
+        .post(Uri.parse('${Constant.baseUrl}/create-driver'), headers: {
+      'Accept': 'application/json;',
+      'Authorization': 'Bearer $token'
+    }, body: {
+      'driver_name': name,
+      'email': email,
+      'password': password,
+    });
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      if (data['status'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
+}
