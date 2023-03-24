@@ -6,26 +6,30 @@ import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:crud_app/screens/admin/drivers_screen.dart';
+import 'package:crud_app/models/Driver.dart';
 
 // Models
 import 'package:crud_app/models/Delivery.dart';
 
 class DriverDetailsScreen extends StatefulWidget {
-  const DriverDetailsScreen({Key? key}) : super(key: key);
+
+  final int id;
+
+  const DriverDetailsScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   State<DriverDetailsScreen> createState() => _DriverDetailsScreenState();
 }
 
 class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
-  late Future<Delivery> futureActiveDelivery;
+  late Future<Delivery> futureDriver;
   DateFormat? dateFormat;
   DateFormat? timeFormat;
 
   @override
   void initState() {
     super.initState();
-    futureActiveDelivery = getActiveDelivery();
+    futureDriver = getDriver(widget.id);
     initializeDateFormatting();
     dateFormat = DateFormat.yMMMMEEEEd('tr');
     timeFormat = DateFormat.Hms('tr');
@@ -35,7 +39,7 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
 
   String address = "";
 
-  static const String _title = 'Teslimatım';
+  static const String _title = 'Şöför Bilgileri';
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +67,7 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
             ),
             body: Stack(),
             bottomNavigationBar:
-                const BottomNavbar(userType: 'driver', index: 2)));
+                const BottomNavbar(userType: 'admin', index: 3)));
   }
 
   void showLoading() {

@@ -96,3 +96,30 @@ createDriver(name, email, password) async {
     return false;
   }
 }
+
+getDriver(id) async{
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('${Constant.baseUrl}/get-driver'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+
+    var driver = data['driver'];
+
+      return Driver(
+        id: driver["id"],
+        name: driver["name"],
+      );
+
+  } else {
+    throw Exception('Failed to load Driver');
+  }
+}
