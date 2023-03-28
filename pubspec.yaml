@@ -46,6 +46,7 @@ dependencies:
   provider: 
   location: ^4.4.0
   maps_launcher: ^2.2.0
+  flutter_slidable:
 
 dev_dependencies:
   flutter_test:
