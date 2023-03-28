@@ -1,8 +1,8 @@
 import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
-import 'package:crud_app/screens/home_page_screen.dart';
-import 'package:crud_app/main.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
 
 class SearchScreen extends StatefulWidget {
   final String userType;
@@ -17,7 +17,7 @@ class _SearchScreenState extends State<SearchScreen> {
   late Future<List<Delivery>> futureAllDeliveries;
   List<Delivery> filterDeliveries = [];
 
-  TextEditingController queryController = TextEditingController();
+  bool _isLoading = false;
 
   void initState() async{
     super.initState();
@@ -32,6 +32,20 @@ class _SearchScreenState extends State<SearchScreen> {
     // Refresh the UI
     setState(() {
       filterDeliveries = filterDeliveries;
+    });
+
+    return true;
+  }
+
+  void showLoading() {
+    setState(() => _isLoading = true);
+  }
+
+  void hideLoading() {
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 
@@ -51,11 +65,13 @@ class _SearchScreenState extends State<SearchScreen> {
                     Flexible(
                       flex: 10,
                       child: TextFormField(
-                        onChanged: (value) => {
-                          searchDeliveries(value),
+                        onChanged: (value) async => {
+                          showLoading();
+                          await searchDeliveries(value),
+
+                          hideLoading();
                         },
                         cursorColor: Colors.grey,
-                        controller: queryController,
                         decoration: InputDecoration(
                             fillColor: Colors.white,
                             filled: true,
@@ -102,6 +118,19 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ],
             ),
+            Padding(
+            padding: const EdgeInsets.all(10),
+            child: Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: Visibility(
+                    visible: _isLoading,
+                    child: Center(
+                      // scaffold of the app
+                      child: LoadingAnimationWidget.hexagonDots(
+                        color: Colors.blue,
+                        size: 50,
+                      ),
+                    )))),
               ],
             )
             

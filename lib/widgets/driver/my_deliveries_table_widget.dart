@@ -1,11 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:crud_app/models/Delivery.dart';
 import 'package:crud_app/models/Location.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MyDeliveriesTable extends StatefulWidget {
