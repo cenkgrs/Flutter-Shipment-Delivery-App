@@ -3,6 +3,7 @@ import 'package:crud_app/screens/home_page_screen.dart';
 import 'package:crud_app/screens/search_screen.dart';
 import 'package:crud_app/screens/driver/delivery_screen.dart';
 import 'package:crud_app/screens/admin/drivers_screen.dart';
+import 'package:crud_app/screens/admin/settings_screen.dart';
 import 'package:crud_app/screens/driver/completed_deliveries_screen.dart';
 import 'package:crud_app/main.dart';
 
@@ -45,16 +46,12 @@ class _BottomNavbarState extends State<BottomNavbar> {
             );
             break;
 
-          
           case 2:
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      const DriversScreen()),
+              MaterialPageRoute(builder: (context) => const DriversScreen()),
             );
             break;
-
 
           case 3:
             Navigator.push(
@@ -100,12 +97,12 @@ class _BottomNavbarState extends State<BottomNavbar> {
             break;
 
           case 3:
-            
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const CompletedDeliveriesScene()),
+              MaterialPageRoute(
+                  builder: (context) => const CompletedDeliveriesScene()),
             );
-            
+
             break;
           // Log Out
           case 4:
@@ -122,47 +119,47 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
     adminBottomNavbar() {
       return BottomAppBar(
-        notchMargin: 5,
-        color: Colors.blue,
-        shape: const CircularNotchedRectangle(),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              padding: EdgeInsets.only(left: 20),
-              icon: const Icon(Icons.home, color: Colors.white),
-              onPressed: () {
-                navigationAction(0);
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Colors.white,
+          notchMargin: 5,
+          color: Colors.blue,
+          shape: const CircularNotchedRectangle(),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                padding: EdgeInsets.only(left: 20),
+                icon: const Icon(Icons.home, color: Colors.white),
+                onPressed: () {
+                  navigationAction(0);
+                },
               ),
-              onPressed: () {
-                navigationAction(1);
-              },
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
+              IconButton(
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  navigationAction(1);
+                },
               ),
-              onPressed: () {
-                navigationAction(3);
-              },
-            ),
-            IconButton(
-              padding: EdgeInsets.only(right: 20),
-              icon: const Icon(Icons.logout, color: Colors.white),
-              onPressed: () {
-                navigationAction(4);
-              },
-            )
-          ],
-        ));
+              IconButton(
+                icon: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  navigationAction(3);
+                },
+              ),
+              IconButton(
+                padding: EdgeInsets.only(right: 20),
+                icon: const Icon(Icons.logout, color: Colors.white),
+                onPressed: () {
+                  navigationAction(4);
+                },
+              )
+            ],
+          ));
     }
 
     driverBottomNavbar() {
@@ -216,6 +213,5 @@ class _BottomNavbarState extends State<BottomNavbar> {
     } else {
       return driverBottomNavbar();
     }
-
   }
 }

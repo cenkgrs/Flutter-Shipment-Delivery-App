@@ -1,8 +1,8 @@
 import 'package:crud_app/models/Driver.dart';
 import 'package:flutter/material.dart';
-import 'package:crud_app/widgets/selectBox.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:crud_app/screens/admin/settings_screen.dart';
 
 class CreateDriverScreen extends StatefulWidget {
   const CreateDriverScreen({Key? key}) : super(key: key);
@@ -94,14 +94,17 @@ class _CreateDriverScreenState extends State<CreateDriverScreen> {
                             passwordController.text.toString());
 
                         if (result) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
                             content: Text('Yeni Şöför Eklendi'),
                             backgroundColor: Colors.blue,
                           ));
 
-                          hideLoading();
-
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SettingsScreen()),
+                          );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(
@@ -111,7 +114,6 @@ class _CreateDriverScreenState extends State<CreateDriverScreen> {
 
                           hideLoading();
                         }
-
                       },
                       child: Container(
                         height: 50,
@@ -143,7 +145,8 @@ class _CreateDriverScreenState extends State<CreateDriverScreen> {
                             ),
                           )))),
             ]),
-            bottomNavigationBar: const BottomNavbar(userType: 'admin', index: 3)));
+            bottomNavigationBar:
+                const BottomNavbar(userType: 'admin', index: 3)));
   }
 
   void showLoading() {

@@ -5,6 +5,7 @@ import 'package:crud_app/models/Driver.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/screens/admin/drivers_screen.dart';
 import 'package:crud_app/screens/admin/driver_details_screen.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -20,11 +21,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
+    futureDrivers = fetchDrivers();
   }
 
   createDriverCard(width) {
     return SizedBox(
-      width: width * 0.8,
+      width: width * 1,
+      height: 50,
       child: FittedBox(
           child: FloatingActionButton.extended(
               heroTag: UniqueKey(),
@@ -45,9 +48,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Container getDriverName(driver) {
     return Container(
       decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(12), topLeft: Radius.circular(12))),
+        color: Colors.blue,
+      ),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -108,6 +110,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             // scaffold of the app
                             child: Text('Sürücü Bulunamadı')))));
           }
+
+          void _confirmationBox(BuildContext context, list, i) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Emin misiniz ?'),
+                content: const Text(
+                    'İlgili sürücü ve sürücüde aktif olan teslimatlar silinecek'),
+                actions: [
+                  SizedBox(
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () {
+                        list.removeAt(i);
+                      },
+                      child: const Text(
+                        'Sil',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text(
+                        'İptal',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
           return ListView.builder(
               itemCount: drivers.length,
               shrinkWrap: true,
@@ -116,24 +154,51 @@ class _SettingsScreenState extends State<SettingsScreen> {
               itemBuilder: (context, index) {
                 Driver driver = drivers[index];
 
+                /*
                 return GestureDetector(
-                    onTap:() => {
-                      Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DriverDetailsScreen(id: driver.id)),
-          );
-                    },
+                    onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    DriverDetailsScreen(id: driver.id)),
+                          )
+                        },
                     child: Card(
                         margin: const EdgeInsets.all(10),
-                        child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Column(
-                              children: <Widget>[
-                                getDriverName(driver),
-                                const SizedBox(height: 50),
-                              ],
-                            ))));
+                        child: Column(
+                          children: <Widget>[
+                            getDriverName(driver),
+                            const SizedBox(height: 50),
+                          ],
+                        )));
+                */
+
+                return Slidable(
+                  key: UniqueKey(),
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    dismissible: DismissiblePane(onDismissed: () {
+                      _confirmationBox(context, drivers, index);
+                    }),
+                    children: [
+                      SlidableAction(
+                        onPressed: (context) =>
+                            _confirmationBox(context, drivers, index),
+                        backgroundColor: const Color(0xFFFE4A49),
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: 'Sil',
+                      ),
+                    ],
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      '${index + 1} - ${drivers[index].name}',
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                );
               });
         });
   }
@@ -145,18 +210,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return MaterialApp(
         title: _title,
         home: Scaffold(
-          floatingActionButton: FloatingActionButton(
-                  heroTag: UniqueKey(),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DriversScreen()),
-                    );
-                  },
-                  child: const Icon(Icons.people), //icon inside button
-                ),
-                floatingActionButtonLocation:
+            floatingActionButton: FloatingActionButton(
+              heroTag: UniqueKey(),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const DriversScreen()),
+                );
+              },
+              child: const Icon(Icons.people), //icon inside button
+            ),
+            floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             appBar: AppBar(
               leading: InkWell(
@@ -172,6 +237,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               centerTitle: true,
             ),
             body: ListView(children: [
+              const SizedBox(height: 10),
               createDriverCard(width),
               driversList(width),
             ]),
