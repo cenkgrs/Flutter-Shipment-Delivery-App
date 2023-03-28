@@ -19,11 +19,11 @@ Future<List<Driver>> fetchDrivers() async {
   // to get token from local storage
   var token = await storage.read(key: 'token');
 
-  final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/get-drivers'), headers: {
-    'Accept': 'application/json;',
-    'Authorization': 'Bearer $token'
-  });
+  final response = await http.get(Uri.parse('${Constant.baseUrl}/get-drivers'),
+      headers: {
+        'Accept': 'application/json;',
+        'Authorization': 'Bearer $token'
+      });
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
@@ -49,17 +49,20 @@ checkDriverStatus(driverId) async {
   // to get token from local storage
   var token = await storage.read(key: 'token');
 
-  final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/check-driver-status/'+ driverId), headers: {
-    'Accept': 'application/json;',
-    'Authorization': 'Bearer $token'
-  });
+  final response = await http.get(
+      Uri.parse(
+          '${Constant.baseUrl}/check-driver-status/' + driverId.toString()),
+      headers: {
+        'Accept': 'application/json;',
+        'Authorization': 'Bearer $token'
+      });
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
 
     return data['status'];
   } else {
+    return false;
     throw Exception('Failed to check Driver status');
   }
 }
@@ -97,28 +100,27 @@ createDriver(name, email, password) async {
   }
 }
 
-getDriver(id) async{
+getDriver(id) async {
   const storage = FlutterSecureStorage();
 
   // to get token from local storage
   var token = await storage.read(key: 'token');
 
-  final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/get-driver'), headers: {
-    'Accept': 'application/json;',
-    'Authorization': 'Bearer $token'
-  });
+  final response = await http.get(Uri.parse('${Constant.baseUrl}/get-driver'),
+      headers: {
+        'Accept': 'application/json;',
+        'Authorization': 'Bearer $token'
+      });
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
 
     var driver = data['driver'];
 
-      return Driver(
-        id: driver["id"],
-        name: driver["name"],
-      );
-
+    return Driver(
+      id: driver["id"],
+      name: driver["name"],
+    );
   } else {
     throw Exception('Failed to load Driver');
   }

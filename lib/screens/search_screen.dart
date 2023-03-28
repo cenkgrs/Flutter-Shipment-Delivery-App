@@ -19,12 +19,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   bool _isLoading = false;
 
-  void initState() async{
+  void initState() {
     super.initState();
   }
 
   searchDeliveries(String deliveryNo) async {
-
     if (deliveryNo.isNotEmpty) {
       filterDeliveries = await searchDelivery(deliveryNo);
     }
@@ -51,83 +50,81 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
         title: 'Arama Yap',
         home: Scaffold(
-          appBar: AppBar(title: const Text('Arama Yap')),
-          body: Container(
-            margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
-            child: Column(
-              children: [
-                Row(
+            appBar: AppBar(title: const Text('Arama Yap')),
+            body: Container(
+                margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+                child: Column(
                   children: [
-                    Flexible(
-                      flex: 10,
-                      child: TextFormField(
-                        onChanged: (value) async => {
-                          showLoading();
-                          await searchDeliveries(value),
-
-                          hideLoading();
-                        },
-                        cursorColor: Colors.grey,
-                        decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: 'Teslimat Ara',
-                            hintStyle: const TextStyle(
-                                color: Colors.grey, fontSize: 18),
-                            prefixIcon: Container(
-                              padding: const EdgeInsets.all(15),
-                              width: 18,
-                              child: const Icon(Icons.search),
-                            )),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-              children: [
-                Expanded(
-                  child: filterDeliveries.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: filterDeliveries.length,
-                          itemBuilder: (context, index) => Card(
-                            key: ValueKey(filterDeliveries[index].delivery_no),
-                            color: Colors.amberAccent,
-                            elevation: 4,
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: DeliveryCard(delivery: filterDeliveries[index])
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 10,
+                          child: TextFormField(
+                            onChanged: (value) async => {
+                              showLoading(),
+                              await searchDeliveries(value),
+                              hideLoading()
+                            },
+                            cursorColor: Colors.grey,
+                            decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                hintText: 'Teslimat Ara',
+                                hintStyle: const TextStyle(
+                                    color: Colors.grey, fontSize: 18),
+                                prefixIcon: Container(
+                                  padding: const EdgeInsets.all(15),
+                                  width: 18,
+                                  child: const Icon(Icons.search),
+                                )),
                           ),
-                        )
-                      : const Text(
-                          'Sonuç bulunamadı',
-                          style: TextStyle(fontSize: 24),
                         ),
-                ),
-              ],
-            ),
-            Padding(
-            padding: const EdgeInsets.all(10),
-            child: Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Visibility(
-                    visible: _isLoading,
-                    child: Center(
-                      // scaffold of the app
-                      child: LoadingAnimationWidget.hexagonDots(
-                        color: Colors.blue,
-                        size: 50,
-                      ),
-                    )))),
-              ],
-            )
-            
-          ),
-          bottomNavigationBar: BottomNavbar(userType: widget.userType, index: 1)
-        ));
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: filterDeliveries.isNotEmpty
+                              ? ListView.builder(
+                                  itemCount: filterDeliveries.length,
+                                  itemBuilder: (context, index) => Card(
+                                      key: ValueKey(
+                                          filterDeliveries[index].delivery_no),
+                                      color: Colors.amberAccent,
+                                      elevation: 4,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: DeliveryCard(
+                                          delivery: filterDeliveries[index])),
+                                )
+                              : const Text(
+                                  'Sonuç bulunamadı',
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: Visibility(
+                                visible: _isLoading,
+                                child: Center(
+                                  // scaffold of the app
+                                  child: LoadingAnimationWidget.hexagonDots(
+                                    color: Colors.blue,
+                                    size: 50,
+                                  ),
+                                )))),
+                  ],
+                )),
+            bottomNavigationBar:
+                BottomNavbar(userType: widget.userType, index: 1)));
   }
 }

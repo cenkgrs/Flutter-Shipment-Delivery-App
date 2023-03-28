@@ -28,19 +28,21 @@ class _DriverLocationsState extends State<DriverLocations> {
   Container getDriverName(location) {
     return Container(
       decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(12), topLeft: Radius.circular(12))),
+        color: Colors.blue,
+      ),
       child: Row(
         children: <Widget>[
           Expanded(
             flex: 6,
-            child: Text(
-              location.driverName,
-              style: const TextStyle(
+            child: Center(
+              child: Text(
+                location.driverName,
+                style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],
@@ -48,15 +50,7 @@ class _DriverLocationsState extends State<DriverLocations> {
     );
   }
 
-  getStatusIcon(location) async {
-    var status = await checkDriverStatus(location.driverId);
-
-    if (status == 'active') {
-      return const Icon(Icons.delivery_dining, size: 57, color: Colors.blue);
-    }
-
-    return const Icon(Icons.stop_circle_outlined, size: 57, color: Colors.blue);
-  }
+  getStatusIcon(location) async {}
 
   getCurrentLocation(Locations location) {
     return Text(
@@ -149,17 +143,33 @@ class _DriverLocationsState extends State<DriverLocations> {
 
                 return Card(
                     margin: const EdgeInsets.all(10),
-                    child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: <Widget>[
-                            getDriverName(location),
-                            const SizedBox(height: 50),
-                            getStatusIcon(location),
-                            getCurrentLocation(location),
-                            getLastLocationTime(location),
-                          ],
-                        )));
+                    child: Column(
+                      children: <Widget>[
+                        getDriverName(location),
+                        const SizedBox(height: 50),
+                        FutureBuilder<dynamic>(
+                            future: checkDriverStatus(location.driverId),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState !=
+                                  ConnectionState.done) {
+                                return Container(
+                                    child: CircularProgressIndicator());
+                              }
+
+                              var status = snapshot.data ?? false;
+
+                              if (status == 'active') {
+                                return const Icon(Icons.delivery_dining,
+                                    size: 57, color: Colors.blue);
+                              }
+
+                              return const Icon(Icons.stop_circle_outlined,
+                                  size: 57, color: Colors.blue);
+                            }),
+                        getCurrentLocation(location),
+                        getLastLocationTime(location),
+                      ],
+                    ));
               });
         });
   }

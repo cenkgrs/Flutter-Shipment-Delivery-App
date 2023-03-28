@@ -22,8 +22,7 @@ class Locations {
       required this.address,
       required this.latitude,
       required this.longitude,
-      required this.time,
-      ge});
+      required this.time});
 }
 
 Future setLocation() async {
@@ -85,13 +84,13 @@ Future<List<Locations>> getDriverLocations() async {
 
     for (var location in data['locations']) {
       result.add(Locations(
-        driverId: location["driver_id"],
-        driverName: location["driver_name"],
-        address: location["address"],
-        latitude: location["latitude"],
-        longitude: location["longitude"],
-        time: location["time"],
-      ));
+              driverId: location["driver_id"],
+              driverName: location["driver_name"],
+              address: location["address"],
+              latitude: location["latitude"],
+              longitude: location["longitude"],
+              time: DateTime.now()) //DateTime.tryParse(location["time"])
+          );
     }
 
     return result;

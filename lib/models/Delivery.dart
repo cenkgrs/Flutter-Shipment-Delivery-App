@@ -147,7 +147,7 @@ Future<List<Delivery>> fetchDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/get-deliveries'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-all-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -197,7 +197,7 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/get-deliveries'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-all-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });
@@ -420,7 +420,8 @@ Future<Delivery> getActiveDelivery() async {
   }
 }
 
-completeDelivery(String deliveryNo, String deliveredPerson, String nationalId) async { 
+completeDelivery(
+    String deliveryNo, String deliveredPerson, String nationalId) async {
   const storage = FlutterSecureStorage();
 
   // to get token from local storage

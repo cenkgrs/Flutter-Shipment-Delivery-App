@@ -25,6 +25,8 @@ class _DeliveryCardState extends State<DeliveryCard> {
   }
 
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Center(
         child: Padding(
             padding: const EdgeInsets.all(10),
@@ -51,16 +53,16 @@ class _DeliveryCardState extends State<DeliveryCard> {
                           flex: 2,
                           child: Column(
                             children: <Widget>[
-                              getDeliveryIcon(delivery),
+                              getDeliveryIcon(widget.delivery),
                             ],
                           )),
                       Expanded(
                           flex: 8,
                           child: Column(
                             children: <Widget>[
-                              getDriverName(delivery),
+                              getDriverName(widget.delivery),
                               const SizedBox(height: 5),
-                              getAddress(delivery)
+                              getAddress(widget.delivery)
                             ],
                           ))
                     ],
@@ -70,7 +72,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
                       Expanded(
                           flex: 10,
                           child: Column(children: <Widget>[
-                            getDeliveryStartTime(delivery),
+                            getDeliveryStartTime(widget.delivery),
                           ])),
                     ],
                   ),
@@ -79,7 +81,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
                       Expanded(
                           flex: 10,
                           child: Column(children: <Widget>[
-                            getDeliveryCompleteTime(delivery),
+                            getDeliveryCompleteTime(widget.delivery),
                           ])),
                     ],
                   ),
@@ -97,7 +99,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
                       children: <Widget>[
                         Expanded(
                           flex: 6,
-                          child: getDeliveryNo(delivery, width),
+                          child: getDeliveryNo(widget.delivery, width),
                         ),
                       ],
                     ),
