@@ -2,7 +2,7 @@ import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
+import 'package:crud_app/widgets/deliveryCard.dart';
 
 class SearchScreen extends StatefulWidget {
   final String userType;
@@ -100,15 +100,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: Colors.amberAccent,
                             elevation: 4,
                             margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: ListTile(
-                              leading: Text(
-                                filterDeliveries[index].delivery_no.toString(),
-                                style: const TextStyle(fontSize: 24),
-                              ),
-                              title: Text(filterDeliveries[index].driver_name),
-                              subtitle: Text(
-                                  '${filterDeliveries[index].address.toString()} gidecek'),
-                            ),
+                            child: DeliveryCard(delivery: filterDeliveries[index])
                           ),
                         )
                       : const Text(
