@@ -89,6 +89,57 @@ Future<Delivery> fetchDelivery() async {
   }
 }
 
+Future<List<Delivery>> fetchAllDeliveries() async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('${Constant.baseUrl}/get-all-deliveries'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    var data = jsonDecode(response.body);
+
+    List<Delivery> result = [];
+
+    for (var delivery in data['deliveries']) {
+      var latitude;
+      var longitude;
+
+      result.add(Delivery(
+          delivery_no: delivery["delivery_no"],
+          driver_id: delivery["driver_id"],
+          driver_name: delivery["driver_name"],
+          firm_name: delivery["firm_name"],
+          address: delivery["address"],
+          st_delivery: delivery["st_delivery"],
+          tt_delivery:
+              DateTime.now(), //delivery["tt_delivery"] ?? DateTime.now(),
+          st_complete: delivery["st_complete"],
+          tt_complete:
+              DateTime.now(), //delivery["tt_complete"] ?? DateTime.now(),
+          delivered_person: delivery["delivered_person"] ?? 'none',
+          distance: 0,
+          latitude: double.tryParse(delivery['latitude']),
+          longitude: double.tryParse(delivery['longitude']),
+          status: delivery['status']));
+    }
+
+    return result;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load Delivery');
+  }
+}
+
+// Gets deliveries according to driver
 Future<List<Delivery>> fetchDeliveries() async {
   const storage = FlutterSecureStorage();
 

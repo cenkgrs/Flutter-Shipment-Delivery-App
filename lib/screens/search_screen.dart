@@ -4,12 +4,36 @@ import 'package:crud_app/screens/home_page_screen.dart';
 import 'package:crud_app/main.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   final String userType;
+
+  const SearchScreen({Key? key, required this.userType}) : super(key: key);
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  late Future<List<Delivery>> futureAllDeliveries;
+  List<Delivery> filterDeliveries = [];
 
   TextEditingController queryController = TextEditingController();
 
-  SearchScreen({Key? key, required this.userType}) : super(key: key);
+  void initState() async{
+    super.initState();
+  }
+
+  searchDeliveries(String deliveryNo) async {
+
+    if (deliveryNo.isNotEmpty) {
+      filterDeliveries = await searchDelivery(deliveryNo);
+    }
+
+    // Refresh the UI
+    setState(() {
+      filterDeliveries = filterDeliveries;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +51,9 @@ class SearchScreen extends StatelessWidget {
                     Flexible(
                       flex: 10,
                       child: TextFormField(
+                        onChanged: (value) => {
+                          searchDeliveries(value),
+                        },
                         cursorColor: Colors.grey,
                         controller: queryController,
                         decoration: InputDecoration(
@@ -44,22 +71,42 @@ class SearchScreen extends StatelessWidget {
                             )),
                       ),
                     ),
-                    GestureDetector(
-                        onTap: () async {
-                          var result = await searchDelivery(
-                              queryController.text.toString());
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          padding: const EdgeInsets.all(15),
-                          child: const Icon(Icons.search),
-                        ))
                   ],
-                )
+                ),
+                Row(
+              children: [
+                Expanded(
+                  child: filterDeliveries.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: filterDeliveries.length,
+                          itemBuilder: (context, index) => Card(
+                            key: ValueKey(filterDeliveries[index].delivery_no),
+                            color: Colors.amberAccent,
+                            elevation: 4,
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: ListTile(
+                              leading: Text(
+                                filterDeliveries[index].delivery_no.toString(),
+                                style: const TextStyle(fontSize: 24),
+                              ),
+                              title: Text(filterDeliveries[index].driver_name),
+                              subtitle: Text(
+                                  '${filterDeliveries[index].address.toString()} gidecek'),
+                            ),
+                          ),
+                        )
+                      : const Text(
+                          'Sonuç bulunamadı',
+                          style: TextStyle(fontSize: 24),
+                        ),
+                ),
               ],
             ),
+              ],
+            )
+            
           ),
-          bottomNavigationBar: BottomNavbar(userType: userType, index: 1)
+          bottomNavigationBar: BottomNavbar(userType: widget.userType, index: 1)
         ));
   }
 }
