@@ -96,28 +96,11 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        showLoading();
-
-                        var result = await createDelivery(
+                        create(
                             deliveryNoController.text.toString(),
                             firmController.text.toString(),
                             addressController.text.toString(),
                             selectedDriver);
-
-                        if (result) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('Yeni Teslimat Eklendi'),
-                            backgroundColor: Colors.blue,
-                          ));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                'Yeni Teslimat Eklenemedi. Lütfen Verileri Kontrol Ediniz'),
-                            backgroundColor: Colors.blue,
-                          ));
-                        }
-
-                        hideLoading();
                       },
                       child: Container(
                         height: 50,
@@ -150,6 +133,28 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
                           )))),
             ]),
             bottomNavigationBar: BottomNavbar(userType: 'admin', index: 0)));
+  }
+
+  create(deliveryNo, firm, address, selectedDriver) async {
+    showLoading();
+
+    var result =
+        await createDelivery(deliveryNo, firm, address, selectedDriver);
+
+    if (result) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Yeni Teslimat Eklendi'),
+        backgroundColor: Colors.blue,
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content:
+            Text('Yeni Teslimat Eklenemedi. Lütfen Verileri Kontrol Ediniz'),
+        backgroundColor: Colors.blue,
+      ));
+    }
+
+    hideLoading();
   }
 
   void showLoading() {
