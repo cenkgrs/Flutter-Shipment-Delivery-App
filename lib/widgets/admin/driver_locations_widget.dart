@@ -152,8 +152,7 @@ class _DriverLocationsState extends State<DriverLocations> {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState !=
                                   ConnectionState.done) {
-                                return Container(
-                                    child: CircularProgressIndicator());
+                                return const CircularProgressIndicator();
                               }
 
                               var status = snapshot.data ?? false;

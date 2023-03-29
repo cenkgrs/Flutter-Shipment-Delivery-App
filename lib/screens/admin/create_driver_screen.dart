@@ -86,34 +86,9 @@ class _CreateDriverScreenState extends State<CreateDriverScreen> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        showLoading();
-
-                        var result = await createDriver(
-                            driverNameController.text.toString(),
+                        create(driverNameController.text.toString(),
                             driverEmailController.text.toString(),
                             passwordController.text.toString());
-
-                        if (result) {
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text('Yeni Şöför Eklendi'),
-                            backgroundColor: Colors.blue,
-                          ));
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SettingsScreen()),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                'Yeni Şöför Eklenemedi. Lütfen Verileri Kontrol Ediniz'),
-                            backgroundColor: Colors.blue,
-                          ));
-
-                          hideLoading();
-                        }
                       },
                       child: Container(
                         height: 50,
@@ -147,6 +122,34 @@ class _CreateDriverScreenState extends State<CreateDriverScreen> {
             ]),
             bottomNavigationBar:
                 const BottomNavbar(userType: 'admin', index: 3)));
+  }
+
+  create(name, email, pass) async{
+    showLoading();
+
+    var result = await createDriver(name, email, pass);
+
+    if (result) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(
+        content: Text('Yeni Şöför Eklendi'),
+        backgroundColor: Colors.blue,
+      ));
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const SettingsScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            'Yeni Şöför Eklenemedi. Lütfen Verileri Kontrol Ediniz'),
+        backgroundColor: Colors.blue,
+      ));
+
+      hideLoading();
+    }
   }
 
   void showLoading() {

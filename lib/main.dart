@@ -47,15 +47,8 @@ class _MyAppState extends State<MyApp> {
                   ),
                   scaffoldBackgroundColor: Colors.lightBlue),*/
           home: Scaffold(
-            appBar: AppBar(title: const Text(_title)),
-            body: const LoginScreen(),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                AppTheme().switchthemelight();
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
+              appBar: AppBar(title: const Text(_title)),
+              body: const LoginScreen()),
         );
       }));
 }
