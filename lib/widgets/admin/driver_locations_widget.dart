@@ -25,63 +25,174 @@ class _DriverLocationsState extends State<DriverLocations> {
     futureDriverLocations = getDriverLocations();
   }
 
-  Container getDriverName(location) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.blue,
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            flex: 6,
-            child: Center(
-              child: Text(
-                location.driverName,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+  getDriverName(location, width) {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            location.driverName,
+            style: const TextStyle(
+                color: Colors.blue, fontSize: 18, fontWeight: FontWeight.bold),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  getStatusIcon(location) async {}
+  getDriverStatus(location) {
+    FutureBuilder<dynamic>(
+        future: checkDriverStatus(location.driverId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const CircularProgressIndicator();
+          }
+
+          var status = snapshot.data ?? false;
+
+          if (status == 'active') {
+            return const Row(
+              children: [
+                Column(
+                  children: [
+                    Icon(Icons.delivery_dining, size: 57, color: Colors.blue)
+                  ],
+                )
+              ],
+            );
+          }
+
+          return const Row(
+            children: [
+              Column(
+                children: [
+                  Icon(Icons.stop_circle_outlined, size: 57, color: Colors.blue)
+                ],
+              )
+            ],
+          );
+        });
+  }
 
   getCurrentLocation(Locations location) {
-    return Text(
-      location.address,
-      style: const TextStyle(
-          fontWeight: FontWeight.normal, fontSize: 18, color: Colors.blueGrey),
-    );
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            tire(),
+            const SizedBox(width: 10),
+            Text(
+              location.address,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Colors.blueGrey),
+            )
+          ],
+        ));
   }
 
   getLastLocationTime(Locations location) {
-    return Column(
-      children: [
-        tire(),
-        const SizedBox(width: 10),
-        Text(
-          '${dateFormat!.format(location.time)} ${timeFormat!.format(location.time)}',
-          style: const TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: 18,
-              color: Colors.blueGrey),
-        )
-      ],
-    );
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            tire(),
+            const SizedBox(width: 10),
+            Text(
+              '${dateFormat!.format(location.time!)} - ${timeFormat!.format(location.time!)}',
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Colors.blueGrey),
+            )
+          ],
+        ));
   }
 
   tire() {
     return const Text("-",
         style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: 18,
-            color: Colors.blueGrey));
+            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue));
+  }
+
+  drawBorder(width) {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            width: 2,
+            color: Colors.blueAccent,
+          ),
+        ),
+      ),
+    );
+  }
+
+  card(location, width) {
+    return Card(
+      margin: const EdgeInsets.all(10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(flex: 7, child: getDriverName(location, width)),
+              Expanded(
+                  flex: 3,
+                  child: FutureBuilder<dynamic>(
+                      future: checkDriverStatus(location.driverId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        var status = snapshot.data ?? false;
+
+                        if (status == 'active') {
+                          return Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: const Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      'Teslimatta',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              )
+                            ],
+                          );
+                        }
+
+                        return Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    'Beklemede',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            )
+                          ],
+                        );
+                      }))
+            ],
+          ),
+          drawBorder(width),
+          const SizedBox(height: 10),
+          getCurrentLocation(location),
+          getLastLocationTime(location),
+        ],
+      ),
+    );
   }
 
   @override
@@ -141,34 +252,7 @@ class _DriverLocationsState extends State<DriverLocations> {
               itemBuilder: (context, index) {
                 Locations location = driverLocations[index];
 
-                return Card(
-                    margin: const EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        getDriverName(location),
-                        const SizedBox(height: 50),
-                        FutureBuilder<dynamic>(
-                            future: checkDriverStatus(location.driverId),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState !=
-                                  ConnectionState.done) {
-                                return const CircularProgressIndicator();
-                              }
-
-                              var status = snapshot.data ?? false;
-
-                              if (status == 'active') {
-                                return const Icon(Icons.delivery_dining,
-                                    size: 57, color: Colors.blue);
-                              }
-
-                              return const Icon(Icons.stop_circle_outlined,
-                                  size: 57, color: Colors.blue);
-                            }),
-                        getCurrentLocation(location),
-                        getLastLocationTime(location),
-                      ],
-                    ));
+                return card(location, width);
               });
         });
   }

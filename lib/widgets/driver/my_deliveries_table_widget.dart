@@ -241,7 +241,21 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                                 // scaffold of the app
                                 child: Text('Teslimat Bulunamadı')))));
               }
+
               List<Delivery> deliveries = snapshot.data ?? [];
+
+              if (deliveries.isEmpty) {
+                return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Container(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: const Visibility(
+                            visible: true,
+                            child: Center(
+                                // scaffold of the app
+                                child: Text('Teslimat Bulunamadı')))));
+              }
+
               return ListView.builder(
                   itemCount: deliveries.length,
                   shrinkWrap: true,

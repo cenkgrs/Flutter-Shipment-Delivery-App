@@ -6,7 +6,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 class WaitingDeliveries extends StatefulWidget {
   const WaitingDeliveries({Key? key}) : super(key: key);
 
@@ -133,9 +132,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    dateFormat!.format(delivery.tt_delivery) +
-                        ' ' +
-                        timeFormat!.format(delivery.tt_delivery),
+                    '${dateFormat!.format(delivery.tt_delivery)} ${timeFormat!.format(delivery.tt_delivery)}',
                     style: TextStyle(
                         color: Colors.blueGrey,
                         fontSize: 13,
@@ -147,6 +144,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

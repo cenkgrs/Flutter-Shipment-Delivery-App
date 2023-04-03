@@ -63,7 +63,6 @@ checkDriverStatus(driverId) async {
     return data['status'];
   } else {
     return false;
-    throw Exception('Failed to check Driver status');
   }
 }
 

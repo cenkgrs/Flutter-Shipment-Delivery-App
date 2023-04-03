@@ -147,7 +147,7 @@ Future<List<Delivery>> fetchDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/get-all-deliveries'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });

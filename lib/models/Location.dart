@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -14,7 +13,7 @@ class Locations {
   final String address;
   final String latitude;
   final String longitude;
-  final DateTime time;
+  final DateTime? time;
 
   const Locations(
       {required this.driverId,
@@ -84,13 +83,14 @@ Future<List<Locations>> getDriverLocations() async {
 
     for (var location in data['locations']) {
       result.add(Locations(
-              driverId: location["driver_id"],
-              driverName: location["driver_name"],
-              address: location["address"],
-              latitude: location["latitude"],
-              longitude: location["longitude"],
-              time: DateTime.now()) //DateTime.tryParse(location["time"])
-          );
+          driverId: location["driver_id"],
+          driverName: location["driver_name"],
+          address: location["address"],
+          latitude: location["latitude"],
+          longitude: location["longitude"],
+          time: location["time"] == null
+              ? null
+              : DateTime.tryParse(location["time"])));
     }
 
     return result;

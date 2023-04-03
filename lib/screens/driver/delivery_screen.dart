@@ -40,7 +40,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   static const String _title = 'Teslimatım';
 
   tire() {
-    return Column(
+    return const Column(
       children: <Widget>[
         Text(
           '-',
@@ -67,7 +67,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                   calculateRemainingKm(delivery.latitude, delivery.longitude),
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
-                  return Container(child: CircularProgressIndicator());
+                  return const CircularProgressIndicator();
                 }
 
                 var distance = snapshot.data ?? "0.0";
