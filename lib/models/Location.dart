@@ -9,6 +9,7 @@ import 'dart:math' show cos, sqrt, asin;
 
 class Locations {
   final int driverId;
+  final String type;
   final String driverName;
   final String address;
   final String latitude;
@@ -17,6 +18,7 @@ class Locations {
 
   const Locations(
       {required this.driverId,
+      required this.type,
       required this.driverName,
       required this.address,
       required this.latitude,
@@ -39,6 +41,7 @@ Future setLocation() async {
       'Accept': 'application/json;',
       'Authorization': 'Bearer $token'
     }, body: {
+      'type': 'start_delivery',
       'address': 'Adres',
       'latitude': pos.latitude.toString(),
       'longitude': pos.longitude.toString(),
@@ -84,6 +87,7 @@ Future<List<Locations>> getDriverLocations() async {
     for (var location in data['locations']) {
       result.add(Locations(
           driverId: location["driver_id"],
+          type: location["type"],
           driverName: location["driver_name"],
           address: location["address"],
           latitude: location["latitude"],
@@ -96,6 +100,13 @@ Future<List<Locations>> getDriverLocations() async {
     return result;
   } else {
     throw Exception('Failed to load driver locations');
+  }
+}
+
+typeToString(type) {
+  switch (type) {
+    case 'start_delivery':
+      return 'Teslimat Başlatıldı';
   }
 }
 

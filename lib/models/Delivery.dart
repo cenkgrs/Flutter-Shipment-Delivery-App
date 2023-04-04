@@ -512,3 +512,29 @@ cancelDelivery(Delivery delivery) async {
     return {'status': false, 'exception': e.toString()};
   }
 }
+
+getDeliveryNo(int driverId) async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http.get(
+      Uri.parse('${Constant.baseUrl}/get-delivery-no/$driverId'),
+      headers: {
+        'Accept': 'application/json;',
+        'Authorization': 'Bearer $token'
+      });
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+
+    if (data['status']) {
+      return data['delivery_no'];
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}

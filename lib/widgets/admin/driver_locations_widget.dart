@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:crud_app/models/Driver.dart';
 import 'package:intl/intl.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:crud_app/models/Location.dart';
+import 'package:crud_app/models/Delivery.dart';
 
 class DriverLocations extends StatefulWidget {
   const DriverLocations({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _DriverLocationsState extends State<DriverLocations> {
   void initState() {
     super.initState();
     initializeDateFormatting();
-    dateFormat = DateFormat.yMMMMEEEEd('tr');
+    dateFormat = DateFormat.MMMMEEEEd('tr');
     timeFormat = DateFormat.Hms('tr');
     futureDriverLocations = getDriverLocations();
   }
@@ -40,38 +40,22 @@ class _DriverLocationsState extends State<DriverLocations> {
     );
   }
 
-  getDriverStatus(location) {
-    FutureBuilder<dynamic>(
-        future: checkDriverStatus(location.driverId),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const CircularProgressIndicator();
-          }
-
-          var status = snapshot.data ?? false;
-
-          if (status == 'active') {
-            return const Row(
-              children: [
-                Column(
-                  children: [
-                    Icon(Icons.delivery_dining, size: 57, color: Colors.blue)
-                  ],
-                )
-              ],
-            );
-          }
-
-          return const Row(
-            children: [
-              Column(
-                children: [
-                  Icon(Icons.stop_circle_outlined, size: 57, color: Colors.blue)
-                ],
-              )
-            ],
-          );
-        });
+  getType(Locations location) {
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          children: [
+            tire(),
+            const SizedBox(width: 10),
+            Text(
+              typeToString(location.type),
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.blueGrey),
+            )
+          ],
+        ));
   }
 
   getCurrentLocation(Locations location) {
@@ -83,9 +67,9 @@ class _DriverLocationsState extends State<DriverLocations> {
             const SizedBox(width: 10),
             Text(
               location.address,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 18,
+                  fontSize: 14,
                   color: Colors.blueGrey),
             )
           ],
@@ -103,11 +87,57 @@ class _DriverLocationsState extends State<DriverLocations> {
               '${dateFormat!.format(location.time!)} - ${timeFormat!.format(location.time!)}',
               style: const TextStyle(
                   fontWeight: FontWeight.w600,
-                  fontSize: 18,
+                  fontSize: 14,
                   color: Colors.blueGrey),
             )
           ],
         ));
+  }
+
+  getDeliveryNoAndDetails(Locations location) {
+    return Container(
+      decoration: const BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(12),
+              bottomLeft: Radius.circular(12))),
+      child: Row(
+        children: [
+          Expanded(
+              flex: 8,
+              child: FutureBuilder<dynamic>(
+                  future: getDeliveryNo(location.driverId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return const LinearProgressIndicator();
+                    }
+
+                    var deliveryNo = snapshot.data ?? '';
+
+                    return Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        deliveryNo,
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  })),
+          Expanded(
+              flex: 3,
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      'Detaylar',
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                  )))
+        ],
+      ),
+    );
   }
 
   tire() {
@@ -143,7 +173,7 @@ class _DriverLocationsState extends State<DriverLocations> {
                       future: checkDriverStatus(location.driverId),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState != ConnectionState.done) {
-                          return const CircularProgressIndicator();
+                          return const LinearProgressIndicator();
                         }
 
                         var status = snapshot.data ?? false;
@@ -188,8 +218,10 @@ class _DriverLocationsState extends State<DriverLocations> {
           ),
           drawBorder(width),
           const SizedBox(height: 10),
+          getType(location),
           getCurrentLocation(location),
           getLastLocationTime(location),
+          getDeliveryNoAndDetails(location),
         ],
       ),
     );
@@ -203,20 +235,32 @@ class _DriverLocationsState extends State<DriverLocations> {
     return FutureBuilder<List<Locations>>(
         future: futureDriverLocations,
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Padding(
-                padding: const EdgeInsets.all(10),
-                child: Container(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Visibility(
-                        visible: true,
-                        child: Center(
-                          // scaffold of the app
-                          child: LoadingAnimationWidget.hexagonDots(
-                            color: Colors.blue,
-                            size: 50,
-                          ),
-                        ))));
+          if (snapshot.hasData) {
+            List<Locations> driverLocations = snapshot.data ?? [];
+
+            if (driverLocations.isEmpty) {
+              return Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                      child: const Visibility(
+                          visible: true,
+                          child: Center(
+                              // scaffold of the app
+                              child: Text(
+                                  'Günlük Herhangi Bir Sürücü Lokasyonu Gönderilmedi')))));
+            }
+
+            return ListView.builder(
+                itemCount: driverLocations.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                physics: const ScrollPhysics(),
+                itemBuilder: (context, index) {
+                  Locations location = driverLocations[index];
+
+                  return card(location, width);
+                });
           }
           if (snapshot.hasError) {
             return Padding(
@@ -229,31 +273,8 @@ class _DriverLocationsState extends State<DriverLocations> {
                             // scaffold of the app
                             child: Text('Sürücü Lokasyonları Getirilemedi')))));
           }
-          List<Locations> driverLocations = snapshot.data ?? [];
 
-          if (driverLocations.isEmpty) {
-            return Padding(
-                padding: const EdgeInsets.all(10),
-                child: Container(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: const Visibility(
-                        visible: true,
-                        child: Center(
-                            // scaffold of the app
-                            child: Text(
-                                'Günlük Herhangi Bir Sürücü Lokasyonu Gönderilmedi')))));
-          }
-
-          return ListView.builder(
-              itemCount: driverLocations.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: const ScrollPhysics(),
-              itemBuilder: (context, index) {
-                Locations location = driverLocations[index];
-
-                return card(location, width);
-              });
+          return const LinearProgressIndicator();
         });
   }
 }
