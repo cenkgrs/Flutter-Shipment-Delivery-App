@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:crud_app/models/Delivery.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/screens/home_page_screen.dart';
@@ -5,7 +7,7 @@ import 'package:flutter/services.dart';
 
 class DeliveredPersonSheet extends StatefulWidget {
   final String deliveryNo;
-  DeliveredPersonSheet({Key? key, required this.deliveryNo})
+  const DeliveredPersonSheet({Key? key, required this.deliveryNo})
       : super(key: key);
 
   @override
@@ -21,7 +23,8 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: <Widget>[
+    return Scaffold(
+        body: Stack(children: <Widget>[
       Padding(
         padding: const EdgeInsets.all(20),
         child: ListView(
@@ -61,7 +64,7 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
       ),
       Visibility(
         visible: _isLoading,
-        child: const CircularProgressIndicator(),
+        child: const Center(child: CircularProgressIndicator()),
       ),
       Align(
         alignment: Alignment.bottomCenter,
@@ -69,13 +72,14 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
             padding: const EdgeInsets.all(10),
             child: FloatingActionButton.extended(
                 heroTag: UniqueKey(),
-                onPressed: () async{
+                onPressed: () async {
                   showLoading();
 
                   var person = deliveryPersonController.text.toString();
-                  var nationalId = nationalIdController.toString();
+                  var nationalId = nationalIdController.text.toString();
 
-                  var result = await completeDelivery(widget.deliveryNo, person, nationalId);
+                  var result = await completeDelivery(
+                      widget.deliveryNo, person, nationalId);
 
                   if (result == true) {
                     hideLoading();
@@ -86,10 +90,9 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
                           builder: (context) => HomeScreen(userType: 'driver')),
                     );
                   } else {
-
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: const Text(
-                        'Teslimat kaydı eklenemedi. Lütfen girdiğiniz verileri kontrol ediniz',
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        'Teslimat tamamlanamadı. Lütfen girdiğiniz verileri kontrol ediniz.',
                       ),
                       backgroundColor: Colors.blue,
                     ));
@@ -102,10 +105,10 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
                 icon: const Icon(Icons.done_outline),
                 label: const Text('Tamamla'))),
       )
-    ]);
+    ]));
   }
 
-    void showLoading() {
+  void showLoading() {
     setState(() => _isLoading = true);
   }
 
