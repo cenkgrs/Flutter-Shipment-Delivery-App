@@ -532,9 +532,9 @@ getDeliveryNo(int driverId) async {
     if (data['status']) {
       return data['delivery_no'];
     } else {
-      return false;
+      return '';
     }
   } else {
-    return false;
+    return '';
   }
 }

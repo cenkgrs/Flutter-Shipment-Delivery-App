@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:crud_app/models/Location.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
@@ -32,7 +30,7 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
   void initState() {
     super.initState();
     futureDriver = getDriver(widget.id);
-    futureLocations = getLocations(widget.id);
+    futureLocations = getLastDriverLocations(widget.id);
 
     initializeDateFormatting();
     dateFormat = DateFormat.yMMMMEEEEd('tr');

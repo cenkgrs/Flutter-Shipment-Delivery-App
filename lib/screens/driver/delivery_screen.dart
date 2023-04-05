@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
@@ -40,7 +38,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
   static const String _title = 'Teslimatım';
 
   tire() {
-    return const Column(
+    return Column(
       children: <Widget>[
         Text(
           '-',

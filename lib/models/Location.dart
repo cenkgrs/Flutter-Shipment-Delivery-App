@@ -110,6 +110,42 @@ Future<List<Locations>> getDriverLocations() async {
   }
 }
 
+Future<List<Locations>> getLastDriverLocations(driverId) async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('${Constant.baseUrl}/get-last-driver-locations/$driverId'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode == 200) {
+    var data = jsonDecode(response.body);
+
+    List<Locations> result = [];
+
+    for (var location in data['locations']) {
+      result.add(Locations(
+          driverId: driverId,
+          type: location["type"],
+          driverName: location["driver_name"],
+          address: location["address"],
+          latitude: location["latitude"],
+          longitude: location["longitude"],
+          time: location["time"] == null
+              ? null
+              : DateTime.tryParse(location["time"])));
+    }
+
+    return result;
+  } else {
+    throw Exception('Failed to load locations of this driver');
+  }
+}
+
 typeToString(type) {
   switch (type) {
     case 'start_delivery':
