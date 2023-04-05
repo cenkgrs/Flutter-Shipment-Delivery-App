@@ -146,7 +146,7 @@ class _MyDeliveriesTableState extends State<MyDeliveriesTable> {
                 backgroundColor: Colors.blue,
               ));
 
-              var result = await setLocation();
+              var result = await setLocation('start_delivery');
 
               hideLoading();
             } else {

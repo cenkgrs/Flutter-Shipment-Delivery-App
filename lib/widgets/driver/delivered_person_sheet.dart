@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/models/Location.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/screens/home_page_screen.dart';
 import 'package:flutter/services.dart';
@@ -82,6 +83,9 @@ class _DeliveredPersonSheetState extends State<DeliveredPersonSheet> {
                       widget.deliveryNo, person, nationalId);
 
                   if (result == true) {
+
+                    var result = await setLocation('complete_delivery');
+
                     hideLoading();
 
                     Navigator.push(

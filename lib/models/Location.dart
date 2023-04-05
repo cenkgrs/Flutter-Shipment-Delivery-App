@@ -26,7 +26,7 @@ class Locations {
       required this.time});
 }
 
-Future setLocation() async {
+Future setLocation(type) async {
   Location location = Location();
   LocationData pos = await location.getLocation();
 
@@ -41,7 +41,7 @@ Future setLocation() async {
       'Accept': 'application/json;',
       'Authorization': 'Bearer $token'
     }, body: {
-      'type': 'start_delivery',
+      'type': type,
       'address': 'Adres',
       'latitude': pos.latitude.toString(),
       'longitude': pos.longitude.toString(),
@@ -116,11 +116,12 @@ Future<List<Locations>> getLastDriverLocations(driverId) async {
   // to get token from local storage
   var token = await storage.read(key: 'token');
 
-  final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/get-last-driver-locations/$driverId'), headers: {
-    'Accept': 'application/json;',
-    'Authorization': 'Bearer $token'
-  });
+  final response = await http.get(
+      Uri.parse('${Constant.baseUrl}/get-last-driver-locations/$driverId'),
+      headers: {
+        'Accept': 'application/json;',
+        'Authorization': 'Bearer $token'
+      });
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
@@ -150,6 +151,10 @@ typeToString(type) {
   switch (type) {
     case 'start_delivery':
       return 'Teslimat Başlatıldı';
+    case 'complete_delivery':
+      return 'Teslimat Tamamlandı';
+    case 'cancel_delivery':
+      return 'Teslimat İptal Edildi';
   }
 }
 

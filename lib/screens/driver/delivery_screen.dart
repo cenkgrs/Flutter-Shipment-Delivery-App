@@ -199,9 +199,14 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           child: FloatingActionButton.extended(
               heroTag: UniqueKey(),
               onPressed: () async {
+                showLoading();
+
                 var result = await cancelDelivery(delivery);
 
                 if (result['status'] == true) {
+
+                  var result = await setLocation('cancel_delivery');
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
