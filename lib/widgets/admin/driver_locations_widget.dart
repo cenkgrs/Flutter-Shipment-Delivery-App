@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:crud_app/models/Location.dart';
 import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/screens/admin/driver_details_screen.dart';
 
 class DriverLocations extends StatefulWidget {
   const DriverLocations({Key? key}) : super(key: key);
@@ -128,7 +129,13 @@ class _DriverLocationsState extends State<DriverLocations> {
               child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DriverDetailsScreen(id: location.driverId)),
+            );
+                    },
                     child: const Text(
                       'Detaylar',
                       style: TextStyle(
