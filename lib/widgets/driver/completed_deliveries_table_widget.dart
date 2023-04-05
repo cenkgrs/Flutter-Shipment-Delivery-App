@@ -27,7 +27,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
   Container getDeliveryIcon(delivery) {
     return Container(
       padding: const EdgeInsets.all(12),
-      child: const Icon(Icons.task_alt, size: 57, color: Colors.blue),
+      child: const Icon(Icons.task_alt, size: 50, color: Colors.blue),
     );
   }
 
@@ -39,6 +39,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
             Icon(Icons.person, size: 16, color: Colors.grey.shade700),
           ],
         ),
+        const SizedBox(width: 5),
         Column(
           children: <Widget>[
             Text(
@@ -59,9 +60,11 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
       children: [
         Column(
           children: <Widget>[
-            Icon(Icons.person, size: 16, color: Colors.grey.shade700),
+            Icon(Icons.fiber_smart_record,
+                size: 16, color: Colors.grey.shade700),
           ],
         ),
+        const SizedBox(width: 5),
         Column(
           children: <Widget>[
             Text(
@@ -85,6 +88,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
             Icon(Icons.location_on, size: 14, color: Colors.grey.shade700),
           ],
         ),
+        const SizedBox(width: 5),
         Flexible(
             child: Column(
           children: <Widget>[
@@ -93,6 +97,31 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
               style: TextStyle(
                   color: Colors.grey.shade700,
                   fontSize: 8,
+                  fontWeight: FontWeight.bold),
+            ),
+          ],
+        ))
+      ],
+    );
+  }
+
+  Row getDeliveredPerson(delivery) {
+    return Row(
+      children: [
+        Column(
+          children: <Widget>[
+            Icon(Icons.person_2_sharp, size: 14, color: Colors.grey.shade700),
+          ],
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+            child: Column(
+          children: <Widget>[
+            Text(
+              delivery.delivered_person,
+              style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold),
             ),
           ],
@@ -262,7 +291,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                             padding: const EdgeInsets.all(10),
                             child: Container(
                               width: 400,
-                              height: 200,
+                              height: 220,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white,
@@ -288,15 +317,21 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                                           )),
                                       Expanded(
                                           flex: 8,
-                                          child: Column(
-                                            children: <Widget>[
-                                              getDriverName(delivery),
-                                              const SizedBox(height: 5),
-                                              getFirm(delivery),
-                                              const SizedBox(height: 5),
-                                              getAddress(delivery)
-                                            ],
-                                          ))
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 15, 0, 5),
+                                              child: Column(
+                                                children: <Widget>[
+                                                  getDriverName(delivery),
+                                                  const SizedBox(height: 5),
+                                                  getFirm(delivery),
+                                                  const SizedBox(height: 5),
+                                                  getDeliveredPerson(delivery),
+                                                  const SizedBox(height: 5),
+                                                  getAddress(delivery),
+                                                ],
+                                              )))
                                     ],
                                   ),
                                   Row(
