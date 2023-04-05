@@ -64,6 +64,7 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
             fontWeight: FontWeight.bold, fontSize: 18, color: Colors.blue));
   }
 
+  /* Driver Profile Card */
   getDriverName(driver, width) {
     return Row(
       children: [
@@ -143,6 +144,7 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
     );
   }
 
+  /* Driver Location Card */
   getType(Locations location) {
     return Padding(
         padding: const EdgeInsets.all(10),
@@ -194,7 +196,9 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
               child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      launchMapCoordinates(location.latitude, location.longitude);
+                    },
                     child: const Text(
                       'Konuma Git',
                       style: TextStyle(

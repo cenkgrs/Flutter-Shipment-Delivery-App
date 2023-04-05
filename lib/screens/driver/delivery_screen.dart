@@ -295,7 +295,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               foregroundColor: Colors.white,
               backgroundColor: Colors.blue,
               onPressed: () {
-                launchMap(address);
+                launchMapQuery(address);
               },
               child: const Icon(Icons.gps_fixed),
             ),

@@ -63,8 +63,15 @@ Future setLocation() async {
   }
 }
 
-launchMap(String address) {
+launchMapQuery(String address) {
   MapsLauncher.launchQuery(address);
+}
+
+launchMapCoordinates(String latitude, String longitude) {
+  double lat = double.parse(latitude);
+  double long = double.parse(longitude);
+
+  MapsLauncher.launchCoordinates(lat, long);
 }
 
 Future<List<Locations>> getDriverLocations() async {
