@@ -17,3 +17,16 @@
 - Arama sayfası
 
     Atılan search delivery istediğinden gelen sonuçlarla tablo çizdirilecek
+
+3.17
+
+- Arama sayfası
+    Atılan search delivery istediğinden gelen sonuçlarla tablo çizdirilecek
+
+- Kalanlar
+    Arama sayfası hataları düzeltilicek ve test edilecek
+
+    Sürücü detay sayfası hataları düzeltilicek
+
+     Admin tamamlananlar sayfası veri gelmiyor
+    

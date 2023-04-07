@@ -6,10 +6,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:crud_app/screens/admin/drivers_screen.dart';
 import 'package:crud_app/models/Driver.dart';
 
-// Models
-import 'package:crud_app/models/Delivery.dart';
-import 'package:location/location.dart';
-
 class DriverDetailsScreen extends StatefulWidget {
   final int id;
 

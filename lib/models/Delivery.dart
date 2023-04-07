@@ -190,6 +190,57 @@ Future<List<Delivery>> fetchDeliveries() async {
   }
 }
 
+Future<List<Delivery>> fetchActiveDeliveries() async {
+  const storage = FlutterSecureStorage();
+
+  // to get token from local storage
+  var token = await storage.read(key: 'token');
+
+  final response = await http
+      .get(Uri.parse('${Constant.baseUrl}/get-all-deliveries'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    var data = jsonDecode(response.body);
+
+    List<Delivery> result = [];
+
+    for (var delivery in data['deliveries']) {
+      if (delivery['status'] == 0 && delivery['st_delivery']) {
+        result.add(Delivery(
+            delivery_no: delivery["delivery_no"],
+            driver_id: delivery["driver_id"],
+            driver_name: delivery["driver_name"],
+            firm_name: delivery["firm_name"],
+            address: delivery["address"],
+            st_delivery: delivery["st_delivery"],
+            tt_delivery: delivery["tt_delivery"] == null
+                ? null
+                : DateTime.tryParse(delivery["tt_delivery"]),
+            st_complete: delivery["st_complete"],
+            tt_complete: delivery["tt_complete"] == null
+                ? null
+                : DateTime.tryParse(delivery["tt_complete"]),
+            delivered_person: delivery["delivered_person"] ?? "none",
+            distance: 0,
+            latitude: 0.0,
+            longitude: 0.0,
+            status: delivery['status']));
+      }
+    }
+
+    return result;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load Delivery');
+  }
+}
+
 Future<List<Delivery>> fetchWaitingDeliveries() async {
   const storage = FlutterSecureStorage();
 
@@ -210,7 +261,7 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
     List<Delivery> result = [];
 
     for (var delivery in data['deliveries']) {
-      if (delivery['status'] == 0) {
+      if (delivery['status'] == 0 && !delivery['st_delivery']) {
         result.add(Delivery(
             delivery_no: delivery["delivery_no"],
             driver_id: delivery["driver_id"],
@@ -248,7 +299,7 @@ Future<List<Delivery>> fetchCompletedDeliveries() async {
   var token = await storage.read(key: 'token');
 
   final response = await http
-      .get(Uri.parse('${Constant.baseUrl}/get-deliveries'), headers: {
+      .get(Uri.parse('${Constant.baseUrl}/get-all-deliveries'), headers: {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   });

@@ -83,6 +83,12 @@ class HomeScreen extends StatelessWidget {
                     if (userType == 'admin')
                       Row(
                         children: const [
+                          Expanded(child: ActiveDeliveriesCard())
+                        ],
+                      ),
+                    if (userType == 'admin')
+                      Row(
+                        children: const [
                           Expanded(child: WaitingDeliveriesCard())
                         ],
                       ),
