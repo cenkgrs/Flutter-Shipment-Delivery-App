@@ -280,9 +280,15 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   void _showDeliveredPersonSheet(BuildContext context, deliveryNo) async {
     showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
         context: context,
+        isScrollControlled: true,
         builder: (BuildContext context) {
-          return DeliveredPersonSheet(deliveryNo: deliveryNo);
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: DeliveredPersonSheet(deliveryNo: deliveryNo),
+          );;
         });
   }
 
