@@ -17,6 +17,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
   DateFormat? dateFormat;
   DateFormat? timeFormat;
 
+  @override
   void initState() {
     super.initState();
     initializeDateFormatting();
@@ -24,15 +25,29 @@ class _DeliveryCardState extends State<DeliveryCard> {
     timeFormat = DateFormat.Hms('tr');
   }
 
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+
+    var completed = widget.delivery.st_complete == 1 ? true : false;
+    var started = widget.delivery.st_delivery == 1 ? true : false;
+
+    var status = completed && started
+        ? 'full'
+        : (completed || started ? 'half' : 'empty');
+
+    var cardHeight = status == 'full'
+        ? MediaQuery.of(context).size.height * .22
+        : (status == 'half'
+            ? MediaQuery.of(context).size.height * .18
+            : MediaQuery.of(context).size.height * .15);
 
     return Center(
         child: Padding(
             padding: const EdgeInsets.all(10),
             child: Container(
               width: 400,
-              height: MediaQuery.of(context).size.height * .25,
+              height: cardHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
@@ -41,7 +56,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -116,7 +131,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
           width: 200,
           child: const Align(
             alignment: Alignment(-1, -1),
-            child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
+            child: Icon(Icons.task_alt, size: 45, color: Colors.blue),
           ));
     } else {
       return Container(
@@ -124,7 +139,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
           width: 200,
           child: const Align(
             alignment: Alignment(-1, -1),
-            child: Icon(Icons.track_changes, size: 57, color: Colors.blue),
+            child: Icon(Icons.track_changes, size: 45, color: Colors.blue),
           ));
     }
   }
@@ -167,7 +182,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
               delivery.address,
               style: TextStyle(
                   color: Colors.grey.shade700,
-                  fontSize: 8,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold),
             ),
           ],
@@ -189,7 +204,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
   }
 
   Container getDeliveryStartTime(delivery) {
-    if (delivery.st_complete == 0) {
+    if (delivery.st_delivery == 0) {
       return Container();
     }
 
@@ -199,13 +214,13 @@ class _DeliveryCardState extends State<DeliveryCard> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
+          const Expanded(
             flex: 2,
             child: Column(
-              children: const <Widget>[
+              children: <Widget>[
                 Align(
                   alignment: Alignment(-1, -1),
-                  child: Icon(Icons.start, size: 30, color: Colors.blueAccent),
+                  child: Icon(Icons.start, size: 25, color: Colors.blueAccent),
                 )
               ],
             ),
@@ -215,12 +230,10 @@ class _DeliveryCardState extends State<DeliveryCard> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    dateFormat!.format(delivery.tt_delivery) +
-                        ' ' +
-                        timeFormat!.format(delivery.tt_delivery),
+                    '${dateFormat!.format(delivery.tt_delivery)} ${timeFormat!.format(delivery.tt_delivery)}',
                     style: const TextStyle(
                         color: Colors.blueGrey,
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -242,14 +255,14 @@ class _DeliveryCardState extends State<DeliveryCard> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
+          const Expanded(
             flex: 2,
             child: Column(
-              children: const <Widget>[
+              children: <Widget>[
                 Align(
                   alignment: Alignment(-1, -1),
                   child: Icon(Icons.timelapse_outlined,
-                      size: 30, color: Colors.blueAccent),
+                      size: 25, color: Colors.blueAccent),
                 )
               ],
             ),
@@ -259,12 +272,10 @@ class _DeliveryCardState extends State<DeliveryCard> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    dateFormat!.format(delivery.tt_complete) +
-                        ' ' +
-                        timeFormat!.format(delivery.tt_complete),
+                    '${dateFormat!.format(delivery.tt_complete)} ${timeFormat!.format(delivery.tt_complete)}',
                     style: const TextStyle(
                         color: Colors.blueGrey,
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold),
                   ),
                 ],

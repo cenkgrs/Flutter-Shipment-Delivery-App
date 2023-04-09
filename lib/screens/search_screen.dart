@@ -40,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     showLoading();
-    filterDeliveries = await searchDelivery(deliveryNo);
+    filterDeliveries = await searchDelivery(deliveryNo, widget.userType);
     hideLoading();
 
     // Refresh the UI
@@ -139,7 +139,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     Padding(
                         padding: const EdgeInsets.all(10),
                         child: Container(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            padding: const EdgeInsets.all(50),
                             child: Visibility(
                                 visible: _isLoading,
                                 child: const Center(

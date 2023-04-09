@@ -373,7 +373,7 @@ createDelivery(deliveryNo, firm, address, driverId) async {
   }
 }
 
-Future<List<Delivery>> searchDelivery(query) async {
+Future<List<Delivery>> searchDelivery(query, userType) async {
   const storage = FlutterSecureStorage();
 
   // to get token from local storage
@@ -384,7 +384,8 @@ Future<List<Delivery>> searchDelivery(query) async {
     'Accept': 'application/json;',
     'Authorization': 'Bearer $token'
   }, body: {
-    'query': query.toString()
+    'query': query.toString(),
+    'user_type': userType,
   });
 
   if (response.statusCode == 200) {
