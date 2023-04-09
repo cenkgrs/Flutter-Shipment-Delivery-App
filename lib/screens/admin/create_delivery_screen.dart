@@ -1,8 +1,10 @@
 import 'package:crud_app/models/Delivery.dart';
+import 'package:crud_app/screens/home_page_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:crud_app/widgets/selectBox.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:crud_app/screens/home_page_screen.dart';
 
 class CreateDeliveryScreen extends StatefulWidget {
   const CreateDeliveryScreen({Key? key}) : super(key: key);
@@ -136,35 +138,48 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
   create(deliveryNo, firm, address, selectedDriver) async {
     showLoading();
 
-    // var result = await createDelivery(deliveryNo, firm, address, selectedDriver);
-
-    var result = true;
+    var result =
+        await createDelivery(deliveryNo, firm, address, selectedDriver);
 
     if (result) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Yeni Teslimat Eklendi'),
         backgroundColor: Colors.blue,
       ));
+
+      hideLoading(true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content:
             Text('Yeni Teslimat Eklenemedi. Lütfen Verileri Kontrol Ediniz'),
         backgroundColor: Colors.blue,
       ));
-    }
 
-    hideLoading();
+      hideLoading(false);
+    }
   }
 
   void showLoading() {
     setState(() => _isLoading = true);
   }
 
-  void hideLoading() {
+  void hideLoading(status) {
     Future.delayed(const Duration(milliseconds: 1500), () {
       setState(() {
         _isLoading = false;
       });
+
+      if (!status) {
+        return;
+      }
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const HomeScreen(
+                  userType: 'admin',
+                )),
+      );
     });
   }
 }
