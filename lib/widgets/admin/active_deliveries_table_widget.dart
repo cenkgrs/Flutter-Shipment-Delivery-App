@@ -21,29 +21,19 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
   void initState() {
     super.initState();
     initializeDateFormatting();
-    dateFormat = DateFormat.yMMMMEEEEd('tr');
+    dateFormat = DateFormat.yMMMMd('tr');
     timeFormat = DateFormat.Hms('tr');
     futureDeliveries = fetchActiveDeliveries();
   }
 
   Container getDeliveryIcon(delivery) {
-    if (delivery.status == 1) {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          width: 200,
-          child: Align(
-            alignment: Alignment(-1, -1),
-            child: Icon(Icons.task_alt, size: 57, color: Colors.blue),
-          ));
-    } else {
-      return Container(
-          padding: const EdgeInsets.all(12),
-          width: 200,
-          child: Align(
-            alignment: Alignment(-1, -1),
-            child: Icon(Icons.track_changes, size: 57, color: Colors.blue),
-          ));
-    }
+    return Container(
+        padding: const EdgeInsets.all(12),
+        width: 200,
+        child: const Align(
+          alignment: Alignment(-1, -1),
+          child: Icon(Icons.track_changes, size: 45, color: Colors.blue),
+        ));
   }
 
   Row getDriverName(delivery) {
@@ -84,7 +74,7 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
               delivery.address,
               style: TextStyle(
                   color: Colors.grey.shade700,
-                  fontSize: 8,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold),
             ),
           ],
@@ -106,20 +96,16 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
   }
 
   Container getDeliveryStartTime(delivery) {
-    if (delivery.st_complete == 0) {
-      return Container();
-    }
-
     return Container(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
+          const Expanded(
             flex: 2,
             child: Column(
-              children: const <Widget>[
+              children: <Widget>[
                 Align(
                   alignment: Alignment(-1, -1),
                   child: Icon(Icons.start, size: 30, color: Colors.blueAccent),
@@ -133,7 +119,7 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
                 children: <Widget>[
                   Text(
                     '${dateFormat!.format(delivery.tt_delivery)} ${timeFormat!.format(delivery.tt_delivery)}',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.blueGrey,
                         fontSize: 13,
                         fontWeight: FontWeight.bold),
@@ -177,7 +163,7 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
                         visible: true,
                         child: Center(
                             // scaffold of the app
-                            child: Text('Tamamlanan Teslimat Bulunamadı')))));
+                            child: Text('Aktif Teslimat Bulunamadı')))));
           }
           List<Delivery> deliveries = snapshot.data ?? [];
 
@@ -190,7 +176,7 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
                         visible: true,
                         child: Center(
                             // scaffold of the app
-                            child: Text('Bekleyen Teslimat Bulunamadı')))));
+                            child: Text('Aktif Teslimat Bulunmuyor')))));
           }
 
           return ListView.builder(
@@ -206,7 +192,7 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
                         padding: const EdgeInsets.all(10),
                         child: Container(
                           width: 400,
-                          height: 150,
+                          height: 175,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.white,
@@ -235,20 +221,13 @@ class _ActiveDeliveriesState extends State<ActiveDeliveries> {
                                       child: Column(
                                         children: <Widget>[
                                           getDriverName(delivery),
+                                          const SizedBox(height: 10),
                                           getAddress(delivery)
                                         ],
                                       ))
                                 ],
                               ),
-                              Row(
-                                children: <Widget>[
-                                  Expanded(
-                                      flex: 10,
-                                      child: Column(children: <Widget>[
-                                        getDeliveryStartTime(delivery),
-                                      ])),
-                                ],
-                              ),
+                              getDeliveryStartTime(delivery),
                               Expanded(
                                   child: Container(
                                 width: 100,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:crud_app/screens/admin/active_deliveries_screen.dart';
 
-class WaitingDeliveriesCard extends StatelessWidget {
-  const WaitingDeliveriesCard({super.key});
+class ActiveDeliveriesCard extends StatelessWidget {
+  const ActiveDeliveriesCard({super.key});
 
   @override
   Widget build(BuildContext context) {
