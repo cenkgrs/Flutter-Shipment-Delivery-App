@@ -5,7 +5,6 @@ import 'package:crud_app/widgets/admin/active_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/create_delivery_card_widget.dart';
 import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
-import 'package:crud_app/widgets/admin/driver_locations_card_widget.dart';
 import 'package:crud_app/widgets/bottomNavbar.dart';
 
 import 'package:crud_app/screens/driver/delivery_screen.dart';
@@ -85,10 +84,6 @@ class HomeScreen extends StatelessWidget {
                     if (userType == 'admin')
                       const Row(
                         children: [Expanded(child: WaitingDeliveriesCard())],
-                      ),
-                    if (userType == 'admin')
-                      const Row(
-                        children: [Expanded(child: DriverLocations())],
                       ),
                   ],
                 ),

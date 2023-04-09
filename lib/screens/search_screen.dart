@@ -4,6 +4,9 @@ import 'package:crud_app/widgets/bottomNavbar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:crud_app/widgets/deliveryCard.dart';
 
+import 'package:crud_app/screens/driver/delivery_screen.dart';
+import 'package:crud_app/screens/admin/drivers_screen.dart';
+
 class SearchScreen extends StatefulWidget {
   final String userType;
 
@@ -18,18 +21,31 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Delivery> filterDeliveries = [];
 
   bool _isLoading = false;
+  bool _textVisible = false;
 
+  @override
   void initState() {
     super.initState();
   }
 
   searchDeliveries(String deliveryNo) async {
-    if (deliveryNo.isNotEmpty) {
-      filterDeliveries = await searchDelivery(deliveryNo);
+    if (deliveryNo.isEmpty) {
+      // Refresh the UI
+      setState(() {
+        _textVisible = false;
+        filterDeliveries = [];
+      });
+
+      return true;
     }
+
+    showLoading();
+    filterDeliveries = await searchDelivery(deliveryNo);
+    hideLoading();
 
     // Refresh the UI
     setState(() {
+      _textVisible = true;
       filterDeliveries = filterDeliveries;
     });
 
@@ -53,9 +69,27 @@ class _SearchScreenState extends State<SearchScreen> {
     return MaterialApp(
         title: 'Arama Yap',
         home: Scaffold(
+            floatingActionButton: FloatingActionButton(
+              heroTag: UniqueKey(),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => widget.userType == 'driver'
+                          ? const DeliveryScreen()
+                          : const DriversScreen()),
+                );
+              },
+              child: widget.userType == 'driver'
+                  ? const Icon(Icons.delivery_dining)
+                  : const Icon(Icons.people), //icon inside button
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             appBar: AppBar(title: const Text('Arama Yap')),
             body: Container(
-                margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+                margin: const EdgeInsets.only(
+                    top: 10, bottom: 0, left: 10, right: 10),
                 child: Column(
                   children: [
                     Row(
@@ -64,9 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           flex: 10,
                           child: TextFormField(
                             onChanged: (value) async => {
-                              showLoading(),
-                              await searchDeliveries(value),
-                              hideLoading()
+                              searchDeliveries(value),
                             },
                             cursorColor: Colors.grey,
                             decoration: InputDecoration(
@@ -86,42 +118,33 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: filterDeliveries.isNotEmpty
-                              ? ListView.builder(
-                                  itemCount: filterDeliveries.length,
-                                  itemBuilder: (context, index) => Card(
-                                      key: ValueKey(
-                                          filterDeliveries[index].delivery_no),
-                                      color: Colors.amberAccent,
-                                      elevation: 4,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: DeliveryCard(
-                                          delivery: filterDeliveries[index])),
-                                )
-                              : const Text(
+                    filterDeliveries.isNotEmpty
+                        ? Expanded(
+                            child: ListView.builder(
+                            itemCount: filterDeliveries.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) =>
+                                DeliveryCard(delivery: filterDeliveries[index]),
+                          ))
+                        : Visibility(
+                            visible: _textVisible,
+                            child: const Expanded(
+                                flex: 1,
+                                child: Center(
+                                    child: Text(
                                   'Sonuç bulunamadı',
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                        ),
-                      ],
-                    ),
+                                  style: TextStyle(fontSize: 16),
+                                )))),
                     Padding(
                         padding: const EdgeInsets.all(10),
                         child: Container(
                             padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Visibility(
                                 visible: _isLoading,
-                                child: Center(
-                                  // scaffold of the app
-                                  child: LoadingAnimationWidget.hexagonDots(
-                                    color: Colors.blue,
-                                    size: 50,
-                                  ),
-                                )))),
+                                child: const Center(
+                                    // scaffold of the app
+                                    child: LinearProgressIndicator())))),
                   ],
                 )),
             bottomNavigationBar:

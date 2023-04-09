@@ -32,7 +32,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
             padding: const EdgeInsets.all(10),
             child: Container(
               width: 400,
-              height: 150,
+              height: MediaQuery.of(context).size.height * .25,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
