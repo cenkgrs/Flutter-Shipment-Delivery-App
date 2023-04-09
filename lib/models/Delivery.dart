@@ -210,7 +210,7 @@ Future<List<Delivery>> fetchActiveDeliveries() async {
     List<Delivery> result = [];
 
     for (var delivery in data['deliveries']) {
-      if (delivery['status'] == 0 && delivery['st_delivery']) {
+      if (delivery['status'] == 0 && delivery['st_delivery'] == 1) {
         result.add(Delivery(
             delivery_no: delivery["delivery_no"],
             driver_id: delivery["driver_id"],
@@ -261,7 +261,7 @@ Future<List<Delivery>> fetchWaitingDeliveries() async {
     List<Delivery> result = [];
 
     for (var delivery in data['deliveries']) {
-      if (delivery['status'] == 0 && !delivery['st_delivery']) {
+      if (delivery['status'] == 0 && delivery['st_delivery'] == 0) {
         result.add(Delivery(
             delivery_no: delivery["delivery_no"],
             driver_id: delivery["driver_id"],
