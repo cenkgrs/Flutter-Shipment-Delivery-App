@@ -57,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void hideLoading() {
-    Future.delayed(const Duration(milliseconds: 1500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         _isLoading = false;
       });
@@ -87,66 +87,54 @@ class _SearchScreenState extends State<SearchScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             appBar: AppBar(title: const Text('Arama Yap')),
-            body: Container(
-                margin: const EdgeInsets.only(
-                    top: 10, bottom: 0, left: 10, right: 10),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 10,
-                          child: TextFormField(
-                            onChanged: (value) async => {
-                              searchDeliveries(value),
-                            },
-                            cursorColor: Colors.grey,
-                            decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                hintText: 'Teslimat Ara',
-                                hintStyle: const TextStyle(
-                                    color: Colors.grey, fontSize: 18),
-                                prefixIcon: Container(
-                                  padding: const EdgeInsets.all(15),
-                                  width: 18,
-                                  child: const Icon(Icons.search),
-                                )),
-                          ),
-                        ),
-                      ],
-                    ),
-                    filterDeliveries.isNotEmpty
-                        ? Expanded(
-                            child: ListView.builder(
-                            itemCount: filterDeliveries.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) =>
-                                DeliveryCard(delivery: filterDeliveries[index]),
-                          ))
-                        : Visibility(
-                            visible: _textVisible,
-                            child: const Expanded(
-                                flex: 1,
-                                child: Center(
-                                    child: Text(
-                                  'Sonuç bulunamadı',
-                                  style: TextStyle(fontSize: 16),
-                                )))),
-                    Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Container(
-                            padding: const EdgeInsets.all(50),
-                            child: Visibility(
-                                visible: _isLoading,
-                                child: const Center(
-                                    // scaffold of the app
-                                    child: LinearProgressIndicator())))),
-                  ],
-                )),
+            body: ListView(children: [
+              Container(
+                  margin: EdgeInsets.all(10),
+                  child: TextFormField(
+                    onChanged: (value) async => {
+                      searchDeliveries(value),
+                    },
+                    cursorColor: Colors.grey,
+                    decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        hintText: 'Teslimat Ara',
+                        hintStyle:
+                            const TextStyle(color: Colors.grey, fontSize: 18),
+                        prefixIcon: Container(
+                          padding: const EdgeInsets.all(15),
+                          width: 18,
+                          child: const Icon(Icons.search),
+                        )),
+                  )),
+              filterDeliveries.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: filterDeliveries.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      itemBuilder: (context, index) =>
+                          DeliveryCard(delivery: filterDeliveries[index]),
+                    )
+                  : Visibility(
+                      visible: _textVisible,
+                      child: const Center(
+                          child: Text(
+                        'Sonuç bulunamadı',
+                        style: TextStyle(fontSize: 16),
+                      ))),
+              Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Container(
+                      padding: const EdgeInsets.all(50),
+                      child: Visibility(
+                          visible: _isLoading,
+                          child: const Center(
+                              // scaffold of the app
+                              child: LinearProgressIndicator())))),
+            ]),
             bottomNavigationBar:
                 BottomNavbar(userType: widget.userType, index: 1)));
   }
