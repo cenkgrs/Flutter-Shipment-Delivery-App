@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:crud_app/models/Delivery.dart';
 import 'package:crud_app/models/Driver.dart';
 
@@ -24,6 +21,7 @@ class _SelectBoxState extends State<SelectBox> {
   String dropDownValue = "";
   int dropDownValueInt = 1000;
 
+  @override
   void initState() {
     super.initState();
 
@@ -36,6 +34,7 @@ class _SelectBoxState extends State<SelectBox> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     final List<String> genderItems = [
       'Male',
@@ -99,14 +98,15 @@ class _SelectBoxState extends State<SelectBox> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(left: 15, right: 15),
+                    padding: const EdgeInsets.only(left: 15, right: 15),
                     child: DropdownButton<int>(
                       value: dropDownValueInt == 1000 ? null : dropDownValueInt,
-                      hint: Text('Sürücü Seç'),
+                      hint: const Text('Sürücü Seç'),
                       isExpanded:
                           true, //make true to take width of parent widget
                       underline: Container(), //empty line
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      style: const TextStyle(
+                          fontSize: 18, color: Colors.blueAccent),
                       iconEnabledColor: Colors.blueAccent, //Icon color
                       items: snapshot.data.map<DropdownMenuItem<int>>((item) {
                         return DropdownMenuItem<int>(
@@ -124,10 +124,8 @@ class _SelectBoxState extends State<SelectBox> {
                       },
                     ),
                   ))
-              : Container(
-                  child: Center(
-                    child: Text('Sürücüler Getiriliyor...'),
-                  ),
+              : const Center(
+                  child: Text('Sürücüler Getiriliyor...'),
                 );
         },
       );

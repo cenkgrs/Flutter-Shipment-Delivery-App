@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:crud_app/widgets/driver/add_way_bill_card_widget.dart';
 import 'package:crud_app/widgets/driver/my_deliveries_table_widget.dart';
 
+import 'package:crud_app/widgets/admin/active_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/completed_deliveries_card_widget.dart';
 import 'package:crud_app/widgets/admin/create_delivery_card_widget.dart';
 import 'package:crud_app/widgets/admin/waiting_deliveries_card_widget.dart';
@@ -17,7 +17,7 @@ import 'package:crud_app/themes/themes.dart';
 class HomeScreen extends StatelessWidget {
   final String userType;
 
-  HomeScreen({Key? key, required this.userType}) : super(key: key);
+  const HomeScreen({Key? key, required this.userType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
@@ -71,30 +71,24 @@ class HomeScreen extends StatelessWidget {
                     */
                     if (userType == 'driver') const MyDeliveriesTable(),
                     if (userType == 'admin')
-                      Row(
-                        children: const [Expanded(child: CreateDeliveryCard())],
+                      const Row(
+                        children: [Expanded(child: CreateDeliveryCard())],
                       ),
                     if (userType == 'admin')
-                      Row(
-                        children: const [
-                          Expanded(child: CompletedDeliveriesCard())
-                        ],
+                      const Row(
+                        children: [Expanded(child: CompletedDeliveriesCard())],
                       ),
                     if (userType == 'admin')
-                      Row(
-                        children: const [
-                          Expanded(child: ActiveDeliveriesCard())
-                        ],
+                      const Row(
+                        children: [Expanded(child: ActiveDeliveriesCard())],
                       ),
                     if (userType == 'admin')
-                      Row(
-                        children: const [
-                          Expanded(child: WaitingDeliveriesCard())
-                        ],
+                      const Row(
+                        children: [Expanded(child: WaitingDeliveriesCard())],
                       ),
                     if (userType == 'admin')
-                      Row(
-                        children: const [Expanded(child: DriverLocations())],
+                      const Row(
+                        children: [Expanded(child: DriverLocations())],
                       ),
                   ],
                 ),

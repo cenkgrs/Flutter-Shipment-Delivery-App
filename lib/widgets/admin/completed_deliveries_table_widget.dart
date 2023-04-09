@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 class CompletedDeliveries extends StatefulWidget {
   const CompletedDeliveries({Key? key}) : super(key: key);
 
@@ -251,7 +250,7 @@ class _CompletedDeliveriesState extends State<CompletedDeliveries> {
                         padding: const EdgeInsets.all(10),
                         child: Container(
                           width: 400,
-                          height: 150,
+                          height: 200,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: Colors.white,

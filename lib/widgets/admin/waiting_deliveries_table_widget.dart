@@ -177,7 +177,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                         visible: true,
                         child: Center(
                             // scaffold of the app
-                            child: Text('Tamamlanan Teslimat Bulunamadı')))));
+                            child: Text('Bekleyen Teslimat Bulunamadı')))));
           }
           List<Delivery> deliveries = snapshot.data ?? [];
 
@@ -190,7 +190,7 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
                         visible: true,
                         child: Center(
                             // scaffold of the app
-                            child: Text('Bekleyen Teslimat Bulunamadı')))));
+                            child: Text('Bekleyen Teslimat Bulunmuyor')))));
           }
 
           return ListView.builder(

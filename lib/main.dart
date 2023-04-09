@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:crud_app/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:crud_app/themes/themes.dart';

@@ -105,11 +105,11 @@ getDriver(id) async {
   // to get token from local storage
   var token = await storage.read(key: 'token');
 
-  final response = await http.get(Uri.parse('${Constant.baseUrl}/get-driver'),
-      headers: {
-        'Accept': 'application/json;',
-        'Authorization': 'Bearer $token'
-      });
+  final response = await http
+      .get(Uri.parse('${Constant.baseUrl}/get-driver/$id'), headers: {
+    'Accept': 'application/json;',
+    'Authorization': 'Bearer $token'
+  });
 
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);

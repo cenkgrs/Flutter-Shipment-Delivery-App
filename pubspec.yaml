@@ -108,4 +108,4 @@ flutter:
   fonts:
     - family: Ubuntu
       fonts:
-        - asset: fonts/Ubuntu-Regular.ttf
+        - asset: assets/fonts/Ubuntu-Regular.ttf
