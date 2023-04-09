@@ -33,113 +33,112 @@ class _CreateDeliveryScreenState extends State<CreateDeliveryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: _title,
-        home: Scaffold(
-            appBar: AppBar(
-              leading: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.white,
-                ),
-              ),
-              title: const Text(_title),
-              centerTitle: true,
+    return Scaffold(
+        appBar: AppBar(
+          leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
             ),
-            body: Stack(children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: ListView(
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        controller: deliveryNoController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'İrsaliye Numarası',
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: TextFormField(
-                        controller: firmController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Firma İsmi',
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: TextFormField(
-                        minLines: 3,
-                        maxLines: 5,
-                        controller: addressController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Teslimat Adresi',
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      child: SelectBox(
-                          type: 'drivers', callback: getSelectedDriver),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        create(
-                            deliveryNoController.text.toString(),
-                            firmController.text.toString(),
-                            addressController.text.toString(),
-                            selectedDriver);
-                      },
-                      child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: const Center(
-                          child: Text('Ekle',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
+          ),
+          title: const Text(_title),
+          centerTitle: true,
+        ),
+        body: Stack(children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(
+              children: <Widget>[
+                Container(
                   padding: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: deliveryNoController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'İrsaliye Numarası',
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: firmController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Firma İsmi',
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: TextFormField(
+                    minLines: 3,
+                    maxLines: 5,
+                    controller: addressController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Teslimat Adresi',
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child:
+                      SelectBox(type: 'drivers', callback: getSelectedDriver),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    create(
+                        deliveryNoController.text.toString(),
+                        firmController.text.toString(),
+                        addressController.text.toString(),
+                        selectedDriver);
+                  },
                   child: Container(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: Visibility(
-                          visible: _isLoading,
-                          child: Center(
-                            // scaffold of the app
-                            child: LoadingAnimationWidget.hexagonDots(
-                              color: Colors.blue,
-                              size: 50,
-                            ),
-                          )))),
-            ]),
-            bottomNavigationBar: BottomNavbar(userType: 'admin', index: 0)));
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Center(
+                      child: Text('Ekle',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Visibility(
+                      visible: _isLoading,
+                      child: Center(
+                        // scaffold of the app
+                        child: LoadingAnimationWidget.hexagonDots(
+                          color: Colors.blue,
+                          size: 50,
+                        ),
+                      )))),
+        ]),
+        bottomNavigationBar: const BottomNavbar(userType: 'admin', index: 0));
   }
 
   create(deliveryNo, firm, address, selectedDriver) async {
     showLoading();
 
-    var result =
-        await createDelivery(deliveryNo, firm, address, selectedDriver);
+    // var result = await createDelivery(deliveryNo, firm, address, selectedDriver);
+
+    var result = true;
 
     if (result) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
