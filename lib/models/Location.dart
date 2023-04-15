@@ -64,6 +64,10 @@ Future setLocation(type) async {
 }
 
 launchMapQuery(String address) {
+  if (address == "") {
+    return false;
+  }
+
   MapsLauncher.launchQuery(address);
 }
 

@@ -204,7 +204,6 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                 var result = await cancelDelivery(delivery);
 
                 if (result['status'] == true) {
-
                   var result = await setLocation('cancel_delivery');
 
                   Navigator.push(
@@ -288,7 +287,8 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           return Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: DeliveredPersonSheet(deliveryNo: deliveryNo),
-          );;
+          );
+          ;
         });
   }
 
@@ -334,7 +334,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
                                     ),
                                   ))));
                     }
-                    if (snapshot.hasError) {
+                    if (snapshot.hasError || !snapshot.hasData) {
                       return Padding(
                           padding: const EdgeInsets.all(10),
                           child: Container(

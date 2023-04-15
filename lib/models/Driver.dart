@@ -99,7 +99,7 @@ createDriver(name, email, password) async {
   }
 }
 
-getDriver(id) async {
+Future<Driver> getDriver(id) async {
   const storage = FlutterSecureStorage();
 
   // to get token from local storage

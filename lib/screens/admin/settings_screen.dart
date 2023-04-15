@@ -242,6 +242,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               driversList(width),
             ]),
             bottomNavigationBar:
-                const BottomNavbar(userType: 'admin', index: 0)));
+                const BottomNavbar(userType: 'admin', index: 3)));
   }
 }

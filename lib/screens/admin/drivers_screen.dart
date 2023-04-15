@@ -10,7 +10,6 @@ class DriversScreen extends StatefulWidget {
 }
 
 class _DriversScreenState extends State<DriversScreen> {
-
   static const String _title = 'Şöförler Şuan Nerede ?';
 
   @override
@@ -38,6 +37,6 @@ class _DriversScreenState extends State<DriversScreen> {
             ),
             body: const DriverLocations(),
             bottomNavigationBar:
-                const BottomNavbar(userType: 'admin', index: 0)));
+                const BottomNavbar(userType: 'admin', index: 2)));
   }
 }

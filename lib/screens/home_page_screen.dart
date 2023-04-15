@@ -22,9 +22,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) => ChangeNotifierProvider(
       create: (context) => AppTheme(),
       child: Consumer<AppTheme>(builder: (context, state, child) {
-        return MaterialApp(
-            title: 'Aydın Plastik',
-            /*theme: state.darkTheme
+        return WillPopScope(
+            onWillPop: () async => false,
+            child: MaterialApp(
+                title: 'Aydın Plastik',
+                /*theme: state.darkTheme
                 ? ThemeData(
                     appBarTheme: AppBarTheme(color: Color(0xff181823)),
                     colorScheme: const ColorScheme.dark().copyWith(
@@ -39,28 +41,28 @@ class HomeScreen extends StatelessWidget {
                       brightness: Brightness.light,
                     ),
                     scaffoldBackgroundColor: Colors.lightBlue),*/
-            home: Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  heroTag: UniqueKey(),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => userType == 'driver'
-                              ? const DeliveryScreen()
-                              : const DriversScreen()),
-                    );
-                  },
-                  child: userType == 'driver'
-                      ? const Icon(Icons.delivery_dining)
-                      : const Icon(Icons.people), //icon inside button
-                ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.centerDocked,
-                appBar: AppBar(title: const Text('Aydın Plastik')),
-                body: ListView(
-                  children: <Widget>[
-                    /*
+                home: Scaffold(
+                    floatingActionButton: FloatingActionButton(
+                      heroTag: UniqueKey(),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => userType == 'driver'
+                                  ? const DeliveryScreen()
+                                  : const DriversScreen()),
+                        );
+                      },
+                      child: userType == 'driver'
+                          ? const Icon(Icons.delivery_dining)
+                          : const Icon(Icons.people), //icon inside button
+                    ),
+                    floatingActionButtonLocation:
+                        FloatingActionButtonLocation.centerDocked,
+                    appBar: AppBar(title: const Text('Aydın Plastik')),
+                    body: ListView(
+                      children: <Widget>[
+                        /*
                     if (userType == 'driver')
                       Row(children: const [
                         Expanded(
@@ -68,26 +70,30 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ]),
                     */
-                    if (userType == 'driver') const MyDeliveriesTable(),
-                    if (userType == 'admin')
-                      const Row(
-                        children: [Expanded(child: CreateDeliveryCard())],
-                      ),
-                    if (userType == 'admin')
-                      const Row(
-                        children: [Expanded(child: CompletedDeliveriesCard())],
-                      ),
-                    if (userType == 'admin')
-                      const Row(
-                        children: [Expanded(child: ActiveDeliveriesCard())],
-                      ),
-                    if (userType == 'admin')
-                      const Row(
-                        children: [Expanded(child: WaitingDeliveriesCard())],
-                      ),
-                  ],
-                ),
-                bottomNavigationBar:
-                    BottomNavbar(userType: userType, index: 0)));
+                        if (userType == 'driver') const MyDeliveriesTable(),
+                        if (userType == 'admin')
+                          const Row(
+                            children: [Expanded(child: CreateDeliveryCard())],
+                          ),
+                        if (userType == 'admin')
+                          const Row(
+                            children: [
+                              Expanded(child: CompletedDeliveriesCard())
+                            ],
+                          ),
+                        if (userType == 'admin')
+                          const Row(
+                            children: [Expanded(child: ActiveDeliveriesCard())],
+                          ),
+                        if (userType == 'admin')
+                          const Row(
+                            children: [
+                              Expanded(child: WaitingDeliveriesCard())
+                            ],
+                          ),
+                      ],
+                    ),
+                    bottomNavigationBar:
+                        BottomNavbar(userType: userType, index: 0))));
       }));
 }

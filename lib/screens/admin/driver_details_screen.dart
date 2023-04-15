@@ -6,6 +6,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:crud_app/screens/admin/drivers_screen.dart';
 import 'package:crud_app/models/Driver.dart';
 
+// Models
+import 'package:crud_app/models/Delivery.dart';
+import 'package:location/location.dart';
+
 class DriverDetailsScreen extends StatefulWidget {
   final int id;
 
@@ -78,10 +82,6 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
     FutureBuilder<dynamic>(
         future: checkDriverStatus(driver.id),
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const LinearProgressIndicator();
-          }
-
           var status = snapshot.data ?? false;
 
           if (status == 'active') {
@@ -118,6 +118,8 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
             ],
           );
         });
+
+    return const LinearProgressIndicator();
   }
 
   driverProfileCard(driver, width) {
@@ -128,7 +130,53 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
           Row(
             children: [
               Expanded(flex: 7, child: getDriverName(driver, width)),
-              Expanded(flex: 3, child: getDriverStatus(driver, width)),
+              Expanded(
+                  flex: 3,
+                  child: FutureBuilder<dynamic>(
+                      future: checkDriverStatus(driver.id),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return const LinearProgressIndicator();
+                        }
+
+                        var status = snapshot.data ?? false;
+
+                        if (status == 'active') {
+                          return Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: const Padding(
+                                    padding: EdgeInsets.all(10),
+                                    child: Text(
+                                      'Teslimatta',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                              )
+                            ],
+                          );
+                        }
+
+                        return Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    'Beklemede',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                            )
+                          ],
+                        );
+                      })),
             ],
           ),
           drawBorder(width),
@@ -175,8 +223,9 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
         ));
   }
 
-  openLocationButton(location) {
+  openLocationButton(location, width) {
     return Container(
+      width: width * 0.92,
       decoration: const BoxDecoration(
           color: Colors.blue,
           borderRadius: BorderRadius.only(
@@ -184,14 +233,15 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
               bottomLeft: Radius.circular(12))),
       child: Row(
         children: [
-          const Expanded(flex: 8, child: Text('')),
+          const Expanded(flex: 7, child: Text('')),
           Expanded(
               flex: 3,
               child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: GestureDetector(
                     onTap: () {
-                      launchMapCoordinates(location.latitude, location.longitude);
+                      launchMapCoordinates(
+                          location.latitude, location.longitude);
                     },
                     child: const Text(
                       'Konuma Git',
@@ -206,17 +256,29 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
 
   driverLocationCard(location, width) {
     return Card(
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Row(
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: SizedBox(
+          child: Column(
             children: [
-              getType(location),
-              getLocationTime(location),
-              openLocationButton(location),
+              Row(
+                children: [
+                  getType(location),
+                ],
+              ),
+              Row(
+                children: [
+                  getLocationTime(location),
+                ],
+              ),
+              Row(
+                children: [
+                  openLocationButton(location, width),
+                ],
+              )
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -245,8 +307,7 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
               title: const Text(_title),
               centerTitle: true,
             ),
-            body: Stack(
-              alignment: Alignment.center,
+            body: ListView(
               children: [
                 FutureBuilder<Driver>(
                     future: futureDriver,
@@ -309,8 +370,8 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
 
                         return ListView.builder(
                             itemCount: locations.length,
-                            shrinkWrap: true,
                             scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
                             physics: const ScrollPhysics(),
                             itemBuilder: (context, index) {
                               Locations location = locations[index];
@@ -334,11 +395,11 @@ class _DriverDetailsScreenState extends State<DriverDetailsScreen> {
                       }
 
                       return const LinearProgressIndicator();
-                    }),
+                    })
               ],
             ),
             bottomNavigationBar:
-                const BottomNavbar(userType: 'admin', index: 0)));
+                const BottomNavbar(userType: 'admin', index: 2)));
   }
 
   void showLoading() {

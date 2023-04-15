@@ -424,7 +424,7 @@ Future<List<Delivery>> searchDelivery(query, userType) async {
 
     return result;
   } else {
-    throw Exception('Failed to load Delivery');
+    return [];
   }
 }
 
@@ -468,7 +468,7 @@ Future<Delivery> getActiveDelivery() async {
         longitude: double.tryParse(delivery['longitude']),
         status: delivery['status']);
   } else {
-    throw Exception('Failed to load Delivery');
+    return Future.error('Aktif teslimat getirilemedi');
   }
 }
 

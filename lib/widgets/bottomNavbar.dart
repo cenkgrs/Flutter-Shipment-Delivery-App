@@ -30,6 +30,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
         switch (selectedIndex) {
           // Home Page
           case 0:
+            if (widget.index == 0) {
+              break;
+            }
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -38,6 +41,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
             break;
 
           case 1:
+            if (widget.index == 1) {
+              break;
+            }
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -47,6 +53,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
             break;
 
           case 2:
+            if (widget.index == 2) {
+              break;
+            }
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const DriversScreen()),
@@ -54,6 +63,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
             break;
 
           case 3:
+            if (widget.index == 3) {
+              break;
+            }
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SettingsScreen()),
@@ -127,7 +139,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
-                padding: EdgeInsets.only(left: 20),
+                padding: const EdgeInsets.only(left: 20),
                 icon: const Icon(Icons.home, color: Colors.white),
                 onPressed: () {
                   navigationAction(0);
@@ -152,7 +164,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 },
               ),
               IconButton(
-                padding: EdgeInsets.only(right: 20),
+                padding: const EdgeInsets.only(right: 20),
                 icon: const Icon(Icons.logout, color: Colors.white),
                 onPressed: () {
                   navigationAction(4);

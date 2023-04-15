@@ -84,6 +84,11 @@ class _DriverLocationsState extends State<DriverLocations> {
           children: [
             tire(),
             const SizedBox(width: 10),
+            const Text(
+              'Son Hareket: ',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.blueGrey),
+            ),
             Text(
               '${dateFormat!.format(location.time!)} - ${timeFormat!.format(location.time!)}',
               style: const TextStyle(
@@ -131,10 +136,11 @@ class _DriverLocationsState extends State<DriverLocations> {
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DriverDetailsScreen(id: location.driverId)),
-            );
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DriverDetailsScreen(id: location.driverId)),
+                      );
                     },
                     child: const Text(
                       'Detaylar',
