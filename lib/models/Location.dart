@@ -108,6 +108,19 @@ Future<List<Locations>> getDriverLocations() async {
               : DateTime.tryParse(location["time"])));
     }
 
+    // Add empty locations last
+    for (var location in data['empty_locations']) {
+      result.add(Locations(
+        driverId: location["driver_id"],
+        type: location["type"],
+        driverName: location["driver_name"],
+        address: null,
+        latitude: null,
+        longitude: null,
+        time: null
+      ));
+    }
+
     return result;
   } else {
     throw Exception('Failed to load driver locations');
@@ -159,6 +172,8 @@ typeToString(type) {
       return 'Teslimat Tamamlandı';
     case 'cancel_delivery':
       return 'Teslimat İptal Edildi';
+    case 'empty':
+      return 'Henüz aktif değil';
   }
 }
 

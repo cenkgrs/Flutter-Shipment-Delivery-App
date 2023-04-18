@@ -67,7 +67,7 @@ class _DriverLocationsState extends State<DriverLocations> {
             tire(),
             const SizedBox(width: 10),
             Text(
-              location.address,
+              location.address == null ? 'Adres bulunmuyor' : location.address,
               style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
