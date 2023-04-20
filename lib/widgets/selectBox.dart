@@ -21,6 +21,8 @@ class _SelectBoxState extends State<SelectBox> {
   String dropDownValue = "";
   int dropDownValueInt = 1000;
 
+  late Driver _selectedDriver;
+
   @override
   void initState() {
     super.initState();
@@ -99,8 +101,8 @@ class _SelectBoxState extends State<SelectBox> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
-                    child: DropdownButton<int>(
-                      value: dropDownValueInt == 1000 ? null : dropDownValueInt,
+                    child: DropdownButton<Driver>(
+                      value: _selectedDriver,
                       hint: const Text('Sürücü Seç'),
                       isExpanded:
                           true, //make true to take width of parent widget
@@ -108,18 +110,18 @@ class _SelectBoxState extends State<SelectBox> {
                       style: const TextStyle(
                           fontSize: 18, color: Colors.blueAccent),
                       iconEnabledColor: Colors.blueAccent, //Icon color
-                      items: snapshot.data.map<DropdownMenuItem<int>>((item) {
-                        return DropdownMenuItem<int>(
+                      items: snapshot.data.map<DropdownMenuItem<Driver>>((item) {
+                        return DropdownMenuItem<Driver>(
                           value: item.id,
                           child: Text(item.name),
                         );
                       }).toList(),
-                      onChanged: (value) {
+                      onChanged: (driver) {
                         setState(() {
-                          dropDownValueInt = dropDownValueInt!;
+                          _selectedDriver = driver!;
 
                           // Send this value to parent widget
-                          widget.callback(value);
+                          widget.callback(driver.id);
                         });
                       },
                     ),
