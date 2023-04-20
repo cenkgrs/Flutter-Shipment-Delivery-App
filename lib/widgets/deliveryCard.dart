@@ -31,17 +31,20 @@ class _DeliveryCardState extends State<DeliveryCard> {
 
     var completed = widget.delivery.st_complete == 1 ? true : false;
     var started = widget.delivery.st_delivery == 1 ? true : false;
-    var waiting = widget.delivery.st_delivery == 0 && widget.delivery.st_complete == 0 ? true : false;
+    var waiting =
+        widget.delivery.st_delivery == 0 && widget.delivery.st_complete == 0
+            ? true
+            : false;
 
     var status = completed && started
         ? 'full'
         : (completed || started ? 'half' : 'empty');
 
     var cardHeight = status == 'full'
-        ? MediaQuery.of(context).size.height * .22
+        ? MediaQuery.of(context).size.height * .28
         : (status == 'half'
-            ? MediaQuery.of(context).size.height * .18
-            : MediaQuery.of(context).size.height * .15);
+            ? MediaQuery.of(context).size.height * .24
+            : MediaQuery.of(context).size.height * .18);
 
     return Center(
         child: Padding(

@@ -109,16 +109,19 @@ Future<List<Locations>> getDriverLocations() async {
     }
 
     // Add empty locations last
+    if (data['empty_locations'] == null) {
+      return result;
+    }
+
     for (var location in data['empty_locations']) {
       result.add(Locations(
-        driverId: location["driver_id"],
-        type: location["type"],
-        driverName: location["driver_name"],
-        address: null,
-        latitude: null,
-        longitude: null,
-        time: null
-      ));
+          driverId: location["driver_id"],
+          type: location["type"],
+          driverName: location["driver_name"],
+          address: '',
+          latitude: '',
+          longitude: '',
+          time: null));
     }
 
     return result;

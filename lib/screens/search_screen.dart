@@ -69,6 +69,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return MaterialApp(
         title: 'Arama Yap',
         home: Scaffold(
+            resizeToAvoidBottomInset: false,
             floatingActionButton: FloatingActionButton(
               heroTag: UniqueKey(),
               onPressed: () {

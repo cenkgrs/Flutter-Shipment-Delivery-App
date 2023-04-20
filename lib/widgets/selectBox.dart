@@ -34,6 +34,8 @@ class _SelectBoxState extends State<SelectBox> {
     if (widget.type == 'drivers') {
       futureDrivers = fetchDrivers();
     }
+
+    Driver _selectedDriver = Driver(id: 0, name: 'Seç');
   }
 
   @override
@@ -102,7 +104,7 @@ class _SelectBoxState extends State<SelectBox> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: DropdownButton<Driver>(
-                      value: _selectedDriver,
+                      value: _selectedDriver == null ? null : _selectedDriver,
                       hint: const Text('Sürücü Seç'),
                       isExpanded:
                           true, //make true to take width of parent widget
@@ -110,9 +112,10 @@ class _SelectBoxState extends State<SelectBox> {
                       style: const TextStyle(
                           fontSize: 18, color: Colors.blueAccent),
                       iconEnabledColor: Colors.blueAccent, //Icon color
-                      items: snapshot.data.map<DropdownMenuItem<Driver>>((item) {
+                      items:
+                          snapshot.data.map<DropdownMenuItem<Driver>>((item) {
                         return DropdownMenuItem<Driver>(
-                          value: item.id,
+                          value: item,
                           child: Text(item.name),
                         );
                       }).toList(),
