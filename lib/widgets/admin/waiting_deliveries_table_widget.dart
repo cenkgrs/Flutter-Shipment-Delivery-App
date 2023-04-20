@@ -5,6 +5,8 @@ import 'package:crud_app/models/Delivery.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:crud_app/widgets/deliveryCard.dart';
+
 
 class WaitingDeliveries extends StatefulWidget {
   const WaitingDeliveries({Key? key}) : super(key: key);
@@ -200,6 +202,8 @@ class _WaitingDeliveriesState extends State<WaitingDeliveries> {
               physics: const ScrollPhysics(),
               itemBuilder: (context, index) {
                 Delivery delivery = deliveries[index];
+
+                return DeliveryCard(delivery: deliveries[index]);
 
                 return Center(
                     child: Padding(

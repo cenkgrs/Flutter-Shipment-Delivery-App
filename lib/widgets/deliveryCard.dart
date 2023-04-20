@@ -31,6 +31,7 @@ class _DeliveryCardState extends State<DeliveryCard> {
 
     var completed = widget.delivery.st_complete == 1 ? true : false;
     var started = widget.delivery.st_delivery == 1 ? true : false;
+    var waiting = widget.delivery.st_delivery == 0 && widget.delivery.st_complete == 0 ? true : false;
 
     var status = completed && started
         ? 'full'
